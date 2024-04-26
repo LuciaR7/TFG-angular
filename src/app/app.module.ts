@@ -1,21 +1,41 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
+import { MatButtonModule } from '@angular/material/button';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
+
+
 import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { ParteIntervencionComponent } from './parte-intervencion/parte-intervencion.component';
+
+import { ParteInicialComponent } from './parte/components/parte-inicial/parte-inicial.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    ParteIntervencionComponent
+    ParteInicialComponent
+
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MatSlideToggleModule
+    MatButtonModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatRadioModule,
+    MatIconModule,
+    MatCheckboxModule
   ],
   providers: [
     provideAnimationsAsync()

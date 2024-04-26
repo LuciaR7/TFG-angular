@@ -1,0 +1,84 @@
+<div>
+  <h1>RicoRepair</h1>
+  <h2>Parte Intervención "" </h2>
+
+  <form class="form">
+    <table class="full-width" cellspacing="0"><tr>
+      <td><mat-form-field class="full-width">
+        <mat-label>Nombre</mat-label>
+        <input matInput #input maxlength="50"required>
+        <mat-hint align="end">{{input.value.length}}/50</mat-hint>
+      </mat-form-field></td>
+      <td><mat-form-field class="full-width">
+        <mat-label>Apellidos</mat-label>
+        <input matInput #input maxlength="50"required>
+        <mat-hint align="end">{{input.value.length}}/50</mat-hint>
+      </mat-form-field></td>
+    </tr></table>
+
+    <table class="full-width" cellspacing="0"><tr>
+      <td><mat-form-field class="full-width">
+          <mat-label>Teléfono</mat-label>
+          <input type="tel" matInput placeholder="666-666-666">
+          </mat-form-field>
+      </td>
+      <td><mat-form-field class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput #input maxlength="50"required>
+        <mat-hint align="end">{{input.value.length}}/50</mat-hint>
+      </mat-form-field></td>
+    </tr></table>
+
+    <table class="full-width" cellspacing="0"><tr>
+      <td><mat-form-field class="full-width">
+        <mat-label>Dispositivo</mat-label>
+    <mat-select>
+      <mat-option value="option">Equipo completo (ordenador y torre)</mat-option>
+      <mat-option value="option">Portátil</mat-option>
+      <mat-option value="option">Tablet</mat-option>
+    </mat-select>
+    <mat-hint align="end"></mat-hint>
+      </mat-form-field></td>
+      <td><mat-form-field class="full-width">
+        <mat-label>Otros materiales</mat-label>
+        <input matInput #input maxlength="50">
+        <mat-hint align="end">{{input.value.length}}/50</mat-hint>
+      </mat-form-field></td>
+    </tr></table>
+
+    <p>
+      <mat-form-field class="full-width">
+        <mat-label>Motivo Intervención Cliente</mat-label>
+        <textarea matInput></textarea>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Informe Empresa</mat-label>
+        <textarea matInput></textarea>
+      </mat-form-field>
+    </p>
+
+    <div>
+      <mat-label>Presupuesto</mat-label>
+      <mat-radio-group aria-label="Selecciona una opcion">
+        <mat-radio-button value="1">Sí</mat-radio-button>
+        <mat-radio-button value="2">No</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+  <div>
+    <p>Términos y Condiciones</p>
+  </div>
+
+  <section class="example-section">
+    <mat-checkbox class="example-margin" required>Aceptar términos y condiciones </mat-checkbox>
+  </section>
+  </form>
+
+
+
+
+
+
+</div>
+
+
