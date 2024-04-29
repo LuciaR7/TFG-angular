@@ -16,6 +16,8 @@ import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import { ParteInicialComponent } from './parte/components/parte-inicial/parte-inicial.component';
+import { CustomFlexboxBase } from '@penalara/custom-flexbox/lib/directives/base-directive/custom-flexbox-base.directive';
+import { CustomFlexBoxModule } from '@penalara/custom-flexbox';
 
 
 @NgModule({
@@ -35,7 +37,8 @@ import { ParteInicialComponent } from './parte/components/parte-inicial/parte-in
     ReactiveFormsModule,
     MatRadioModule,
     MatIconModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    CustomFlexBoxModule
   ],
   providers: [
     provideAnimationsAsync()

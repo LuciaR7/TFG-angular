@@ -1,20 +1,21 @@
-.formulario-container mat-form-field + mat-form-field {
-  margin-left: 8px;
+
+
+h1 {
+  padding-top: 20px;
+  text-align: center;
 }
 
-.form {
-  min-width: 150px;
+h2 {
+  text-align: center;
+}
+
+.width-input {
+  min-width: 180px;
   max-width: 500px;
-  width: 100%;
+  width:150%;
 }
 
-.full-width {
-  width: 100%;
-}
-
-td {
-  padding-right: 8px;
-}
+input
 
 .mat-mdc-radio-button ~ .mat-mdc-radio-button {
   margin-left: 16px;
