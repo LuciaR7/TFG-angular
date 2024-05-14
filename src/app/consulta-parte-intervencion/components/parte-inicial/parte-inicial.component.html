@@ -1,14 +1,14 @@
-<div id="formulario" customFlexbox="row">
+<div  style="background-color:lightblue">
 
     <!-- Margen izquierdo -->
-    <div cFflex style="background-color: rgb(187, 203, 197);">
-        Hola
-    </div>
+    <!--<div cFflex style="background-color: rgb(187, 203, 197);">
 
-    <!-- Contenedor campos-->
+    </div>-->
+
+    <!-- Contenedor campos rellenar-->
     <div customFlexbox="colum"
         style="background-color: rgb(219, 75, 75);"
-        cFflex="50" cFflex.m="60" cFflex.s="70" cFflex.xs="90">
+        cFAlign="center center">
 
         <!-- Bloque título y logo -->
         <div customFlexbox="colum">
@@ -20,7 +20,8 @@
 
         <!-- Bloque nombre y apellidos -->
         <div customFlexbox="row" customFlexbox.s="colum"
-            customFlexbox.xs="colum">
+             customFlexbox.xs="colum" cFAlign="space-around center"
+             cFGap="30px">
 
 
             <!-- Nombre-->
@@ -51,7 +52,8 @@
 
         <!-- Bloque Telf y email -->
         <div customFlexbox="row" customFlexbox.s="colum"
-            customFlexbox.xs="colum">
+             customFlexbox.xs="colum" cFAlign="space-around center"
+             cFGap="30px">
 
             <!-- Teléfono-->
             <div customFlexbox="colum">
@@ -84,7 +86,8 @@
 
          <!-- Bloque Dispositivo y Otros Materiales -->
         <div customFlexbox="row" customFlexbox.s="colum"
-            customFlexbox.xs="colum">
+             customFlexbox.xs="colum" cFAlign="space-around center"
+             cFGap="30px">
 
             <!-- Dispositivo-->
             <div customFlexbox="colum">
@@ -124,7 +127,7 @@
         <div customFlexbox="colum">
 
             <label>MOTIVO CLIENTE</label>
-            <mat-form-field class="width-input">
+            <mat-form-field class="width-motivo">
                 <mat-label>Introduzca el Motivo del Cliente</mat-label>
                 <textarea matInput></textarea>
             </mat-form-field>
@@ -135,26 +138,33 @@
         <div customFlexbox="colum">
 
             <label>INFORME EMPRESA</label>
-            <mat-form-field class="width-input">
+            <mat-form-field class="width-motivo">
                 <mat-label>Introduzca el Informe de Empresa</mat-label>
                 <textarea matInput></textarea>
             </mat-form-field>
 
         </div>
+    </div>
+
+    <!-- Contenedor campos seleccionar o desplegables-->
+    <div customFlexbox="colum"
+        style="background-color: rgb(219, 75, 75);"
+        cFGap="20px">
 
         <!-- Presupuesto -->
-        <div customFlexbox="colum">
+        <div id="margen-div-seleccion" customFlexbox="column" >
 
             <label>PRESUPUESTO</label>
             <mat-radio-group aria-label="Selecciona una opcion">
                 <mat-radio-button value="1">Sí</mat-radio-button>
                 <mat-radio-button value="2">No</mat-radio-button>
-          </mat-radio-group>
+            </mat-radio-group>
 
         </div>
 
         <!-- Política de Privacidad -->
-        <div customFlexbox="colum">
+        <div id="margen-div-seleccion" customFlexbox="colum"
+             cFAlign="space-around center" cFGap="10px">
 
             <label>POLÍTICA DE PRIVACIDAD</label>
             <div>
@@ -241,17 +251,15 @@
 
         <!-- Botón Imprimir -->
         <div customFlexbox="colum">
-
-
         </div>
 
 
     </div>
 
     <!-- Margen derecho -->
-    <div  cFflex style="background-color: rgb(187, 203, 197);">
-        Hola
-    </div>
+    <!-- <div  cFflex style="background-color: rgb(187, 203, 197);">
+
+    </div> -->
 
 </div>
 

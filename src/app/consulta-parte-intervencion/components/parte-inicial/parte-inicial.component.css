@@ -9,13 +9,22 @@ h2 {
   text-align: center;
 }
 
-.width-input {
-  min-width: 180px;
-  max-width: 400px;
-  width:150%;
+.width-motivo {
+  width: 532px;
 }
 
+
+.width-input {
+  width: 250px;
+
+}
+
+#margen-div-seleccion {
+margin-left: 425px;
+}
+
+
 .mat-mdc-radio-button ~ .mat-mdc-radio-button {
-  margin-left: 16px;
+  margin-left: 30px;
 }
 
