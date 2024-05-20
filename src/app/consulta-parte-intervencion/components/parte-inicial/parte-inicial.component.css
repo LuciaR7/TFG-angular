@@ -19,12 +19,24 @@ h2 {
 
 }
 
-#margen-div-seleccion {
-margin-left: 425px;
+
+.mat-mdc-radio-button ~ .mat-mdc-radio-button {
+  margin-left: 20px;
 }
 
 
-.mat-mdc-radio-button ~ .mat-mdc-radio-button {
-  margin-left: 30px;
+.button-row {
+  display: table-cell;
+  max-width: 600px;
+}
+
+.button-row .mat-mdc-button-base {
+  margin: 8px 8px 8px 0;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 

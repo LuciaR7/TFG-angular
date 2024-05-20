@@ -1,14 +1,38 @@
-<div  style="background-color:lightblue">
+<div style="background-color:lightblue">
 
     <!-- Margen izquierdo -->
     <!--<div cFflex style="background-color: rgb(187, 203, 197);">
 
     </div>-->
 
-    <!-- Contenedor campos rellenar-->
+    <!-- Contenedor campos-->
     <div customFlexbox="colum"
-        style="background-color: rgb(219, 75, 75);"
+        style="background-color: rgb(212, 100, 100); "
         cFAlign="center center">
+
+      <!-- Menú arriba-->
+      <div customFlexbox="colum">
+        <div class="button-row">
+          <div class="flex-container">
+            <button mat-icon-button aria-label="Icon button with a vertical three dot icon">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" aria-label="Icon button with a home icon">
+              <mat-icon>home</mat-icon>
+            </button>
+            <button mat-icon-button color="accent" aria-label="Icon button with a menu icon">
+              <mat-icon>menu</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" aria-label="Icon button with a heart icon">
+              <mat-icon>favorite</mat-icon>
+            </button>
+            <button mat-icon-button disabled aria-label="Icon button with a open in new tab icon">
+              <mat-icon>open_in_new</mat-icon>
+            </button>
+          </div>
+        </div>
+      <mat-divider></mat-divider>
+      </div>
 
         <!-- Bloque título y logo -->
         <div customFlexbox="colum">
@@ -144,18 +168,14 @@
             </mat-form-field>
 
         </div>
-    </div>
 
-    <!-- Contenedor campos seleccionar o desplegables-->
-    <div customFlexbox="colum"
-        style="background-color: rgb(219, 75, 75);"
-        cFGap="20px">
 
         <!-- Presupuesto -->
-        <div id="margen-div-seleccion" customFlexbox="column" >
+        <div customFlexbox="column">
 
             <label>PRESUPUESTO</label>
-            <mat-radio-group aria-label="Selecciona una opcion">
+            <mat-radio-group class="width-motivo"
+            aria-label="Selecciona una opcion">
                 <mat-radio-button value="1">Sí</mat-radio-button>
                 <mat-radio-button value="2">No</mat-radio-button>
             </mat-radio-group>
@@ -163,8 +183,8 @@
         </div>
 
         <!-- Política de Privacidad -->
-        <div id="margen-div-seleccion" customFlexbox="colum"
-             cFAlign="space-around center" cFGap="10px">
+        <div customFlexbox="colum" cFGap="10px" class="width-motivo"
+            style="padding-top: 20px;">
 
             <label>POLÍTICA DE PRIVACIDAD</label>
             <div>
@@ -242,6 +262,12 @@
                   Agencia Española de Protección de Datos: <a href="http://www.agpd.es" target="_blank" rel="noopener">www.agpd.es</a></p>
               </details>
             </div>
+        </div>
+
+        <!-- Aceptar Términos y Condiciones -->
+        <div customFlexbox="colum" cFGap="10px" class="width-motivo"
+             style="padding-top: 20px;">
+
             <section class="example-section">
               <mat-checkbox class="example-margin" required>
                 Aceptar términos y condiciones </mat-checkbox>
@@ -249,11 +275,11 @@
 
         </div>
 
-        <!-- Botón Imprimir -->
-        <div customFlexbox="colum">
-        </div>
 
+      </div>
 
+    <!-- Botón Imprimir -->
+    <div customFlexbox="colum">
     </div>
 
     <!-- Margen derecho -->
