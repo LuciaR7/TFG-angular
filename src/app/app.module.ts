@@ -3,7 +3,7 @@ import { AppComponent } from './app.component';
 
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { ConsultaParteIntervencionModule } from './consulta-parte-intervencion/consulta-parte-intervencion.module';
+import { HomePageModule } from './home-page/home-page.module';
 import { HttpClientModule } from '@angular/common/http';
 
 import { SharedModule } from './shared/shared.module';
@@ -19,7 +19,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
   imports: [
     AppRoutingModule,
     BrowserModule,
-    ConsultaParteIntervencionModule,
+    HomePageModule,
     HttpClientModule,
 
     SharedModule,
