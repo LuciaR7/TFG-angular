@@ -3,12 +3,12 @@ import { AppComponent } from './app.component';
 
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { HomePageModule } from './home-page/home-page.module';
-import { HttpClientModule } from '@angular/common/http';
-
 import { SharedModule } from './shared/shared.module';
 
+import { HttpClientModule } from '@angular/common/http';
+
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+
 
 
 @NgModule({
@@ -19,10 +19,9 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
   imports: [
     AppRoutingModule,
     BrowserModule,
-    HomePageModule,
+    SharedModule,
     HttpClientModule,
 
-    SharedModule,
   ],
   providers: [
     provideAnimationsAsync()

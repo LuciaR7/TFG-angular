@@ -13,11 +13,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { Error404PageComponent } from './pages/error404-page/error404-page.component';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    Error404PageComponent
+  ],
   imports: [
     CommonModule,
     RouterModule,
@@ -36,6 +39,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatRadioModule,
     MatSelectModule,
     ReactiveFormsModule,
+
+    Error404PageComponent,
   ]
 
 

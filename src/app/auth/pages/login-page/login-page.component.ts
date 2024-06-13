@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-inicio-sesion',
-  templateUrl: './inicio-sesion.component.html',
-  styleUrl: './inicio-sesion.component.css',
+  selector: 'app-login-page',
+  templateUrl: './login-page.component.html',
+  styleUrl: './login.component.css',
 })
-export class InicioSesionComponent implements OnInit {
+export class LoginPageComponent implements OnInit {
 
   constructor(private _router: Router) {}
 
@@ -21,4 +21,5 @@ export class InicioSesionComponent implements OnInit {
     this._router.navigate(['user'])
   }
 
- }
+
+}
