@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
-import { AppComponent } from './app.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
-import { BrowserModule } from '@angular/platform-browser';
+import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
-
-import { HttpClientModule } from '@angular/common/http';
 
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
@@ -17,10 +16,11 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 
   ],
   imports: [
-    AppRoutingModule,
     BrowserModule,
-    SharedModule,
     HttpClientModule,
+
+    AppRoutingModule,
+    SharedModule,
 
   ],
   providers: [

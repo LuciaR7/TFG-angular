@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { RoutesConstants } from '../../../shared/constants/routes.constants';
 
 @Component({
   selector: 'app-login-page',
@@ -14,11 +15,11 @@ export class LoginPageComponent implements OnInit {
   }
 
   goAdmin(){
-    this._router.navigate(['admin'])
+    this._router.navigate([RoutesConstants.RUTA_LOGIN])
   }
 
   goUser(){
-    this._router.navigate(['user'])
+    this._router.navigate([RoutesConstants.RUTA_LOGIN])
   }
 
 

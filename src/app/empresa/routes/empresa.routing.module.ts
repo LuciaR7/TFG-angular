@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AdminComponent } from './components/admin/admin.component';
+import { AdminComponent } from '../components/admin/admin.component';
+import { RoutesConstants } from '../../shared/constants/routes.constants';
 
 const routes: Routes = [
 
   {
-    path: 'admin',
+    path: RoutesConstants.RUTA_ADMINISTRADOR,
     component: AdminComponent
   },
 

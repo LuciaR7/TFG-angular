@@ -1,20 +1,22 @@
 import { NgModule } from '@angular/core';
-import { UserComponent } from './components/user/user.component';
+import { MaterialModule } from '../material/material.module';
 import { SharedModule } from '../shared/shared.module';
-import { ClienteRoutingModule } from './cliente.routing.module';
+
+
+import { ClienteRoutingModule } from './routes/cliente-routing.module';
+import { UserPagesComponent } from './pages/user-pages/user-pages.component';
+
 
 
 
 @NgModule({
     declarations: [
-        UserComponent
-    ],
+    UserPagesComponent
+  ],
     imports: [
-        SharedModule,
-        ClienteRoutingModule
-    ],
-    exports: [
-        UserComponent,
+      MaterialModule,
+      SharedModule,
+      ClienteRoutingModule
     ]
 })
 

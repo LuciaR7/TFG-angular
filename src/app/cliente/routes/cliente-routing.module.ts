@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserComponent } from './components/user/user.component';
+import { RoutesConstants } from '../../shared/constants/routes.constants';
+
+import { UserPagesComponent } from '../pages/user-pages/user-pages.component';
 
 
 const routes: Routes = [
 
     {
-        path: '',
-        component: UserComponent
+      path: RoutesConstants.RUTA_PAGINA_CLIENTE,
+      component: UserPagesComponent,
     },
 
     //cualquier ruta que no este definida en este archivo va a redirigir

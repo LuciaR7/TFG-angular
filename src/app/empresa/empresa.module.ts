@@ -1,7 +1,11 @@
 import { NgModule } from '@angular/core';
-import { AdminComponent } from './components/admin/admin.component';
+import { MaterialModule } from '../material/material.module';
 import { SharedModule } from '../shared/shared.module';
-import { EmpresaRoutingModule } from './empresa.routing.module';
+
+import { AdminComponent } from './components/admin/admin.component';
+import { EmpresaRoutingModule } from './routes/empresa.routing.module';
+
+
 
 
 @NgModule({
@@ -9,6 +13,7 @@ import { EmpresaRoutingModule } from './empresa.routing.module';
     AdminComponent
   ],
   imports: [
+    MaterialModule,
     SharedModule,
     EmpresaRoutingModule
   ],
