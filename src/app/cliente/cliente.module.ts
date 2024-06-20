@@ -4,19 +4,25 @@ import { SharedModule } from '../shared/shared.module';
 
 
 import { ClienteRoutingModule } from './routes/cliente-routing.module';
-import { UserPagesComponent } from './pages/user-pages/user-pages.component';
+import { GeneralClientePageComponent } from './pages/general-cliente-page/general-cliente-page.component';
+import { ListadoPartesPageComponent } from './pages/listado-partes-page/listado-partes-page.component';
+import { DetallePartePageComponent } from './pages/detalle-parte-page/detalle-parte-page.component';
+import { BuscarPartesPageComponent } from './pages/buscar-partes-page/buscar-partes-page.component';
 
 
 
 
 @NgModule({
     declarations: [
-    UserPagesComponent
+    GeneralClientePageComponent,
+    ListadoPartesPageComponent,
+    DetallePartePageComponent,
+    BuscarPartesPageComponent
   ],
     imports: [
       MaterialModule,
       SharedModule,
-      ClienteRoutingModule
+      ClienteRoutingModule,
     ]
 })
 

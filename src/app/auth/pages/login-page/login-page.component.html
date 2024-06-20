@@ -1,3 +1,56 @@
+
+<mat-sidenav-container fullscreen>
+  <!-- Menú desplegable izquierda (Sidenav) -->
+  <mat-sidenav #sidenav mode="push" ngStyle="{ width: '250px'}">
+
+    <!-- Toolbar -->
+    <mat-toolbar color="warn">
+      <span>Menú</span>
+      <span class="spacer"></span>
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <!-- Lista -->
+    <mat-nav-list>
+      @for (item of sidebarItems; track $index) {
+
+        <mat-list-item
+          [routerLink]="item.url"
+          (click)="sidenav.toggle()">
+
+          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+          {{ item.label }}
+
+        </mat-list-item>
+
+      }
+    </mat-nav-list>
+
+  </mat-sidenav>
+
+  <!-- Toolbar principal -->
+  <mat-toolbar color="primary">
+
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <span class="spacer"></span>
+
+    <button mat-button>
+      Logout
+    </button>
+
+  </mat-toolbar>
+
+  <div class="container p-2">
+
+    <router-outlet></router-outlet>
+
+  </div>
+
 <div style="background-color:lightblue" customFlexbox="row">
 
   <!-- Margen izquierdo Empresa -->
@@ -29,7 +82,7 @@
 
 
         <div class="flex justify-content-end mt-5">
-          <a routerLink="/auth/new-account">¿Ya tienes cuenta?</a>
+          <a routerLink="/auth/new-account">¿No tienes cuenta?</a>
         </div>
 
       </div>
@@ -46,7 +99,10 @@
 
     </div>
 
-
+  <!-- Separación -->
+    <div style="background-color: rgb(255, 255, 255);"
+    cFflex="5">
+    </div>
 
   <!-- Margen derecho Cliente -->
     <div style="background-color: rgb(231, 218, 99);"
@@ -77,7 +133,7 @@
 
 
           <div class="flex justify-content-end mt-5">
-            <a routerLink="/auth/new-account">¿Ya tienes cuenta?</a>
+            <a routerLink="/auth/new-account">¿No tienes cuenta?</a>
           </div>
 
         </div>
@@ -98,3 +154,5 @@
 
 
 </div>
+
+</mat-sidenav-container>

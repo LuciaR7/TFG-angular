@@ -17,24 +17,17 @@ const routes: Routes = [
       },
 
       {
-          path: RoutesConstants.RUTA_USUARIOS,
+          path: RoutesConstants.RUTA_USERS,
           //función de carga que llama el import que recibe un argumento y dice
           // que si todo sale bien (then) llama a un módulo del que obtiene algo
           loadChildren: () => import('./cliente/cliente.module').then( m => m.ClienteModule)
       },
 
       {
-          path: RoutesConstants.RUTA_ADMINISTRADOR,
+          path: RoutesConstants.RUTA_ADMIN,
           //función de carga que llama el import que recibe un argumento y dice
           // que si todo sale bien (then) llama a un módulo del que obtiene algo
           loadChildren: () => import('./empresa/empresa.module').then( m => m.EmpresaModule)
-      },
-
-      {
-        path: RoutesConstants.RUTA_PARTE,
-        //función de carga que llama el import que recibe un argumento y dice
-        // que si todo sale bien (then) llama a un módulo del que obtiene algo
-        loadChildren: () => import('./consulta-parte-intervencion/consulta-parte-intervencion.module').then( m => m.ConsultaParteIntervencionModule)
       },
 
       {

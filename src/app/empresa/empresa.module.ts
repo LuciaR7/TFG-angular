@@ -2,15 +2,23 @@ import { NgModule } from '@angular/core';
 import { MaterialModule } from '../material/material.module';
 import { SharedModule } from '../shared/shared.module';
 
-import { AdminComponent } from './components/admin/admin.component';
 import { EmpresaRoutingModule } from './routes/empresa.routing.module';
+import { GeneralEmpresaPageComponent } from './pages/general-empresa-page/general-empresa-page.component';
+import { NewClientePageComponent } from './pages/new-cliente-page/new-cliente-page.component';
+import { NewPartePageComponent } from './pages/new-parte-page/new-parte-page.component';
+import { ListadoPartesPageComponent } from './pages/listado-partes-page/listado-partes-page.component';
+import { ListadoClientesPageComponent } from './pages/listado-clientes-page/listado-clientes-page.component';
 
 
 
 
 @NgModule({
   declarations: [
-    AdminComponent
+    GeneralEmpresaPageComponent,
+    NewClientePageComponent,
+    NewPartePageComponent,
+    ListadoPartesPageComponent,
+    ListadoClientesPageComponent
   ],
   imports: [
     MaterialModule,
@@ -18,7 +26,7 @@ import { EmpresaRoutingModule } from './routes/empresa.routing.module';
     EmpresaRoutingModule
   ],
   exports: [
-    AdminComponent,
+
   ]
 })
 

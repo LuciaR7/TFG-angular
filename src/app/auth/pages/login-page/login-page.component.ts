@@ -5,7 +5,7 @@ import { RoutesConstants } from '../../../shared/constants/routes.constants';
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
-  styleUrl: './login.component.css',
+  styles: ``
 })
 export class LoginPageComponent implements OnInit {
 
@@ -15,12 +15,15 @@ export class LoginPageComponent implements OnInit {
   }
 
   goAdmin(){
-    this._router.navigate([RoutesConstants.RUTA_LOGIN])
+    this._router.navigate([RoutesConstants.RUTA_ADMIN])
   }
 
   goUser(){
-    this._router.navigate([RoutesConstants.RUTA_LOGIN])
+    this._router.navigate([RoutesConstants.RUTA_USERS])
   }
 
+  public sidebarItems = [
+    { label: 'Listado', icon: 'label', url: RoutesConstants.RUTA_LIST_PARTES_ADMIN },
+  ]
 
 }
