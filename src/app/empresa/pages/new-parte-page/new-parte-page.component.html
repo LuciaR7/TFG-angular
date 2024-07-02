@@ -1,3 +1,35 @@
+<mat-sidenav-container fullscreen>
+
+  <!-- Menú desplegable izquierda (Sidenav) -->
+  <mat-sidenav #sidenav mode="push" ngStyle="{ width: '250px'}">
+    <!-- Toolbar Menú -->
+    <mat-toolbar color="warn">
+      <span>Menú</span>
+      <span class="spacer"></span>
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </mat-toolbar>
+  </mat-sidenav>
+
+  <!-- Toolbar pantalla principal -->
+  <mat-toolbar color="primary">
+
+    <!-- Boton Menu Tres Rayas -->
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <span class="spacer"></span>
+
+     <!-- Boton Logout -->
+    <button mat-button>
+      Logout
+    </button>
+
+  </mat-toolbar>
+
+<!-- Formulario -->
 <div style="background-color:lightblue">
 
   <!-- Margen izquierdo -->
@@ -7,32 +39,8 @@
 
   <!-- Contenedor campos-->
   <div customFlexbox="colum"
-      style="background-color: rgb(212, 100, 100); "
+      style="background-color: rgb(231, 223, 253); "
       cFAlign="center center">
-
-    <!-- Menú arriba-->
-    <div customFlexbox="row">
-      <div class="button-row">
-        <div class="flex-container">
-          <button mat-icon-button aria-label="Icon button with a vertical three dot icon">
-            <mat-icon>more_vert</mat-icon>
-          </button>
-          <button mat-icon-button color="primary" aria-label="Icon button with a home icon">
-            <mat-icon>home</mat-icon>
-          </button>
-          <button mat-icon-button color="accent" aria-label="Icon button waaith a menu icon">
-            <mat-icon>menu</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" aria-label="Icon button with a heart icon">
-            <mat-icon>favorite</mat-icon>
-          </button>
-          <button mat-icon-button disabled aria-label="Icon button with a open in new tab icon">
-            <mat-icon>open_in_new</mat-icon>
-          </button>
-        </div>
-      </div>
-    <mat-divider></mat-divider>
-    </div>
 
       <!-- Bloque título y logo -->
       <div customFlexbox="colum">
@@ -291,6 +299,7 @@
 
 </div>
 
+</mat-sidenav-container>
 
 
 

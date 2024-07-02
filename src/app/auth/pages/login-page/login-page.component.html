@@ -1,157 +1,71 @@
 
 <mat-sidenav-container fullscreen>
-  <!-- Menú desplegable izquierda (Sidenav) -->
-  <mat-sidenav #sidenav mode="push" ngStyle="{ width: '250px'}">
 
-    <!-- Toolbar -->
-    <mat-toolbar color="warn">
-      <span>Menú</span>
-      <span class="spacer"></span>
-      <button mat-icon-button (click)="sidenav.toggle()">
-        <mat-icon>menu</mat-icon>
-      </button>
+    <!-- Toolbar arriba -->
+    <mat-toolbar color="primary">
+        <!-- Diferentes Opciones toolbar -->
+        <button mat-button>
+            Info
+        </button>
+        <!-- ... -->
     </mat-toolbar>
 
-    <!-- Lista -->
-    <mat-nav-list>
-      @for (item of sidebarItems; track $index) {
+    <!-- Contenedor Login -->
+    <div customFlexbox="row" class="grid bm-8 p-5">
 
-        <mat-list-item
-          [routerLink]="item.url"
-          (click)="sidenav.toggle()">
+        <!-- Espacio relleno izq-->
+        <div style="background-color: rgb(241, 243, 217);"
+        cFflex="">
 
-          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
-          {{ item.label }}
-
-        </mat-list-item>
-
-      }
-    </mat-nav-list>
-
-  </mat-sidenav>
-
-  <!-- Toolbar principal -->
-  <mat-toolbar color="primary">
-
-    <button mat-icon-button (click)="sidenav.toggle()">
-      <mat-icon>menu</mat-icon>
-    </button>
-
-    <span class="spacer"></span>
-
-    <button mat-button>
-      Logout
-    </button>
-
-  </mat-toolbar>
-
-  <div class="container p-2">
-
-    <router-outlet></router-outlet>
-
-  </div>
-
-<div customFlexbox="row" class="grid bm-8 p-5">
-
-  <!-- Margen izquierdo Empresa -->
-    <div style="background-color: rgb(238, 234, 199); "
-    cFflex="45">
-
-      <h1>EMPRESA</h1>
-      <hr>
-
-      <div class="flex flex-column p-5">
-
-        <span class="text-lg mb-4">Login</span>
-
-        <mat-form-field>
-          <mat-label>Usuario</mat-label>
-          <input type="text" matInput placeholder="Nombre de usuario">
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Contraseña</mat-label>
-          <input type="password" matInput placeholder="Contraseña">
-        </mat-form-field>
-
-        <button mat-button mat-flat-button color="primary"
-            (click)="goAdmin()">
-          <mat-icon>save</mat-icon>
-          Ingresar
-        </button>
-
-
-        <div class="flex justify-content-end mt-5">
-          <a routerLink="/auth/new-account">¿No tienes cuenta?</a>
-        </div>
-
-      </div>
-
-      <!-- <div customFlexbox="row" cFAlign="space-around center">
-
-           <button class="btn btn-primary"
-              (click)="goAdmin()">
-              Empresa
-           </button>
-
-      </div> -->
-
-
-    </div>
-
-  <!-- Separación -->
-    <div cFflex="10">
-    </div>
-
-  <!-- Margen derecho Cliente -->
-    <div style="background-color: rgb(236, 217, 243);"
-    cFflex="45">
-
-        <h1>CLIENTE</h1>
-        <hr>
-
-        <div class="flex flex-column p-5">
-
-          <span class="text-lg mb-4">Login</span>
-
-          <mat-form-field>
-            <mat-label>Usuario</mat-label>
-            <input type="text" matInput placeholder="Nombre de usuario">
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Contraseña</mat-label>
-            <input type="password" matInput placeholder="Contraseña">
-          </mat-form-field>
-
-          <button mat-button mat-flat-button color="primary"
-            (click)="goUser()">
-            <mat-icon>save</mat-icon>
-            Ingresar
-          </button>
-
-
-          <div class="flex justify-content-end mt-5">
-            <a routerLink="/auth/new-account">¿No tienes cuenta?</a>
-          </div>
+            <h1>izquierda</h1>
 
         </div>
 
-        <!-- <div customFlexbox="row" cFAlign="space-around center">
+        <!-- Formulario Login Cliente -->
+        <div style="background-color: rgb(236, 217, 243);"
+        cFflex="50">
 
-          <button class="btn btn-primary"
-              (click)="goUser()">
-              Cliente
-          </button>
+            <h1>RicoRepair</h1>
+            <hr>
 
-     </div> -->
+            <span class="text-lg mb-4">Login</span>
+
+            <mat-form-field>
+                <mat-label>Usuario</mat-label>
+                <input type="text" matInput placeholder="Nombre de usuario">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Contraseña</mat-label>
+                <input type="password" matInput placeholder="Contraseña">
+            </mat-form-field>
+
+            <button mat-button mat-flat-button color="primary"
+                (click)="goUser()">
+                <mat-icon>save</mat-icon>
+                Ingresar
+            </button>
+
+            <div class="flex justify-content-end mt-5">
+                <a routerLink="/auth/new-account">¿No tienes cuenta?</a>
+            </div>
+
+        </div>
+
+        <!-- Espacio relleno drch-->
+        <div style="background-color: rgb(193, 219, 209);"
+        cFflex="">
+
+            <h1>derecha</h1>
+
+        </div>
+
 
 
     </div>
 
 
+ <router-outlet></router-outlet>
 
 
-</div>
-
-</mat-sidenav-container>
+</mat-sidenav-container> <!-- FIN toolbar principal -->

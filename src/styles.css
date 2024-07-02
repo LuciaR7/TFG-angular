@@ -3,7 +3,12 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+/** Separacion vertical */
+.alto20{
+  margin-top: 20px;
+}
 
+/** Separación de elementos en los extremos opuestos */
 .spacer {
   flex: 1 1 auto;
 }
