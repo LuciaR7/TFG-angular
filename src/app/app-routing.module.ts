@@ -1,7 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Error404PageComponent } from './shared/pages/error404-page/error404-page.component';
+
 import { RoutesConstants } from './shared/constants/routes.constants';
+
+import { AuthGuard } from './auth/guards/auth.guard';
+import { PublicGuard } from './auth/guards/public.guard';
 
 
 const routes: Routes = [
@@ -9,6 +13,8 @@ const routes: Routes = [
       {
           path: RoutesConstants.RUTA_AUTENTICACION,
           loadChildren: () => import('./auth/auth.module').then( m => m.AuthModule),
+          canActivate: [ PublicGuard ],
+          canMatch: [ PublicGuard ]
       },
 
       {
@@ -20,7 +26,9 @@ const routes: Routes = [
           path: RoutesConstants.RUTA_USERS,
           //función de carga que llama el import que recibe un argumento y dice
           // que si todo sale bien (then) llama a un módulo del que obtiene algo
-          loadChildren: () => import('./cliente/cliente.module').then( m => m.ClienteModule)
+          loadChildren: () => import('./cliente/cliente.module').then( m => m.ClienteModule),
+          canActivate: [ AuthGuard ],
+          canMatch: [ AuthGuard ]
       },
 
       {
@@ -32,7 +40,7 @@ const routes: Routes = [
 
       {
           path: '',
-          redirectTo: RoutesConstants.RUTA_AUTENTICACION,
+          redirectTo: RoutesConstants.RUTA_USERS,
           pathMatch: 'full' //tiene que ser exactamente un string vacío como dice el path
       },
 

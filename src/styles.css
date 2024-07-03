@@ -4,11 +4,28 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 /** Separacion vertical */
-.alto20{
-  margin-top: 20px;
+
+.alto40{
+  margin-top: 40px;
+}
+
+/** Padding */
+.padContent {
+  padding-top: 30px;
+  padding-left: 300px;
+  padding-right: 300px;
+}
+
+.padInputs {
+  padding-top: 20px;
+  padding-left: 100px;
+  padding-right: 100px;
 }
 
 /** Separación de elementos en los extremos opuestos */
 .spacer {
   flex: 1 1 auto;
 }
+
+
+

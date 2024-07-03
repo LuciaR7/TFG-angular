@@ -21,9 +21,6 @@ import { RegisterPageComponent } from './pages/register-page/register-page.compo
     AuthRoutingModule,
     MaterialModule,
     SharedModule
-  ],
-  exports: [
-
   ]
 })
 

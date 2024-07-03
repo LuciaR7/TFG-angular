@@ -10,57 +10,44 @@
         <!-- ... -->
     </mat-toolbar>
 
+    <!-- Logo Inicial RicoRepair -->
+    <div customFlexbox="column" cFAlign="center center" class="alto40">
+      <h1>RicoRepair</h1>
+    </div>
+
     <!-- Contenedor Login -->
-    <div customFlexbox="row" class="grid bm-8 p-5">
-
-        <!-- Espacio relleno izq-->
-        <div style="background-color: rgb(241, 243, 217);"
-        cFflex="">
-
-            <h1>izquierda</h1>
-
-        </div>
+    <div customFlexbox="column" class="padContent" >
 
         <!-- Formulario Login Cliente -->
-        <div style="background-color: rgb(236, 217, 243);"
-        cFflex="50">
-
-            <h1>RicoRepair</h1>
-            <hr>
+        <div customFlexbox="column" class="padInputs"
+             style="background-color: rgb(236, 217, 243);">
 
             <span class="text-lg mb-4">Login</span>
 
-            <mat-form-field>
+            <mat-form-field class="padInputs">
                 <mat-label>Usuario</mat-label>
                 <input type="text" matInput placeholder="Nombre de usuario">
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field class="padInputs">
                 <mat-label>Contraseña</mat-label>
                 <input type="password" matInput placeholder="Contraseña">
             </mat-form-field>
 
-            <button mat-button mat-flat-button color="primary"
-                (click)="goUser()">
+            <div class="flex justify-content-center mt-5" >
+              <button mat-button mat-flat-button color="primary"
+                (click)="onLogin()">
                 <mat-icon>save</mat-icon>
                 Ingresar
-            </button>
+              </button>
+            </div>
+
 
             <div class="flex justify-content-end mt-5">
                 <a routerLink="/auth/new-account">¿No tienes cuenta?</a>
             </div>
 
         </div>
-
-        <!-- Espacio relleno drch-->
-        <div style="background-color: rgb(193, 219, 209);"
-        cFflex="">
-
-            <h1>derecha</h1>
-
-        </div>
-
-
 
     </div>
 

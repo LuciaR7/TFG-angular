@@ -1,29 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { RoutesConstants } from '../../../shared/constants/routes.constants';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
   styles: ``
 })
-export class LoginPageComponent implements OnInit {
 
-  constructor(private _router: Router) {}
+export class LoginPageComponent{
 
-  ngOnInit(): void {
-  }
+    constructor(
+        private authService: AuthService,
+        private router: Router
+    ){}
 
-  goAdmin(){
-    this._router.navigate([RoutesConstants.RUTA_ADMIN])
-  }
+    onLogin(): void {
 
-  goUser(){
-    this._router.navigate([RoutesConstants.RUTA_USERS])
-  }
+        this.authService.login('lucia@gmail.com', '123456')
+            .subscribe( user => {
 
-  public sidebarItems = [
-    { label: 'Listado', icon: 'label', url: RoutesConstants.RUTA_LIST_PARTES_ADMIN },
-  ]
+              this.router.navigate([RoutesConstants.RUTA_USERS])
+
+            });
+
+    }
 
 }
