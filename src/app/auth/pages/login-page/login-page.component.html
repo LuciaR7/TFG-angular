@@ -19,35 +19,86 @@
     <div customFlexbox="column" class="padContent" >
 
         <!-- Formulario Login Cliente -->
-        <div customFlexbox="column" class="padInputs"
-             style="background-color: rgb(236, 217, 243);">
+        <form [formGroup]="myForm" (ngSubmit)="onSave()" autocomplete="off">
 
-            <span class="text-lg mb-4">Login</span>
+            <div customFlexbox="column" class="padInputs"
+                style="background-color: rgb(236, 217, 243);">
 
-            <mat-form-field class="padInputs">
-                <mat-label>Usuario</mat-label>
-                <input type="text" matInput placeholder="Nombre de usuario">
-            </mat-form-field>
+                <span class="text-lg mb-4">Login</span>
 
-            <mat-form-field class="padInputs">
-                <mat-label>Contraseña</mat-label>
-                <input type="password" matInput placeholder="Contraseña">
-            </mat-form-field>
+                <!-- E-Mail -->
+                <mat-form-field class="padInputs">
+                    <mat-label>E-Mail</mat-label>
+                    <input type="text" matInput formControlName="email"
+                    placeholder="Ej: usuario@example.com">
+                    <mat-error>
+                      @if (isNotValidField('email')) {
+                          <span> {{ getFieldError('email') }}</span>
+                        }
+                    </mat-error>
+                </mat-form-field>
 
-            <div class="flex justify-content-center mt-5" >
-              <button mat-button mat-flat-button color="primary"
-                (click)="onLogin()">
-                <mat-icon>save</mat-icon>
-                Ingresar
-              </button>
+                <!-- Password -->
+                <mat-form-field class="padInputs">
+                    <mat-label>Contraseña</mat-label>
+                    <input type="password" matInput
+                    formControlName="password" placeholder="password">
+                    <mat-error>
+                      @if (isNotValidField('password')) {
+                          {{ getFieldError('password') }}
+                        }
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Boton Ingresar -->
+                <div class="padBoton">
+                  <button mat-button mat-flat-button color="primary"
+                    (click)="onLogin('email', 'password')">
+                    <mat-icon>save</mat-icon>
+                    Ingresar
+                  </button>
+                </div>
+
+
+                <!-- Link Nueva Cuenta -->
+                <div class="flex justify-content-end mt-5">
+                    <a routerLink="/auth/new-account">¿No tienes cuenta?</a>
+                </div>
+
+                <!-- Link Ólvido Contraseña -->
+                <!-- <div class="flex justify-content-end mt-5">
+                  <a routerLink="/auth/recover-password">¿Olvido su contraseña?</a>
+                </div> -->
+
             </div>
 
+        </form>
 
-            <div class="flex justify-content-end mt-5">
-                <a routerLink="/auth/new-account">¿No tienes cuenta?</a>
-            </div>
 
+        <div class="row">
+          <div class="col">
+
+              <span>Valid</span>
+              <pre>{{ myForm.valid | json }}</pre>
+
+              <span>Pristine</span>
+              <pre>{{ myForm.pristine | json }}</pre>
+
+              <span>Touched</span>
+              <pre>{{ myForm.touched | json }}</pre>
+
+              <span>Value</span>
+              <pre>{{ myForm.value | json }}</pre>
+
+              <span>E-Mail</span>
+              <pre>{{ myForm.controls['email'].value | json }}</pre>
+
+              <span>Password</span>
+              <pre>{{ myForm.controls['password'].errors | json }}</pre>
+
+          </div>
         </div>
+
 
     </div>
 

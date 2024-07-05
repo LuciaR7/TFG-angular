@@ -8,17 +8,30 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
-@NgModule({ declarations: [
+@NgModule({
+    declarations: [
         AppComponent,
     ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
+
+    bootstrap: [
+        AppComponent
+    ],
+
+    imports: [
+        BrowserModule,
         BrowserAnimationsModule,
         AppRoutingModule,
-        SharedModule], providers: [
+        SharedModule,
+        ReactiveFormsModule,
+    ],
+
+    providers: [
         provideAnimationsAsync(),
         provideHttpClient(withInterceptorsFromDi())
-    ] })
+    ]
+  })
 export class AppModule { }
