@@ -26,15 +26,24 @@ export class AuthService {
     // en un momento dado.
 
     login( email: string, password: string ):Observable<User> {
-        return of({
-          id: 1,
-          user: "jajajaja",
-          email: "lucia@gmail.com"
-        })
-        .pipe(
-          tap( user => this.user = user ),
-          tap( user => localStorage.setItem('token', 'prueba' )),
-        );
+
+        if((email == 'lucia@gmail.com') && (password == 'Lucia.R7')){
+
+            return of({
+                id: 1,
+                user: "Lucía Rico",
+                email: "lucia@gmail.com"
+              })
+              .pipe(
+                tap( user => this.user = user ),
+                tap( user => localStorage.setItem('token', 'prueba' )),
+              );
+
+        } else {
+            return throwError(()=>"Credenciales incorrectas")
+        }
+
+
     }
 
     checkAuthentication(): Observable<boolean> {

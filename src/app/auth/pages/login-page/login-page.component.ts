@@ -84,30 +84,22 @@ export class LoginPageComponent{
       this.myForm.reset();
     }
 
-    // TODO: REVISAR 
-    onLogin(email: string, password: string): void {
+    // TODO: REVISAR
+    onLogin(): void {
 
-        if(!email){
-          alert("Campo correo vacio");
-          return;
-        }
-        if(!password){
-          alert("Campo contraseña vacío");
-          return;
-        }
-        if(this.onLogin != null){
-          alert("Acceso denegado")
-        }else {
-          alert("Acceso permitido")
-        }
+      const email:string = this.myForm.controls['email'].value;
+      const password:string = this.myForm.controls['password'].value;
 
-        this.authService.login('lucia@gmail.com', 'Lucia.R7')
-            .subscribe( user => {
 
-              this.router.navigate([RoutesConstants.RUTA_USERS])
-
+        this.authService.login(email, password)
+            .subscribe({
+                next: user => {
+                    this.router.navigate([RoutesConstants.RUTA_USERS])
+                },
+                error: err=>{
+                    alert("Acceso denegado: "+err)
+                }
             });
-
     }
 
 }

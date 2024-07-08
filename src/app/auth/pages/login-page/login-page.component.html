@@ -53,7 +53,7 @@
                 <!-- Boton Ingresar -->
                 <div class="padBoton">
                   <button mat-button mat-flat-button color="primary"
-                    (click)="onLogin('email', 'password')">
+                    (click)="onLogin()">
                     <mat-icon>save</mat-icon>
                     Ingresar
                   </button>
@@ -93,7 +93,7 @@
               <span>E-Mail</span>
               <pre>{{ myForm.controls['email'].value | json }}</pre>
 
-              <span>Password</span>
+              <span>Password Errores</span>
               <pre>{{ myForm.controls['password'].errors | json }}</pre>
 
           </div>
