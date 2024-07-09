@@ -1,109 +1,120 @@
+<!-- Barra de navegación superior -->
+<app-auth-toolbar></app-auth-toolbar>
 
-<mat-sidenav-container fullscreen>
+<!-- Logo Inicial RicoRepair -->
+<div class="alto40" customFlexbox="column" cFAlign="center center">
+  <h1>RicoRepair</h1>
+</div>
 
-    <!-- Toolbar arriba -->
-    <mat-toolbar color="primary">
-        <!-- Diferentes Opciones toolbar -->
-        <button mat-button>
-            Info
-        </button>
-        <!-- ... -->
-    </mat-toolbar>
+<!-- Contenedor Login -->
+<div class="authContainer" customFlexbox="column" cFGap="40px" cFAlign="center center">
 
-    <!-- Logo Inicial RicoRepair -->
-    <div customFlexbox="column" cFAlign="center center" class="alto40">
-      <h1>RicoRepair</h1>
-    </div>
+  <!-- Mat-card -->
+  <div><mat-card style="background-color: rgb(236, 217, 243);">
+    <!-- Cabecera mat-card-->
+    <mat-card-header>
+          <mat-card-title>
+              <span>
+                  Iniciar Sesión:
+              </span>
+          </mat-card-title>
+    </mat-card-header>
 
-    <!-- Contenedor Login -->
-    <div customFlexbox="column" class="padContent" >
+    <!-- Formulario Login -->
+    <form [formGroup]="formLogin" (ngSubmit)="onSave()" autocomplete="off">
 
-        <!-- Formulario Login Cliente -->
-        <form [formGroup]="myForm" (ngSubmit)="onSave()" autocomplete="off">
+      <!-- Contenido mat-card-->
+      <mat-card-content>
+        <div customFlexbox="column" cFAlign="center">
 
-            <div customFlexbox="column" class="padInputs"
-                style="background-color: rgb(236, 217, 243);">
-
-                <span class="text-lg mb-4">Login</span>
-
+            <div  customFlexbox="column" cFGap="28px">
                 <!-- E-Mail -->
-                <mat-form-field class="padInputs">
-                    <mat-label>E-Mail</mat-label>
-                    <input type="text" matInput formControlName="email"
-                    placeholder="Ej: usuario@example.com">
-                    <mat-error>
-                      @if (isNotValidField('email')) {
-                          <span> {{ getFieldError('email') }}</span>
-                        }
-                    </mat-error>
-                </mat-form-field>
+                <div>
+                  <mat-form-field>
+                      <mat-label>E-Mail</mat-label>
+                      <input type="text" matInput formControlName="email"
+                      placeholder="Ej: usuario@example.com">
+                      <mat-error>
+                        <span> {{ getFieldError('email') }} </span>
+                      </mat-error>
+                  </mat-form-field>
+                </div>
 
                 <!-- Password -->
-                <mat-form-field class="padInputs">
-                    <mat-label>Contraseña</mat-label>
-                    <input type="password" matInput
-                    formControlName="password" placeholder="password">
-                    <mat-error>
-                      @if (isNotValidField('password')) {
-                          {{ getFieldError('password') }}
-                        }
-                    </mat-error>
-                </mat-form-field>
-
-                <!-- Boton Ingresar -->
-                <div class="padBoton">
-                  <button mat-button mat-flat-button color="primary"
-                    (click)="onLogin()">
-                    <mat-icon>save</mat-icon>
-                    Ingresar
-                  </button>
+                <div>
+                  <mat-form-field>
+                      <mat-label>Contraseña</mat-label>
+                      <input type="password" matInput
+                      formControlName="password" placeholder="password">
+                      <mat-error>
+                        <span> {{ getFieldError('password') }} </span>
+                      </mat-error>
+                  </mat-form-field>
                 </div>
-
-
-                <!-- Link Nueva Cuenta -->
-                <div class="flex justify-content-end mt-5">
-                    <a routerLink="/auth/new-account">¿No tienes cuenta?</a>
-                </div>
-
-                <!-- Link Ólvido Contraseña -->
-                <!-- <div class="flex justify-content-end mt-5">
-                  <a routerLink="/auth/recover-password">¿Olvido su contraseña?</a>
-                </div> -->
-
             </div>
 
-        </form>
+            <!-- Separacion inputs-boton-->
+            <div style="height: 50px;"></div>
 
+            <!-- Boton Ingresar -->
+            <div customFlexbox="row" cFAlign="center center" >
+              <div>
+                  <button mat-flat-button color="primary"
+                    (click)="onLogin()">
+                      Ingresar
+                    <mat-icon>save</mat-icon>
+                  </button>
+              </div>
+              </div>
 
-        <div class="row">
-          <div class="col">
-
-              <span>Valid</span>
-              <pre>{{ myForm.valid | json }}</pre>
-
-              <span>Pristine</span>
-              <pre>{{ myForm.pristine | json }}</pre>
-
-              <span>Touched</span>
-              <pre>{{ myForm.touched | json }}</pre>
-
-              <span>Value</span>
-              <pre>{{ myForm.value | json }}</pre>
-
-              <span>E-Mail</span>
-              <pre>{{ myForm.controls['email'].value | json }}</pre>
-
-              <span>Password Errores</span>
-              <pre>{{ myForm.controls['password'].errors | json }}</pre>
-
-          </div>
         </div>
 
+      </mat-card-content>
 
+      <!-- Link Nueva Cuenta -->
+      <div class="flex justify-content-end">
+        <a routerLink="/auth/new-account">¿No tienes cuenta?</a>
+    </div>
+
+      <!-- Link Olvido Contraseña -->
+      <!-- <div class="flex justify-content-end mt-5">
+        <a routerLink="/auth/recover-password">¿Olvido su contraseña?</a>
+      </div> -->
+
+
+    </form> <!-- FIN Formulario login-->
+
+  </mat-card></div>
+  <div customFlexbox="row">
+
+    <div class="col">
+      <span>Valid</span>
+      <pre>{{ formLogin.valid | json }}</pre>
+
+      <span>Pristine</span>
+      <pre>{{ formLogin.pristine | json }}</pre>
+
+      <span>Touched</span>
+      <pre>{{ formLogin.touched | json }}</pre>
+    </div>
+
+    <div style="padding: 50px;">
+    </div>
+
+    <div>
+      <span>Value</span>
+      <pre>{{ formLogin.value | json }}</pre>
+
+      <span>E-Mail</span>
+      <pre>{{ formLogin.controls['email'].value | json }}</pre>
+
+      <span>Password Errores</span>
+      <pre>{{ formLogin.controls['password'].errors | json }}</pre>
     </div>
 
 
- <router-outlet></router-outlet>
+  </div>
+</div>
 
+ <!-- <router-outlet></router-outlet> -->
 
-</mat-sidenav-container> <!-- FIN toolbar principal -->

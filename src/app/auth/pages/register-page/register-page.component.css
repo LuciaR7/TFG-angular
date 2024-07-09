@@ -1,0 +1,11 @@
+mat-card-title{
+  padding: 15px;
+}
+
+mat-form-field{
+  width: 210px;
+}
+
+mat-card-content{
+  padding: 60px;
+}

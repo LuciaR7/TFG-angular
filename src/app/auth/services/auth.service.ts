@@ -27,7 +27,7 @@ export class AuthService {
 
     login( email: string, password: string ):Observable<User> {
 
-        if((email == 'lucia@gmail.com') && (password == 'Lucia.R7')){
+        if((email === 'lucia@gmail.com') && (password === 'Lucia.R7')){
 
             return of({
                 id: 1,
@@ -45,6 +45,28 @@ export class AuthService {
 
 
     }
+
+    register( name: string, email: string, password: string, password2: string ):Observable<User> {
+
+      if((name === 'Lucía Rico') && (email === 'lucia@gmail.com') &&
+         (password === 'Lucia.R7') && (password2 === 'Lucia.R7')){
+
+          return of({
+              id: 1,
+              user: "Lucía Rico",
+              email: "lucia@gmail.com"
+            })
+            .pipe(
+              tap( user => this.user = user ),
+              tap( user => localStorage.setItem('token', 'prueba' )),
+            );
+
+      } else {
+          return throwError(()=>"Credenciales incorrectas")
+      }
+
+
+  }
 
     checkAuthentication(): Observable<boolean> {
 

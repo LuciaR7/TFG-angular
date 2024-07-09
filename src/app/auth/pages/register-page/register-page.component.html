@@ -1,32 +1,165 @@
+<!-- Barra de navegación superior -->
+<app-auth-toolbar></app-auth-toolbar>
 
-<div class="flex flex-column">
-
-  <span class="text-lg mb-4">Resgistro</span>
-
-  <mat-form-field>
-    <mat-label>Usuario</mat-label>
-    <input type="text" matInput placeholder="Nombre de usuario">
-  </mat-form-field>
-
-  <mat-form-field>
-    <mat-label>Nombre</mat-label>
-    <input type="text" matInput placeholder="Nombre de usuario">
-  </mat-form-field>
-
-  <mat-form-field>
-    <mat-label>Contraseña</mat-label>
-    <input type="password" matInput placeholder="Contraseña">
-  </mat-form-field>
-
-  <button mat-button mat-flat-button color="primary">
-    <mat-icon>add_circle</mat-icon>
-    Crear cuenta
-  </button>
-
-
-  <div class="flex justify-content-end mt-5">
-    <a routerLink="/auth/login">¿Ya tienes cuenta?</a>
-  </div>
-
+<!-- Logo Inicial RicoRepair -->
+<div class="alto40" customFlexbox="column" cFAlign="center center">
+  <h1>RicoRepair</h1>
 </div>
+
+<!-- Contenedor Registro -->
+<div class="authContainer" customFlexbox="column" cFGap="40px" cFAlign="center center">
+
+  <!-- Mat-card -->
+  <div><mat-card style="background-color: rgb(236, 217, 243);">
+    <!-- Cabecera mat-card-->
+    <mat-card-header>
+          <mat-card-title>
+              <span>
+                  Nuevo Cliente:
+              </span>
+          </mat-card-title>
+    </mat-card-header>
+
+    <!-- Formulario Login -->
+    <form [formGroup]="formRegister" (ngSubmit)="onSave()" autocomplete="off">
+
+      <!-- Contenido mat-card-->
+      <mat-card-content>
+        <div customFlexbox="column" cFAlign="center">
+
+            <div  customFlexbox="row" customFlexbox.xs="column" cFGap="40px">
+                <!-- Nombre -->
+                <div customFlexbox="" cFGap="35px">
+                  <mat-form-field>
+                      <mat-label>Nombre</mat-label>
+                      <input type="text" matInput formControlName="name"
+                      placeholder="Nombre Completo">
+                      <mat-error>
+                        @if (isValidField('name')) {
+                            Debe de ser en formato de nombre y apellido.
+                          }
+                      </mat-error>
+                  </mat-form-field>
+
+                  <!-- Password -->
+                  <div>
+                    <mat-form-field>
+                        <mat-label>Contraseña</mat-label>
+                        <input type="password" matInput
+                        formControlName="password" placeholder="password">
+                        <mat-error>
+                          @if (isValidField('password')) {
+                            La contraseña debe contener al menos un símbolo,
+                            un número, una letra mayúscula y una minúscula y
+                            al menos 8 caracteres.
+                            }
+                        </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                </div>
+
+                <!-- E-Mail -->
+                <div customFlexbox="" cFGap="35px">
+                  <mat-form-field>
+                      <mat-label>E-Mail</mat-label>
+                      <input type="text" matInput formControlName="email"
+                      placeholder="Ej: usuario@example.com">
+                      <mat-error>
+                        @if (isValidField('email')) {
+                            Debe ser un correo con formato válido.
+                          }
+                      </mat-error>
+                  </mat-form-field>
+
+                  <!-- Password2 -->
+                  <div>
+                    <mat-form-field>
+                        <mat-label>Confirmar Contraseña</mat-label>
+                        <input type="password" matInput
+                        formControlName="password2"
+                        placeholder="Confirmar la contraseña">
+                        <mat-error>
+                          @if (isValidField('password2')) {
+                            Las contraseñas deben de ser iguales.
+                            }
+                        </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                </div>
+
+            </div>
+
+            <!-- Separacion inputs-boton-->
+            <div style="height: 100px;"></div>
+
+            <!-- Boton Ingresar -->
+            <div customFlexbox="row" cFAlign="center center" >
+              <div>
+                  <button mat-flat-button color="primary"
+                    (click)="onRegister()">
+                      Crear Cuenta
+                    <mat-icon>add_circle</mat-icon>
+                  </button>
+              </div>
+              </div>
+
+        </div>
+
+      </mat-card-content>
+
+      <!-- Link Nueva Cuenta -->
+      <div class="flex justify-content-end">
+        <a routerLink="/auth/login">¿Ya tienes cuenta?</a>
+    </div>
+
+      <!-- Link Olvido Contraseña -->
+      <!-- <div class="flex justify-content-end mt-5">
+        <a routerLink="/auth/recover-password">¿Olvido su contraseña?</a>
+      </div> -->
+
+
+    </form> <!-- FIN Formulario login-->
+
+  </mat-card></div>
+  <div customFlexbox="row">
+
+    <div class="col">
+      <span>Valid</span>
+      <pre>{{ formRegister.valid | json }}</pre>
+
+      <span>Pristine</span>
+      <pre>{{ formRegister.pristine | json }}</pre>
+
+      <span>Touched</span>
+      <pre>{{ formRegister.touched | json }}</pre>
+
+      <span>Value</span>
+      <pre>{{ formRegister.value | json }}</pre>
+    </div>
+
+    <div style="padding: 50px;">
+    </div>
+
+    <div>
+
+      <span>Nombre</span>
+      <pre>{{ formRegister.controls['name'].value | json }}</pre>
+
+      <span>E-Mail</span>
+      <pre>{{ formRegister.controls['email'].value | json }}</pre>
+
+      <span>Password2 Errores</span>
+      <pre>{{ formRegister.controls['password2'].errors | json }}</pre>
+
+      <span>Password Errores</span>
+      <pre>{{ formRegister.controls['password'].errors | json }}</pre>
+    </div>
+
+
+  </div>
+</div>
+
+ <!-- <router-outlet></router-outlet> -->
 
