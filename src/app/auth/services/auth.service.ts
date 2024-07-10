@@ -31,7 +31,7 @@ export class AuthService {
 
             return of({
                 id: 1,
-                user: "Lucía Rico",
+                user: "Lucia Rico",
                 email: "lucia@gmail.com"
               })
               .pipe(
@@ -46,10 +46,10 @@ export class AuthService {
 
     }
 
-    register( name: string, email: string, password: string, password2: string ):Observable<User> {
+    register( name: string, email: string, password1: string, password2: string ):Observable<User> {
 
-      if((name === 'Lucía Rico') && (email === 'lucia@gmail.com') &&
-         (password === 'Lucia.R7') && (password2 === 'Lucia.R7')){
+      if((name === 'Lucia Rico') && (email === 'lucia@gmail.com') &&
+         (password1 === 'Lucia.R7') && (password2 === 'Lucia.R7')){
 
           return of({
               id: 1,
@@ -68,19 +68,19 @@ export class AuthService {
 
   }
 
-    checkAuthentication(): Observable<boolean> {
+  checkAuthentication(): Observable<boolean> {
 
-      // si user auth regresa false
-      if ( !localStorage.getItem('token') ) return of(false)
+    // si user auth regresa false
+    if ( !localStorage.getItem('token') ) return of(false)
 
-      const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
 
-      // si user no auth regresa true
-      return of(true);
-    }
+    // si user no auth regresa true
+    return of(true);
+  }
 
-    logout() {
-      this.user = undefined;
-      localStorage.clear();
-    }
+  logout() {
+    this.user = undefined;
+    localStorage.clear();
+  }
 }

@@ -30,11 +30,12 @@ export class LoginPageComponent{
       return this.validatorsService.isValidField( this.formLogin, field );
     }
 
+    // Muestra mensaje de error específico dependiendo del campo
     getFieldError( field: string ): string | null {
         return this.validatorsService.getFieldError( this.formLogin, field );
     }
 
-
+    //Guardar datos formulario
     onSave():void {
 
       if ( this.formLogin.invalid ) {
@@ -49,6 +50,7 @@ export class LoginPageComponent{
       this.formLogin.reset();
     }
 
+    //Comprobar credenciales usuario
     onLogin(): void {
 
       const email:string = this.formLogin.controls['email'].value;

@@ -25,74 +25,91 @@
 
       <!-- Contenido mat-card-->
       <mat-card-content>
-        <div customFlexbox="column" cFAlign="center">
+        <div customFlexbox="column" cFAlign="center center" cFGap="25px">
 
-            <div  customFlexbox="row" customFlexbox.xs="column" cFGap="40px">
+          <!-- Bloque nombre y email -->
+            <div  customFlexbox="row" customFlexbox.xs="column"
+                  cFAlign="space-around center" cFGap="25px">
                 <!-- Nombre -->
-                <div customFlexbox="" cFGap="35px">
+                <div customFlexbox="column">
                   <mat-form-field>
                       <mat-label>Nombre</mat-label>
                       <input type="text" matInput formControlName="name"
                       placeholder="Nombre Completo">
                       <mat-error>
                         @if (isValidField('name')) {
-                            Debe de ser en formato de nombre y apellido.
-                          }
+                          <span> {{ getFieldError('name') }} </span>
+                        }
                       </mat-error>
                   </mat-form-field>
-
-                  <!-- Password -->
-                  <div>
-                    <mat-form-field>
-                        <mat-label>Contraseña</mat-label>
-                        <input type="password" matInput
-                        formControlName="password" placeholder="password">
-                        <mat-error>
-                          @if (isValidField('password')) {
-                            La contraseña debe contener al menos un símbolo,
-                            un número, una letra mayúscula y una minúscula y
-                            al menos 8 caracteres.
-                            }
-                        </mat-error>
-                    </mat-form-field>
-                  </div>
-
                 </div>
-
                 <!-- E-Mail -->
-                <div customFlexbox="" cFGap="35px">
+                <div customFlexbox="column">
                   <mat-form-field>
                       <mat-label>E-Mail</mat-label>
                       <input type="text" matInput formControlName="email"
                       placeholder="Ej: usuario@example.com">
                       <mat-error>
                         @if (isValidField('email')) {
-                            Debe ser un correo con formato válido.
-                          }
+                          <span> {{ getFieldError('email') }} </span>
+                        }
                       </mat-error>
                   </mat-form-field>
+                </div>
+            </div> <!-- FIN bloque nombre y email -->
 
-                  <!-- Password2 -->
-                  <div>
-                    <mat-form-field>
-                        <mat-label>Confirmar Contraseña</mat-label>
-                        <input type="password" matInput
-                        formControlName="password2"
-                        placeholder="Confirmar la contraseña">
-                        <mat-error>
-                          @if (isValidField('password2')) {
-                            Las contraseñas deben de ser iguales.
-                            }
-                        </mat-error>
-                    </mat-form-field>
-                  </div>
-
+          <!-- Bloque password1 y password2 -->
+            <div  customFlexbox="row" customFlexbox.xs="column"
+                  cFAlign="space-around center" cFGap="25px">
+                <!-- Password1 -->
+                <div customFlexbox="column">
+                  <mat-form-field>
+                      <mat-label>Contraseña</mat-label>
+                      <input type="password" matInput
+                      formControlName="password1" placeholder="Contraseña">
+                      <mat-error>
+                        @if (isValidField('password1')) {
+                          <span> {{ getFieldError('password1') }} </span>
+                        }
+                      </mat-error>
+                  </mat-form-field>
                 </div>
 
-            </div>
+                <!-- Si hay error en password1, como el mensaje es largo,
+                 mete un espacio entre campos-->
+                @if (isValidField('password1') &&
+                (formRegister.controls['password1'].hasError('pattern'))) {
+                  <div customFlexbox="" cfHide cfShow.xs
+                        style="height: 42px;"></div>
+                }
 
-            <!-- Separacion inputs-boton-->
-            <div style="height: 100px;"></div>
+                <!-- Password2 -->
+                <div customFlexbox="column">
+                  <mat-form-field>
+                      <mat-label>Confirmar Contraseña</mat-label>
+                      <input type="password" matInput
+                      formControlName="password2"
+                      placeholder="Confirmar la contraseña">
+                      <mat-error>
+                        @if (isValidField('password2')) {
+                          <span> {{ getFieldError('password2') }} </span>
+                        }
+                      </mat-error>
+                  </mat-form-field>
+                </div>
+              </div> <!-- FIN bloque password1 y password2 -->
+        </div>  <!-- FIN inputs -->
+
+            <!-- Separacion normal inputs-boton-->
+            <div style="height: 50px;"></div>
+
+             <!-- Si hay error en password1, como el mensaje es largo,
+                 mete un espacio más grande entre inputs y boton-->
+                 @if (isValidField('password1') &&
+                 (formRegister.controls['password1'].hasError('pattern'))) {
+                  <div customFlexbox="" cfShow cfHide.xs
+                        style="height: 42px;"></div>
+                }
 
             <!-- Boton Ingresar -->
             <div customFlexbox="row" cFAlign="center center" >
@@ -103,9 +120,7 @@
                     <mat-icon>add_circle</mat-icon>
                   </button>
               </div>
-              </div>
-
-        </div>
+            </div>
 
       </mat-card-content>
 
@@ -153,8 +168,8 @@
       <span>Password2 Errores</span>
       <pre>{{ formRegister.controls['password2'].errors | json }}</pre>
 
-      <span>Password Errores</span>
-      <pre>{{ formRegister.controls['password'].errors | json }}</pre>
+      <span>Password1 Errores</span>
+      <pre>{{ formRegister.controls['password1'].errors | json }}</pre>
     </div>
 
 

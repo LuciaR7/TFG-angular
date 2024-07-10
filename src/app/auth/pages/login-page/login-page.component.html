@@ -35,7 +35,9 @@
                       <input type="text" matInput formControlName="email"
                       placeholder="Ej: usuario@example.com">
                       <mat-error>
-                        <span> {{ getFieldError('email') }} </span>
+                        @if (isValidField('email')) {
+                          <span> {{ getFieldError('email') }} </span>
+                        }
                       </mat-error>
                   </mat-form-field>
                 </div>
@@ -44,10 +46,15 @@
                 <div>
                   <mat-form-field>
                       <mat-label>Contraseña</mat-label>
-                      <input type="password" matInput
-                      formControlName="password" placeholder="password">
+                      <input type="password" matInput #input
+                      formControlName="password" placeholder="Contraseña">
+                      <mat-hint align="end">
+                        {{input.value.length}}/8
+                    </mat-hint>
                       <mat-error>
-                        <span> {{ getFieldError('password') }} </span>
+                        @if (isValidField('password')) {
+                          <span> {{ getFieldError('password') }} </span>
+                        }
                       </mat-error>
                   </mat-form-field>
                 </div>

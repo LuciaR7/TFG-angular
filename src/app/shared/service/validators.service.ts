@@ -28,23 +28,37 @@ public isValidField( form: FormGroup, field: string ) {
   && form.controls[field].touched;
 }
 
-getFieldError( form: FormGroup, field: string ): string | null {
+// Validator Errores Campo: Mensaje de error específico dependiendo del campo
+public getFieldError( form: FormGroup, field: string ): string | null {
 
   // Si el form no tiene ese campo no regreso nada
   if ( !form.controls[field] ) return null;
 
-  // Si el form si tiene el campo
-  // || {} => Si errors es nulo regresa un objeto vacío
-  const errors = form.controls[field].errors || {};
+  // Si el form si tiene el campo devolver mensaje de error específico
 
+  //Campo Obligatorio
   if (form.controls[field].hasError('required')) {
     return 'Este campo es obligatorio.'
+  //Email
   } else if((field === 'email') &&
      (form.controls[field].hasError('pattern')) ) {
     return 'Debe ser un correo con formato válido.'
+  //Contraseña Login
   } else if((field === 'password') &&
       (form.controls[field].hasError('pattern')) ) {
     return 'Debe ser una contraseña con formato válido.'
+  //Nombre
+  } else if((field === 'name') &&
+      (form.controls[field].hasError('pattern')) ) {
+    return 'Debe de ser en formato de nombre y apellido.'
+  //Contraseña 1 Registro
+  } else if((field === 'password1') &&
+      (form.controls[field].hasError('pattern')) ) {
+    return 'La contraseña debe contener al menos un símbolo, un número,' +
+           'una letra mayúscula y una minúscula y al menos 8 caracteres.'
+  //Contraseña 2 Registro
+  } else if(field === 'password2') {
+    return 'Las contraseñas deben de ser iguales.'
   }
 
   return null;
@@ -60,16 +74,20 @@ public isFieldOneEqualFieldTwo( field1: string, field2: string) {
     const fieldValue1 = formGroup.get(field1)?.value;
     const fieldValue2 = formGroup.get(field2)?.value;
 
-    // Si los campos son diferentes devuelvo un objeto con el mensaje error
-    if ( fieldValue1 !== fieldValue2 ) {
-      // Establezco el error en el input field2
-      formGroup.get(field2)?.setErrors({ notEqual: true });
-      return { notEqual: true }
+     // Si los campos están vacíos devuelvo null
+    if ((fieldValue1 === '') && (fieldValue2 === '')) {
+      return null;
+      // Si los campos son diferentes devuelvo un objeto con el mensaje error
+    }else if (fieldValue1 !== fieldValue2) {
+        // Establezco el error en el input field2
+        formGroup.get(field2)?.setErrors({ notEqual: true });
+        return { notEqual: true }
+      // Si los campos son iguales
+    } else {
+      formGroup.get(field2)?.setErrors(null);
+      return null;
     }
 
-    //Si los campos son iguales
-    formGroup.get(field2)?.setErrors(null);
-    return null;
   }
 
 }

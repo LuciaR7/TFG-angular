@@ -17,11 +17,11 @@ export class RegisterPageComponent {
     name: ['', [ Validators.required,  Validators.pattern( this.validatorsService.firstNameAndLastnamePattern ) ]],
     // email: ['', [ Validators.required, Validators.pattern(this.validatorsService.emailPattern) ], [  this.emailValidator ]],
     email: ['', [ Validators.required, Validators.pattern(this.validatorsService.emailPattern) ], [  new EmailValidator() ]],
-    password: ['', [ Validators.required, Validators.pattern(this.validatorsService.passwordPattern) ]],
-    password2: ['', [ Validators.required,]]
+    password1: ['', [ Validators.required, Validators.pattern(this.validatorsService.passwordPattern) ]],
+    password2: ['', [ Validators.required, ]]
   }, {
     validators: [
-      this.validatorsService.isFieldOneEqualFieldTwo('password', 'password2'),
+      this.validatorsService.isFieldOneEqualFieldTwo('password1', 'password2'),
     ]
 
   });
@@ -33,10 +33,17 @@ export class RegisterPageComponent {
     private validatorsService: ValidatorsService,
    ) {}
 
+  // Comprueba si en el campo hay errores cuando toca
   isValidField( field: string ) {
     return this.validatorsService.isValidField( this.formRegister, field );
   }
 
+  // Muestra mensaje de error específico dependiendo del campo
+  getFieldError( field: string ): string | null {
+    return this.validatorsService.getFieldError( this.formRegister, field );
+  }
+
+  //Guardar datos formulario
   onSave() {
 
     if ( this.formRegister.invalid ) {
@@ -51,15 +58,16 @@ export class RegisterPageComponent {
     this.formRegister.reset();
   }
 
+  //Comprobar credenciales usuario
   onRegister(): void {
 
     const name:string = this.formRegister.controls['name'].value;
     const email:string = this.formRegister.controls['email'].value;
-    const password:string = this.formRegister.controls['password'].value;
+    const password1:string = this.formRegister.controls['password1'].value;
     const password2:string = this.formRegister.controls['password2'].value;
 
 
-      this.authService.register(name, email, password, password2)
+      this.authService.register(name, email, password1, password2)
           .subscribe({
               next: user => {
                   this.router.navigate([RoutesConstants.RUTA_USERS])
