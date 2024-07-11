@@ -18,7 +18,8 @@ export class RegisterPageComponent {
     // email: ['', [ Validators.required, Validators.pattern(this.validatorsService.emailPattern) ], [  this.emailValidator ]],
     email: ['', [ Validators.required, Validators.pattern(this.validatorsService.emailPattern) ], [  new EmailValidator() ]],
     password1: ['', [ Validators.required, Validators.pattern(this.validatorsService.passwordPattern) ]],
-    password2: ['', [ Validators.required, ]]
+    password2: ['', [ Validators.required, ]],
+
   }, {
     validators: [
       this.validatorsService.isFieldOneEqualFieldTwo('password1', 'password2'),
@@ -65,7 +66,6 @@ export class RegisterPageComponent {
     const email:string = this.formRegister.controls['email'].value;
     const password1:string = this.formRegister.controls['password1'].value;
     const password2:string = this.formRegister.controls['password2'].value;
-
 
       this.authService.register(name, email, password1, password2)
           .subscribe({

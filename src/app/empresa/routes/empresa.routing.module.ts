@@ -22,7 +22,7 @@ const routes: Routes = [
       // Esta ruta iría al final porque sino cualquiera de las rutas
       // anteriores podría confundirse y cogerse como id (p.ej. :new-hero o :search)
       // { path: ':id', component: EditarPartePageComponent },
-      { path: '**', redirectTo: RoutesConstants.RUTA_ADMIN },
+      { path: '**', redirectTo: RoutesConstants.RUTA_LIST_PARTES_ADMIN },
     ]
   }
 

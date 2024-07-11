@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
 
-import { User } from '../interfaces/user.interface';
+import { Rol, User } from '../interfaces/user.interface';
 
 
 @Injectable({providedIn: 'root'})
@@ -32,12 +32,15 @@ export class AuthService {
             return of({
                 id: 1,
                 user: "Lucia Rico",
-                email: "lucia@gmail.com"
+                email: "lucia@gmail.com",
+                rol: Rol.ADMIN
               })
               .pipe(
                 tap( user => this.user = user ),
                 tap( user => localStorage.setItem('token', 'prueba' )),
+                tap( user => localStorage.setItem('rol', Rol.ADMIN)),
               );
+
 
         } else {
             return throwError(()=>"Credenciales incorrectas")
@@ -54,7 +57,8 @@ export class AuthService {
           return of({
               id: 1,
               user: "Lucía Rico",
-              email: "lucia@gmail.com"
+              email: "lucia@gmail.com",
+              rol: Rol.USER
             })
             .pipe(
               tap( user => this.user = user ),
@@ -64,7 +68,6 @@ export class AuthService {
       } else {
           return throwError(()=>"Credenciales incorrectas")
       }
-
 
   }
 
@@ -76,6 +79,17 @@ export class AuthService {
     const token = localStorage.getItem('token');
 
     // si user no auth regresa true
+    return of(true);
+  }
+
+  checkRolAuth(): Observable<boolean> {
+
+    // si el rol es user regresa false
+    if ( localStorage.getItem('rol')==='Usuario') return of(false)
+
+    const rol = localStorage.getItem('rol');
+
+    // si user auth es admin regresa true
     return of(true);
   }
 

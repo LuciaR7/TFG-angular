@@ -48,9 +48,6 @@
                       <mat-label>Contraseña</mat-label>
                       <input type="password" matInput #input
                       formControlName="password" placeholder="Contraseña">
-                      <mat-hint align="end">
-                        {{input.value.length}}/8
-                    </mat-hint>
                       <mat-error>
                         @if (isValidField('password')) {
                           <span> {{ getFieldError('password') }} </span>

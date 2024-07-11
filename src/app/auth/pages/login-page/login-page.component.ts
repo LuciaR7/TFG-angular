@@ -4,6 +4,7 @@ import { RoutesConstants } from '../../../shared/constants/routes.constants';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidatorsService } from '../../../shared/service/validators.service';
+import { Rol } from '../../interfaces/user.interface';
 
 @Component({
   selector: 'app-login-page',
@@ -11,7 +12,7 @@ import { ValidatorsService } from '../../../shared/service/validators.service';
   styleUrl: './login-page.component.css',
 })
 
-export class LoginPageComponent{
+export class LoginPageComponent {
 
     public formLogin: FormGroup = this.fb.group({
       email: ['', [Validators.required, Validators.pattern( this.validatorsService.emailPattern )]],
@@ -24,6 +25,7 @@ export class LoginPageComponent{
         private router: Router,
         private validatorsService: ValidatorsService,
     ){}
+
 
     // Comprueba si en el campo hay errores cuando toca
     isValidField( field: string ): boolean | null {
@@ -56,11 +58,15 @@ export class LoginPageComponent{
       const email:string = this.formLogin.controls['email'].value;
       const password:string = this.formLogin.controls['password'].value;
 
-
         this.authService.login(email, password)
             .subscribe({
                 next: user => {
+                  if(user.rol === Rol.USER){
                     this.router.navigate([RoutesConstants.RUTA_USERS])
+                  }else{
+                    this.router.navigate([RoutesConstants.RUTA_ADMIN])
+                  }
+
                 },
                 error: err=>{
                     alert("Acceso denegado: "+err)

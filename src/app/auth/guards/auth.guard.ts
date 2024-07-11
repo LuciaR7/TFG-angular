@@ -26,6 +26,20 @@ export class AuthGuard implements CanMatch, CanActivate {
 
   }
 
+  private checkRolStatus(): boolean | Observable<boolean> {
+
+    return this.authService.checkRolAuth()
+    .pipe(
+      tap( isAdmin => console.log('Admin:', isAdmin) ),
+      tap( isAdmin =>  {
+        if ( !isAdmin ) {
+          this.router.navigate(['./auth/login'])
+        }
+      }),
+    )
+
+  }
+
   canMatch(route: Route, segments: UrlSegment[]): boolean | Observable<boolean> {
     // console.log( 'Can Match' );
     // console.log({ route, segments });

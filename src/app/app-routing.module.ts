@@ -35,7 +35,9 @@ const routes: Routes = [
           path: RoutesConstants.RUTA_ADMIN,
           //función de carga que llama el import que recibe un argumento y dice
           // que si todo sale bien (then) llama a un módulo del que obtiene algo
-          loadChildren: () => import('./empresa/empresa.module').then( m => m.EmpresaModule)
+          loadChildren: () => import('./empresa/empresa.module').then( m => m.EmpresaModule),
+          canActivate: [ AuthGuard ],
+          canMatch: [ AuthGuard ]
       },
 
       {
