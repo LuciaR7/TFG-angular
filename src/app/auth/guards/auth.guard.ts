@@ -15,7 +15,7 @@ export class AuthGuard implements CanMatch, CanActivate {
 
   private checkAuthStatus(): boolean | Observable<boolean> {
 
-    return this.authService.checkAuthentication()
+    return this.authService.checkLogin()
     .pipe(
       tap( isAuthenticated => console.log('Authenticated:', isAuthenticated) ),
       tap( isAuthenticated =>  {

@@ -11,7 +11,7 @@ export class AuthService {
     // va a ser nulo cuando se cargue la app por primera vez y no hay auth
     private user: User|undefined ;
 
-    private usuario: User = {
+    private usuarioMock: User = {
          id: 1,
          user: "Lucia Rico",
          email: "lucia@gmail.com",
@@ -34,11 +34,15 @@ export class AuthService {
 
     login( email: string, password: string ):Observable<User> {
 
-      return of(this.usuario)
+      return of(this.usuarioMock)
        .pipe(
-         tap( user => this.user = user ),
-         tap( user => localStorage.setItem('token', 'prueba' )),
-         tap( user => localStorage.setItem('rol', Rol.USER)),
+         tap( usuarioDevuelto =>{
+            this.user = usuarioDevuelto,
+            console.log("CHEACK:",usuarioDevuelto)
+         } ),
+         tap( usuadrioDevuelto => console.log('RolUsuario:',usuadrioDevuelto.rol) ),
+         //tap( user => localStorage.setItem('token', 'prueba' )),
+         //tap( user => localStorage.setItem('rol', this.usuario.rol)),
        );
 
       // if((email === 'lucia@gmail.com') && (password === 'Lucia.R7')){
@@ -68,11 +72,7 @@ export class AuthService {
       if((name === 'Lucia Rico') && (email === 'lucia@gmail.com') &&
          (password1 === 'Lucia.R7') && (password2 === 'Lucia.R7')){
 
-          return of(this.usuario)
-            .pipe(
-              tap( user => this.user = user ),
-              tap( user => localStorage.setItem('token', 'prueba' )),
-            );
+          return of(this.usuarioMock);
 
       } else {
           return throwError(()=>"Credenciales incorrectas")
@@ -80,27 +80,32 @@ export class AuthService {
 
   }
 
-  checkAuthentication(): Observable<boolean> {
+  checkLogin(): Observable<boolean> {
 
     // si no existe token no esta autenticado
-    if ( !localStorage.getItem('token') ) return of(false)
+    //if ( !localStorage.getItem('token') || !localStorage.getItem('rol') ) return of(false)
 
-    const token = localStorage.getItem('token');
+    //const token = localStorage.getItem('token');
 
-    // si existe token si esta autenticado
-    return of(true);
+    if(this.user){
+      return of(true);
+    } else {
+      return of(false);
+    }
+
+
   }
 
-  checkRolAuth(): Observable<User|undefined> {
+  checkRolAuth(): Observable<Rol|undefined> {
 
-    return of(this.usuario)
-    // // // Devuelvo el Usuario
-    // // console.log( this.user );
-    // // return of(this.user);
+    console.log("VALOR USUARIO : ",this.user)
+
+    //Devuelvo el usuario
+    return of(this.user?.rol)
   }
 
   logout() {
     this.user = undefined;
-    localStorage.clear();
+    //localStorage.clear();
   }
 }

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, CanMatch, Route, UrlSegment, GuardResult, MaybeAsync, RouterStateSnapshot, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { Observable, map, tap } from 'rxjs';
+import { Observable, catchError, map, of, tap } from 'rxjs';
 import { RoutesConstants } from '../../shared/constants/routes.constants';
+import { Rol } from '../interfaces/user.interface';
 
 @Injectable({providedIn: 'root'})
 export class PublicGuard implements CanMatch, CanActivate {
@@ -14,16 +15,25 @@ export class PublicGuard implements CanMatch, CanActivate {
 
   private checkAuthStatus(): boolean | Observable<boolean> {
 
-    return this.authService.checkAuthentication()
+    return this.authService.checkRolAuth()
     .pipe(
-      tap( isAuthenticated => console.log('Authenticated:', isAuthenticated) ),
-      tap( isAuthenticated =>  {
-        if ( isAuthenticated ) {
-          this.router.navigate([RoutesConstants.RUTA_USERS])
+      tap( rol => console.log('rolUser:', rol) ),
+      map( rol =>  {
+        // si es ADMIN
+        if( (rol === Rol.ADMIN) ) {
+          this.router.navigate([RoutesConstants.RUTA_ADMIN])
+          return false;
+        } else if (rol === Rol.USER) {
+          // si es USER
+        this.router.navigate([RoutesConstants.RUTA_USERS])
+          return false
         }
+        else {
+         return true
+        }
+
       }),
-      // entra en auth/login si no esta autenticado
-      map( isAutenticated => !isAutenticated )
+
     )
 
   }

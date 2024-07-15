@@ -25,4 +25,8 @@ export class GeneralEmpresaPageComponent {
     this.router.navigate([RoutesConstants.RUTA_AUTENTICACION])
   }
 
+  onUsuario(): void {
+    this.router.navigate([RoutesConstants.RUTA_USERS])
+  }
+
 }

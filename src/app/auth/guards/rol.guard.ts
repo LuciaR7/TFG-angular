@@ -18,13 +18,12 @@ export class RolGuard implements CanMatch, CanActivate {
 
     return this.authService.checkRolAuth()
     .pipe(
-      tap( isUser => console.log('rolUser:', isUser?.rol) ),
-      map( isUser =>  {
+      tap( rol => console.log('rolUser:', rol) ),
+      map( rol =>  {
         // si es ADMIN
-        if( (isUser?.rol === Rol.ADMIN) ) {
+        if( (rol === Rol.ADMIN) ) {
           return true
         } else {
-
          this.router.navigate([RoutesConstants.RUTA_USERS])
          return false
         }
