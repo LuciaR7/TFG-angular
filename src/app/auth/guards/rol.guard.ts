@@ -1,29 +1,36 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, CanMatch, Route, UrlSegment, RouterStateSnapshot, Router } from '@angular/router';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable, of, tap } from 'rxjs';
 
 import { AuthService } from '../services/auth.service';
 import { RoutesConstants } from '../../shared/constants/routes.constants';
+import { Rol } from '../interfaces/user.interface';
 
 @Injectable({ providedIn: 'root' })
-export class AuthGuard implements CanMatch, CanActivate {
+export class RolGuard implements CanMatch, CanActivate {
 
   constructor(
     private authService: AuthService,
     private router: Router,
   ) { }
 
-  private checkAuthStatus(): boolean | Observable<boolean> {
+  private checkRolStatus(): boolean | Observable<boolean> {
 
-    return this.authService.checkAuthentication()
+    return this.authService.checkRolAuth()
     .pipe(
-      tap( isAuthenticated => console.log('Authenticated:', isAuthenticated) ),
-      tap( isAuthenticated =>  {
-        // si no esta autenticado navego al login
-        if ( !isAuthenticated ) {
-          this.router.navigate([RoutesConstants.RUTA_AUTENTICACION])
+      tap( isUser => console.log('rolUser:', isUser?.rol) ),
+      map( isUser =>  {
+        // si es ADMIN
+        if( (isUser?.rol === Rol.ADMIN) ) {
+          return true
+        } else {
+
+         this.router.navigate([RoutesConstants.RUTA_USERS])
+         return false
         }
+
       }),
+
     )
 
   }
@@ -32,7 +39,7 @@ export class AuthGuard implements CanMatch, CanActivate {
     // console.log( 'Can Match' );
     // console.log({ route, segments });
 
-    return this.checkAuthStatus();
+    return this.checkRolStatus();
 
   }
 
@@ -40,7 +47,7 @@ export class AuthGuard implements CanMatch, CanActivate {
     // console.log( 'Can Activate' );
     // console.log({ route, state });
 
-    return this.checkAuthStatus();
+    return this.checkRolStatus();
   }
 
 }

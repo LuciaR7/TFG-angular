@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, CanMatch, Route, UrlSegment, GuardResult, MaybeAsync, RouterStateSnapshot, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { Observable, map, tap } from 'rxjs';
+import { RoutesConstants } from '../../shared/constants/routes.constants';
 
 @Injectable({providedIn: 'root'})
 export class PublicGuard implements CanMatch, CanActivate {
@@ -18,7 +19,7 @@ export class PublicGuard implements CanMatch, CanActivate {
       tap( isAuthenticated => console.log('Authenticated:', isAuthenticated) ),
       tap( isAuthenticated =>  {
         if ( isAuthenticated ) {
-          this.router.navigate(['./'])
+          this.router.navigate([RoutesConstants.RUTA_USERS])
         }
       }),
       // entra en auth/login si no esta autenticado

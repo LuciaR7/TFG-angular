@@ -9,7 +9,14 @@ import { Rol, User } from '../interfaces/user.interface';
 export class AuthService {
 
     // va a ser nulo cuando se cargue la app por primera vez y no hay auth
-    private user?: User ;
+    private user: User|undefined ;
+
+    private usuario: User = {
+         id: 1,
+         user: "Lucia Rico",
+         email: "lucia@gmail.com",
+         rol: Rol.USER
+    }
 
     constructor() { }
 
@@ -27,24 +34,31 @@ export class AuthService {
 
     login( email: string, password: string ):Observable<User> {
 
-        if((email === 'lucia@gmail.com') && (password === 'Lucia.R7')){
+      return of(this.usuario)
+       .pipe(
+         tap( user => this.user = user ),
+         tap( user => localStorage.setItem('token', 'prueba' )),
+         tap( user => localStorage.setItem('rol', Rol.USER)),
+       );
 
-            return of({
-                id: 1,
-                user: "Lucia Rico",
-                email: "lucia@gmail.com",
-                rol: Rol.ADMIN
-              })
-              .pipe(
-                tap( user => this.user = user ),
-                tap( user => localStorage.setItem('token', 'prueba' )),
-                tap( user => localStorage.setItem('rol', Rol.ADMIN)),
-              );
+      // if((email === 'lucia@gmail.com') && (password === 'Lucia.R7')){
+
+        //     return of({
+        //         id: 1,
+        //         user: "Lucia Rico",
+        //         email: "lucia@gmail.com",
+        //         rol: Rol.USER
+        //       })
+        //       .pipe(
+        //         tap( user => this.user = user ),
+        //         tap( user => localStorage.setItem('token', 'prueba' )),
+        //         tap( user => localStorage.setItem('rol', Rol.USER)),
+        //       );
 
 
-        } else {
-            return throwError(()=>"Credenciales incorrectas")
-        }
+        // } else {
+        //     return throwError(()=>"Credenciales incorrectas")
+        // }
 
 
     }
@@ -54,12 +68,7 @@ export class AuthService {
       if((name === 'Lucia Rico') && (email === 'lucia@gmail.com') &&
          (password1 === 'Lucia.R7') && (password2 === 'Lucia.R7')){
 
-          return of({
-              id: 1,
-              user: "Lucía Rico",
-              email: "lucia@gmail.com",
-              rol: Rol.USER
-            })
+          return of(this.usuario)
             .pipe(
               tap( user => this.user = user ),
               tap( user => localStorage.setItem('token', 'prueba' )),
@@ -73,24 +82,21 @@ export class AuthService {
 
   checkAuthentication(): Observable<boolean> {
 
-    // si user auth regresa false
+    // si no existe token no esta autenticado
     if ( !localStorage.getItem('token') ) return of(false)
 
     const token = localStorage.getItem('token');
 
-    // si user no auth regresa true
+    // si existe token si esta autenticado
     return of(true);
   }
 
-  checkRolAuth(): Observable<boolean> {
+  checkRolAuth(): Observable<User|undefined> {
 
-    // si el rol es user regresa false
-    if ( localStorage.getItem('rol')==='Usuario') return of(false)
-
-    const rol = localStorage.getItem('rol');
-
-    // si user auth es admin regresa true
-    return of(true);
+    return of(this.usuario)
+    // // // Devuelvo el Usuario
+    // // console.log( this.user );
+    // // return of(this.user);
   }
 
   logout() {

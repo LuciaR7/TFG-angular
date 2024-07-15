@@ -6,6 +6,7 @@ import { RoutesConstants } from './shared/constants/routes.constants';
 
 import { AuthGuard } from './auth/guards/auth.guard';
 import { PublicGuard } from './auth/guards/public.guard';
+import { RolGuard } from './auth/guards/rol.guard';
 
 
 const routes: Routes = [
@@ -36,13 +37,13 @@ const routes: Routes = [
           //función de carga que llama el import que recibe un argumento y dice
           // que si todo sale bien (then) llama a un módulo del que obtiene algo
           loadChildren: () => import('./empresa/empresa.module').then( m => m.EmpresaModule),
-          canActivate: [ AuthGuard ],
-          canMatch: [ AuthGuard ]
+          canActivate: [ AuthGuard, RolGuard ],
+          canMatch: [ AuthGuard, RolGuard ]
       },
 
       {
           path: '',
-          redirectTo: RoutesConstants.RUTA_USERS,
+          redirectTo: RoutesConstants.RUTA_AUTENTICACION,
           pathMatch: 'full' //tiene que ser exactamente un string vacío como dice el path
       },
 
