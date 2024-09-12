@@ -33,9 +33,9 @@
                 <!-- Nombre -->
                 <div customFlexbox="column">
                   <mat-form-field>
-                      <mat-label>Nombre y Apellidos</mat-label>
+                      <mat-label>Nombre</mat-label>
                       <input type="text" matInput formControlName="name"
-                      placeholder="Nombre Completo">
+                      placeholder="Nombre">
                       <mat-error>
                         @if (isValidField('name')) {
                           <span> {{ getFieldError('name') }} </span>
@@ -43,20 +43,51 @@
                       </mat-error>
                   </mat-form-field>
                 </div>
-                <!-- E-Mail -->
+                <!-- Apellidos -->
                 <div customFlexbox="column">
                   <mat-form-field>
-                      <mat-label>E-Mail</mat-label>
-                      <input type="text" matInput formControlName="email"
-                      placeholder="Ej: usuario@example.com">
+                      <mat-label>Apellidos</mat-label>
+                      <input type="text" matInput formControlName="surname"
+                      placeholder="Ej: apellido1 apellido2">
                       <mat-error>
-                        @if (isValidField('email')) {
-                          <span> {{ getFieldError('email') }} </span>
+                        @if (isValidField('surname')) {
+                          <span> {{ getFieldError('surname') }} </span>
                         }
                       </mat-error>
                   </mat-form-field>
                 </div>
-            </div> <!-- FIN bloque nombre y email -->
+            </div> <!-- FIN bloque nombre y apellidos -->
+
+          <!-- Bloque email y teléfono -->
+          <div  customFlexbox="row" customFlexbox.xs="column"
+          cFAlign="space-around center" cFGap="25px">
+              <!-- E-Mail -->
+              <div customFlexbox="column">
+                <mat-form-field>
+                    <mat-label>E-Mail</mat-label>
+                    <input type="text" matInput formControlName="email"
+                    placeholder="Ej: usuario@example.com">
+                    <mat-error>
+                      @if (isValidField('email')) {
+                        <span> {{ getFieldError('email') }} </span>
+                      }
+                    </mat-error>
+                </mat-form-field>
+              </div>
+              <!-- TELÉFONO -->
+              <div customFlexbox="column">
+                <mat-form-field>
+                    <mat-label>Teléfono</mat-label>
+                    <input type="text" matInput formControlName="tlf"
+                    placeholder="Ej: +34 912-345-678">
+                    <mat-error>
+                      @if (isValidField('tlf')) {
+                        <span> {{ getFieldError('tlf') }} </span>
+                      }
+                    </mat-error>
+                </mat-form-field>
+              </div>
+          </div> <!-- FIN bloque email y teléfono-->
 
           <!-- Bloque password1 y password2 -->
             <div  customFlexbox="row" customFlexbox.xs="column"
@@ -124,10 +155,10 @@
 
       </mat-card-content>
 
-      <!-- Link Nueva Cuenta -->
+      <!-- Link Nueva Cuenta
       <div class="flex justify-content-end">
         <a routerLink="/auth/login">¿Ya tienes cuenta?</a>
-    </div>
+      </div> -->
 
       <!-- Link Olvido Contraseña -->
       <!-- <div class="flex justify-content-end mt-5">

@@ -7,7 +7,7 @@ import { RoutesConstants } from '../../../shared/constants/routes.constants';
 @Component({
   selector: 'app-general-empresa-page',
   templateUrl: './general-empresa-page.component.html',
-  styles: ``
+  styles:``
 })
 export class GeneralEmpresaPageComponent {
 
@@ -19,13 +19,13 @@ export class GeneralEmpresaPageComponent {
   get user(): User | undefined {
     return this.authService.currentUser;
   }
-
-  onLogout() {
+  
+  onLogout():void  {
     this.authService.logout();
     this.router.navigate([RoutesConstants.RUTA_AUTENTICACION])
   }
 
-  onUsuario(): void {
+  onUsuario():void {
     this.router.navigate([RoutesConstants.RUTA_USERS])
   }
 

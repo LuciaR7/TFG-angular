@@ -15,7 +15,7 @@ export class AuthService {
          id: 1,
          user: "Lucia Rico",
          email: "lucia@gmail.com",
-         rol: Rol.USER
+         rol: Rol.ADMIN
     }
 
     constructor() { }

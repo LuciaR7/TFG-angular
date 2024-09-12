@@ -8,6 +8,7 @@ import { NewClientePageComponent } from './pages/new-cliente-page/new-cliente-pa
 import { NewPartePageComponent } from './pages/new-parte-page/new-parte-page.component';
 import { ListadoPartesPageComponent } from './pages/listado-partes-page/listado-partes-page.component';
 import { ListadoClientesPageComponent } from './pages/listado-clientes-page/listado-clientes-page.component';
+import { HomeEmpresaPageComponent } from './pages/home-empresa-page/home-empresa-page.component';
 
 
 
@@ -18,7 +19,8 @@ import { ListadoClientesPageComponent } from './pages/listado-clientes-page/list
     NewClientePageComponent,
     NewPartePageComponent,
     ListadoPartesPageComponent,
-    ListadoClientesPageComponent
+    ListadoClientesPageComponent,
+    HomeEmpresaPageComponent,
   ],
   imports: [
     MaterialModule,

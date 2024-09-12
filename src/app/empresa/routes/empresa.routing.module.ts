@@ -6,23 +6,19 @@ import { ListadoPartesPageComponent } from '../pages/listado-partes-page/listado
 import { NewPartePageComponent } from '../pages/new-parte-page/new-parte-page.component';
 import { ListadoClientesPageComponent } from '../pages/listado-clientes-page/listado-clientes-page.component';
 import { NewClientePageComponent } from '../pages/new-cliente-page/new-cliente-page.component';
-import { DetallePartePageComponent } from '../../cliente/pages/detalle-parte-page/detalle-parte-page.component';
-
+import { HomeEmpresaPageComponent } from '../pages/home-empresa-page/home-empresa-page.component';
 const routes: Routes = [
   {
-    path: '',
+    path: '', // Ruta base para el módulo de empresa,
     component: GeneralEmpresaPageComponent,
     children: [
-      { path: RoutesConstants.RUTA_LIST_PARTES_ADMIN, component: ListadoPartesPageComponent },
-      { path: RoutesConstants.RUTA_LIST_CLIENTS_ADMIN, component: ListadoClientesPageComponent },
-      { path: RoutesConstants.RUTA_DETAIL_PARTES_ADMIN, component: DetallePartePageComponent },
-      { path: RoutesConstants.RUTA_NEW_PARTE, component: NewPartePageComponent },
+      { path: RoutesConstants.RUTA_HOME_ADMIN, component: HomeEmpresaPageComponent },
       { path: RoutesConstants.RUTA_NEW_CLIENT, component: NewClientePageComponent },
-      // { path: 'edit/:id', component: NewPageComponent },
-      // Esta ruta iría al final porque sino cualquiera de las rutas
-      // anteriores podría confundirse y cogerse como id (p.ej. :new-hero o :search)
-      // { path: ':id', component: EditarPartePageComponent },
-      { path: '**', redirectTo: RoutesConstants.RUTA_LIST_PARTES_ADMIN },
+      { path: RoutesConstants.RUTA_NEW_PARTE, component: NewPartePageComponent },
+      { path: RoutesConstants.RUTA_LIST_CLIENTS_ADMIN, component: ListadoClientesPageComponent },
+      { path: RoutesConstants.RUTA_LIST_PARTES_ADMIN, component: ListadoPartesPageComponent },
+      { path: '', redirectTo: RoutesConstants.RUTA_HOME_ADMIN, pathMatch: 'full' }, // Ruta por defecto
+      { path: '**', redirectTo: RoutesConstants.RUTA_HOME_ADMIN } // Ruta comodín 
     ]
   }
 

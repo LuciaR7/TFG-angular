@@ -14,9 +14,11 @@ import { RoutesConstants } from '../../../shared/constants/routes.constants';
 export class RegisterPageComponent {
 
   public formRegister: FormGroup = this.fb.group({
-    name: ['', [ Validators.required,  Validators.pattern( this.validatorsService.firstNameAndLastnamePattern ) ]],
+    name: ['', [ Validators.required,  Validators.pattern( this.validatorsService.namePattern ) ]],
+    surname: ['', [ Validators.required,  Validators.pattern( this.validatorsService.surnamePattern ) ]],
     // email: ['', [ Validators.required, Validators.pattern(this.validatorsService.emailPattern) ], [  this.emailValidator ]],
     email: ['', [ Validators.required, Validators.pattern(this.validatorsService.emailPattern) ], [  new EmailValidator() ]],
+    tlf: ['', [ Validators.required,  Validators.pattern( this.validatorsService.tlfPattern ) ]],
     password1: ['', [ Validators.required, Validators.pattern(this.validatorsService.passwordPattern) ]],
     password2: ['', [ Validators.required, ]],
 

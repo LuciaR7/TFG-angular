@@ -1,33 +1,5 @@
-<mat-sidenav-container fullscreen>
-
-  <!-- Menú desplegable izquierda (Sidenav) -->
-  <mat-sidenav #sidenav mode="push">
-    <!-- Toolbar Menú -->
-    <mat-toolbar color="warn">
-      <span>Menú</span>
-      <span class="spacer"></span>
-      <button mat-icon-button (click)="sidenav.toggle()">
-        <mat-icon>menu</mat-icon>
-      </button>
-    </mat-toolbar>
-  </mat-sidenav>
-
-  <!-- Toolbar pantalla principal -->
-  <mat-toolbar color="primary">
-
-    <!-- Boton Menu Tres Rayas -->
-    <button mat-icon-button (click)="sidenav.toggle()">
-      <mat-icon>menu</mat-icon>
-    </button>
-
-    <span class="spacer"></span>
-
-     <!-- Boton Logout -->
-    <button mat-button>
-      Logout
-    </button>
-
-  </mat-toolbar>
+<!-- Título central -->
+<div class="title" customFlexbox="row" cFAlign="center center" cFGap="10px">RicoRepair</div>
 
 <!-- Formulario -->
 <div style="background-color:lightblue">
@@ -42,10 +14,9 @@
       style="background-color: rgb(231, 223, 253); "
       cFAlign="center center">
 
-      <!-- Bloque título y logo -->
+      <!-- Parte -->
       <div customFlexbox="colum">
 
-          <h1>RicoRepair</h1>
           <h2>Parte de intervención: " "</h2>
 
       </div>
@@ -297,8 +268,6 @@
   </div> -->
 
 </div>
-
-</mat-sidenav-container>
 
 
 
