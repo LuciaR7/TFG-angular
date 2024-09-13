@@ -2,11 +2,13 @@ import { NgModule } from '@angular/core';
 
 import { CustomFlexBoxModule } from '@penalara/custom-flexbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,6 +16,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
+import { MatNativeDateModule, DateAdapter } from '@angular/material/core';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
@@ -32,6 +36,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatCardModule,
     MatCheckboxModule,
     MatChipsModule,
+    MatDatepickerModule,
     MatDialogModule,
     MatDividerModule,
     MatFormFieldModule,
@@ -39,6 +44,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatIconModule,
     MatInputModule,
     MatListModule,
+    MatNativeDateModule,
+    MatProgressBarModule,
     MatProgressSpinnerModule,
     MatRadioModule,
     MatSelectModule,
@@ -48,4 +55,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     ReactiveFormsModule,
   ]
 })
-export class MaterialModule { }
+export class MaterialModule { 
+  constructor(private dateAdapter: DateAdapter<any>) {
+    this.dateAdapter.setLocale('es-ES'); // Localización española
+    this.dateAdapter.getFirstDayOfWeek = () => 1; // Primer día de la semana: Lunes
+  }
+}
