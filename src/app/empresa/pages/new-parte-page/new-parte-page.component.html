@@ -1,114 +1,224 @@
-<!-- Botón para volver a la pantalla principal -->
-<div class="volver-home">
-    <button mat-icon-button (click)="volverHome()" aria-label="Volver a home">
-      <mat-icon>home</mat-icon>
-    </button>
-</div>
-  
 <!-- Título central -->
 <div class="title" customFlexbox="row" cFAlign="center center" cFGap="10px">RicoRepair</div>
 
-<!-- Contenedor general -->
-<div class="parte-intervencion-container" customFlexbox="row" customFlexbox.xs="column" 
+<!-- Contenedor general Parte -->
+<div class="principContainer" customFlexbox="row" customFlexbox.xs="column" 
     cFAlign="center center" cFGap="20px">
 
-    
     <!-- Bloque 1: Datos Cliente-->
-    <div class="parte-intervencion-container" customFlexbox="row" customFlexbox.s="column" customFlexbox.xs="column"
-            cFAlign="center start" cFGap="20px">
-        <mat-card>
-            <h2>CREAR PARTE INTERVENCIÓN</h2>
-            <mat-form-field appearance="outline">
-                <mat-label>Buscar cliente</mat-label>
-                <input matInput placeholder="Buscar cliente" [formControl]="clienteControl">
-                <mat-icon matSuffix>search</mat-icon>
-            </mat-form-field>
-    
-            <form [formGroup]="clienteForm">
-                <h3>DATOS CLIENTE</h3>
-                <div class="cliente-info">
+    <div class="menu-block" customFlexbox="column" customFlexbox.xs="row" cFAlign="space-around center">
+        
+            <mat-card>
+            <!-- Cabecera mat-card cliente-->
+            <mat-card-header>
+                <mat-card-title customFlexbox="column">
+                    <span>
+                        Añadir parte de intervención a:
+                    </span>
+                    
+                    <!-- Separacion vertical-->
+                    <div class="alto20"></div>
+
+                    <!-- Campo Busca Cliente -->
                     <mat-form-field appearance="outline">
-                    <mat-label>Nombre</mat-label>
-                    <input matInput formControlName="nombre" placeholder="Nombre">
+                        <mat-label>Buscar cliente</mat-label>
+                        <input matInput placeholder="Buscar cliente" [formControl]="clienteControl"
+                               [matAutocomplete]="auto">
+                        <mat-icon matSuffix>search</mat-icon>
                     </mat-form-field>
-                    <mat-form-field appearance="outline">
-                    <mat-label>Apellidos</mat-label>
-                    <input matInput formControlName="apellidos" placeholder="Apellidos">
-                    </mat-form-field>
-                    <mat-form-field appearance="outline">
-                    <mat-label>Email</mat-label>
-                    <input matInput formControlName="email" placeholder="Correo electrónico">
-                    </mat-form-field>
-                    <mat-form-field appearance="outline">
-                    <mat-label>Teléfono</mat-label>
-                    <input matInput formControlName="telefono" placeholder="Teléfono">
-                    </mat-form-field>
-                </div>
-            </form>
+
+                    
+                    <!-- Lista de clientes filtrados -->
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="seleccionarCliente($event.option.value)">
+                    <mat-option *ngFor="let cliente of clientesFiltrados | async" [value]="cliente">
+                        {{ cliente.name }} {{ cliente.surname }}
+                    </mat-option>
+                    </mat-autocomplete>
+                    
+                    <!-- Separacion vertical-->
+                    <div class="alto75"></div>
+                    
+                    <span>
+                        Datos Cliente:
+                    </span>
+                </mat-card-title>
+            </mat-card-header>
+
+            <!-- Formulario 1 Datos Cliente -->
+                <form [formGroup]="clienteForm">
+
+                <!-- Contenido mat-card-->
+                <mat-card-content>
+                    <div customFlexbox="column" cFGap="25px">
+  
+                        <!-- Bloque nombre y apellidos -->
+                        <div customFlexbox="row" customFlexbox.xs="column"
+                            cFAlign="space-around center" cFGap="25px">
+                            <!-- Nombre -->
+                            <div customFlexbox="column">
+                                <mat-form-field>
+                                    <mat-label>Nombre</mat-label>
+                                    <input type="text" matInput formControlName="name"
+                                    placeholder="Nombre">
+                                </mat-form-field>
+                            </div>
+                            <!-- Apellidos -->
+                            <div customFlexbox="column">
+                                <mat-form-field>
+                                    <mat-label>Apellidos</mat-label>
+                                    <input type="text" matInput formControlName="surname"
+                                    placeholder="Ej: apellido1 apellido2">
+                                </mat-form-field>
+                            </div>
+                        </div> <!-- FIN bloque nombre y apellidos -->
+
+                        <!-- Bloque email y teléfono -->
+                        <div customFlexbox="row" customFlexbox.xs="column" 
+                            cFAlign="space-around center" cFGap="25px">
+                            <!-- E-Mail -->
+                            <div customFlexbox="column">
+                                <mat-form-field>
+                                    <mat-label>E-Mail</mat-label>
+                                    <input type="text" matInput formControlName="email"
+                                    placeholder="Ej: usuario@example.com">
+                                </mat-form-field>
+                            </div>
+                            <!-- TELÉFONO -->
+                            <div customFlexbox="column">
+                                <mat-form-field>
+                                    <mat-label>Teléfono</mat-label>
+                                    <input type="text" matInput formControlName="tlf"
+                                    placeholder="Ej: +34 912-345-678">
+                                </mat-form-field>
+                            </div>
+                        </div> <!-- FIN bloque email y teléfono-->
+
+                    </div> <!-- FIN inputs cliente -->
+                </mat-card-content>
+            </form> <!-- FIN Formulario 1-->
+            <!-- Separacion vertical-->
+            <div class="alto75"></div>
         </mat-card>
     </div> <!-- FIN Bloque 1: Datos Cliente-->
 
     <!-- Bloque 2: Datos Parte Intervención-->
-    <div class="parte-intervencion-container" customFlexbox="row" customFlexbox.s="column" customFlexbox.xs="column"
-            cFAlign="center start" cFGap="20px">
+    <div class="menu-block" customFlexbox="column" cFAlign="space-around center">
         <mat-card>
+            <!-- Cabecera mat-card Datos Intervención-->
+            <mat-card-header customFlexbox="row" cFAlign="space-between center">
+                <mat-card-title>
+                    <span>
+                        Parte de Intervención -_____-
+                    </span>
+                </mat-card-title>
+                <span>{{ currentDate | date: 'dd/MM/yyyy' }}</span>
+            </mat-card-header>
+
+            <!-- Separacion vertical-->
+            <div class="alto10"></div>
+
+            <!-- Formulario 2 Datos Intervención -->
             <form [formGroup]="intervencionForm">
-                <h3>PARTE DE INTERVENCIÓN</h3>
-                <!-- Agrupar elementos de dispositivo y materiales -->
-                <div class="dispositivo-material">
-                    <mat-form-field appearance="outline">
-                    <mat-label>Dispositivo</mat-label>
-                    <input matInput formControlName="dispositivo" placeholder="Dispositivo">
-                    </mat-form-field>
+                            
+                <!-- Contenido mat-card Datos Intervención-->
+                <mat-card-content>
+                    <div customFlexbox="column" cFGap="25px">
+                        
+                        <!-- Bloque dispositivo y materiales -->
+                        <div customFlexbox="row" customFlexbox.xs="column"
+                             cFAlign="space-around center" cFGap="25px">
+                            
+                            <!-- Dispositivo -->
+                            <div customFlexbox="column">
+                                <mat-form-field>
+                                    <mat-label>Dispositivo</mat-label>
+                                    <input type="text" matInput formControlName="dispositivo" 
+                                           placeholder="Dispositivo">
+                                </mat-form-field>
+                            </div>
 
-                    <mat-form-field appearance="outline">
-                    <mat-label>Otros materiales</mat-label>
-                    <input matInput formControlName="otrosMateriales" placeholder="Otros materiales">
-                    </mat-form-field>
-                </div>
+                            <!-- Otros materiales -->
+                            <div customFlexbox="column">
+                                <mat-form-field>
+                                    <mat-label>Otros materiales</mat-label>
+                                    <input type="text" matInput formControlName="otrosMateriales" 
+                                           placeholder="Otros materiales">
+                                </mat-form-field>
+                            </div>
+                        </div> <!-- FIN dispositivo y materiales -->
 
-                <!-- Agrupar estado y progreso -->
-                <div class="estado-progreso">
-                    <mat-form-field appearance="outline">
-                    <mat-label>Estado de la intervención</mat-label>
-                    <mat-select formControlName="estadoIntervencion" (selectionChange)="actualizarProgreso()">
-                        <mat-option *ngFor="let estado of estados" [value]="estado">
-                        {{ estado.label }}
-                        </mat-option>
-                    </mat-select>
-                    </mat-form-field>
+                        <!-- Bloque estado y fecha estimada salida -->
+                        <div customFlexbox="row" customFlexbox.xs="column"
+                             cFAlign="space-around center" cFGap="25px">
+                        
+                            <!-- Estado -->
+                            <div customFlexbox="column">
+                                <mat-form-field>
+                                    <mat-label>Estado</mat-label>
+                                    <mat-select formControlName="estadoIntervencion">
+                                        <mat-option *ngFor="let estado of estados" [value]="estado">
+                                        {{ estado.label }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
 
-                    <mat-progress-bar mode="determinate" [value]="progreso"></mat-progress-bar>
-                </div>
-        
-                <mat-form-field appearance="outline">
-                <mat-label>Fecha estimada</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="fechaEstimada" placeholder="Fecha estimada">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-        
-                <mat-form-field appearance="outline">
-                <mat-label>Motivo del cliente</mat-label>
-                <input matInput formControlName="motivoCliente" placeholder="Motivo cliente">
-                </mat-form-field>
-        
-                <mat-form-field appearance="outline">
-                <mat-label>Informe empresa</mat-label>
-                <textarea matInput formControlName="informeEmpresa" placeholder="Informe empresa"></textarea>
-                </mat-form-field>
-        
-                <mat-radio-group formControlName="documentacionTecnica">
-                <mat-radio-button value="si">Sí</mat-radio-button>
-                <mat-radio-button value="no">No</mat-radio-button>
-                </mat-radio-group>
-        
-                <div class="acciones">
-                <button mat-raised-button color="primary" (click)="crearParte()">Crear</button>
-                <button mat-raised-button color="warn" (click)="cancelar()">Cancelar</button>
-                <button mat-raised-button color="accent" (click)="generarQR()">Generar QR</button>
-                </div>
+                            <!-- Fecha estimada de salida -->
+                            <div customFlexbox="column">
+                                <mat-form-field style="width: 215px;">
+                                    <mat-label>Fecha estimada fin</mat-label>
+                                    <input matInput [matDatepicker]="picker" formControlName="fechaEstimada" placeholder="Fecha estimada">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+                        </div> <!-- FIN  estado y fecha estimada salida -->
+                
+                        <!-- Bloque motivo cliente e informe empresa -->
+                        <div customFlexbox="row" customFlexbox.xs="column"
+                             cFAlign="space-around center" cFGap="25px">
+                            
+                            <!-- Motivo Cliente -->
+                            <div customFlexbox="column">
+                                <mat-form-field>
+                                    <mat-label>Motivo cliente</mat-label>
+                                    <textarea matInput formControlName="motivoCliente" placeholder="Motivo cliente"></textarea>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Informe Empresa -->
+                            <div customFlexbox="column">
+                                <mat-form-field>
+                                    <mat-label>Informe empresa</mat-label>
+                                    <textarea matInput formControlName="informeEmpresa" placeholder="Informe empresa"></textarea>
+                                </mat-form-field>
+                            </div>
+                        </div> <!-- FIN motivo cliente e informe empresa -->
+                
+                        <!-- Campo Incluir Documentación Técnica -->
+                        <div customFlexbox="column" cFGap="30px">
+
+                            <div customFlexbox="column">
+                                <mat-label>DOCUMENTACIÓN TÉCNICA (Presupuesto u otros)</mat-label>
+                                <mat-radio-group formControlName="documentacionTecnica">
+                                <mat-radio-button value="si">Sí</mat-radio-button>
+                                <mat-radio-button value="no">No</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div> <!-- FIN Documentación Técnica -->
+
+                        <!-- Botones -->
+                        <div customFlexbox="row" cFAlign="space-around strech" cFGap="60px">
+                            <button mat-raised-button color="primary" (click)="crearParte()">Crear</button>
+                            <button mat-raised-button color="warn" (click)="cancelar()">Cancelar</button>
+                            <button mat-raised-button color="accent" (click)="generarQR()">Generar QR</button>
+                        </div>
+                    </div>
+
+                </mat-card-content>
             </form>
         </mat-card>
     </div> <!-- FIN Bloque 2: Datos Parte Intervención-->
+    
 </div> <!-- FIN Contenedor general -->

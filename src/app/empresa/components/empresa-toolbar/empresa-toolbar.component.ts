@@ -1,21 +1,22 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../../auth/services/auth.service';
 import { Router } from '@angular/router';
 import { User } from '../../../auth/interfaces/user.interface';
+import { AuthService } from '../../../auth/services/auth.service';
 import { RoutesConstants } from '../../../shared/constants/routes.constants';
 
 @Component({
-  selector: 'app-general-empresa-page',
-  templateUrl: './general-empresa-page.component.html',
-  styles:``
+  selector: 'app-empresa-toolbar',
+  templateUrl: './empresa-toolbar.component.html',
+  styles: ``
 })
-export class GeneralEmpresaPageComponent {
-
+export class EmpresaToolbarComponent {
+  
   constructor(
     private authService: AuthService,
     private router: Router
   ) {}
 
+  // Coger usuario de sesión
   get user(): User | undefined {
     return this.authService.currentUser;
   }

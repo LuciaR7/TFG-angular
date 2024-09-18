@@ -1,0 +1,9 @@
+.cliente-card {
+    background-color: #ff806f;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }

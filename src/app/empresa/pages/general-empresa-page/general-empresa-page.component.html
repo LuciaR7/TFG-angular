@@ -1,17 +1,11 @@
-<!-- Aquí puedes agregar un contenedor para el contenido de la página, como un header, toolbar, etc. -->
 
-<div customFlexbox="column" cFGap="20px">
-    <!-- Barra superior con el nombre del perfil y botón de logout -->
-    <mat-toolbar color="primary">
-      <span>{{ user?.user }}</span>
-       &nbsp; <!-- "espacio no separable" (non-breaking space) -->
-      <span>{{ user?.rol }}</span>
-      <span class="spacer"></span>
-      <button mat-icon-button (click)="onLogout()">
-        <mat-icon>power_settings_new</mat-icon>
-      </button>
-    </mat-toolbar>
-  
+<div>
+  <div>
+    <!-- Barra de navegación superior -->
+    <app-empresa-toolbar></app-empresa-toolbar>
+
     <!-- Aquí se renderizarán los componentes de las rutas hijas -->
     <router-outlet></router-outlet>
+
+  </div>
 </div>

@@ -1,56 +1,12 @@
-.volver-home {
-    position: absolute;
-    top: 10px;
-    right: 100px; /* Ajustado para mover el botón más a la izquierda */
-    }
-
-.volver-home mat-icon {
-    color: white; /* Cambia el color del icono a blanco */
+mat-card{
+    background-color: rgb(236, 217, 243);
+    width: 100%;
+    height: 100%;
 }
 
-.parte-intervencion-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
-  
-mat-card {
-    padding: 20px;
-    width: 600px;
-    margin-bottom: 20px; /* Añadido para espaciado en la parte inferior */
-}
-    
-.cliente-info {
-    display: flex;
-    flex-wrap: wrap; /* Permite que los campos se ajusten en varias líneas si es necesario */
-    gap: 16px; /* Aumentado para mayor separación */
-    margin-bottom: 20px; /* Espaciado adicional en la parte inferior */
-}
-  
 mat-form-field {
     width: 100%;
 }
-  
-.dispositivo-material, .estado-progreso {
-    display: flex;
-    gap: 16px; /* Espaciado entre los campos */
-    margin-bottom: 20px; /* Espaciado adicional en la parte inferior */
-}
-  
-.estado-progreso {
-    flex-direction: column; /* Dispone los elementos en columna */
-}
-  
-.acciones {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px; /* Espaciado entre los botones */
-    margin-top: 20px;
-}
-  
-mat-radio-group {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-  
+
+
+

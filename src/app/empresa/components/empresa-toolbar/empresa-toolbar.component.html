@@ -1,0 +1,25 @@
+<!-- Toolbar Empresa -->
+<mat-toolbar color="primary">
+
+    <img class="logo-rs" src="assets/images/logo-rs.png"> 
+    
+
+    <div>
+        <span>{{ user?.user }}</span>
+         &nbsp;
+        <span>{{ user?.rol }}</span>
+    </div>
+       
+    <span class="spacer"></span>
+   
+    <div>
+        <button mat-icon-button (click)="volverHome()" aria-label="Volver a home">
+            <mat-icon>home</mat-icon>
+        </button>
+         &nbsp;
+       <button mat-icon-button (click)="onLogout()">
+            <mat-icon>power_settings_new</mat-icon>
+       </button>
+    </div>   
+
+</mat-toolbar>

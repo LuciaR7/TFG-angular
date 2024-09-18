@@ -9,6 +9,7 @@ import { NewPartePageComponent } from './pages/new-parte-page/new-parte-page.com
 import { ListadoPartesPageComponent } from './pages/listado-partes-page/listado-partes-page.component';
 import { ListadoClientesPageComponent } from './pages/listado-clientes-page/listado-clientes-page.component';
 import { HomeEmpresaPageComponent } from './pages/home-empresa-page/home-empresa-page.component';
+import { EmpresaToolbarComponent } from './components/empresa-toolbar/empresa-toolbar.component';
 
 
 
@@ -21,6 +22,7 @@ import { HomeEmpresaPageComponent } from './pages/home-empresa-page/home-empresa
     ListadoPartesPageComponent,
     ListadoClientesPageComponent,
     HomeEmpresaPageComponent,
+    EmpresaToolbarComponent,
   ],
   imports: [
     MaterialModule,

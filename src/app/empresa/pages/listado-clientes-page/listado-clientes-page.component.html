@@ -1,1 +1,43 @@
-<p>listado-clientes-page works!</p>
+<!-- Título central -->
+<div class="title" customFlexbox="row" cFAlign="center center" cFGap="10px">RicoRepair</div>
+
+<!-- Contenedor principal listado clientes -->
+<div class="principContainer" customFlexbox="column" style="background-color: #e6d0ff; padding: 20px;" 
+     cFAlign="center center" cfGap="20px">
+  
+  <!-- Encabezado -->
+  <div customFlexbox="row" cFAlign="space-between" style="width: 100%;">
+    <h2>Listado de Clientes</h2>
+  </div>
+  
+  <!-- Filtros de búsqueda y ordenamiento -->
+  <div customFlexbox="row" cFAlign="space-between" style="width: 100%;">
+    <mat-form-field appearance="outline">
+      <mat-label>Buscar Cliente</mat-label>
+      <input matInput [(ngModel)]="filtroNombre" placeholder="Buscar Cliente">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Ordenar por: Nombre</mat-label>
+      <mat-select [(ngModel)]="orden" (selectionChange)="ordenarClientes()">
+        <mat-option value="asc">Ascendente</mat-option>
+        <mat-option value="desc">Descendente</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <!-- Listado de Clientes -->
+  <div customFlexbox="column" style="width: 100%;" cfGap="20px">
+    <div *ngFor="let cliente of clientesFiltrados" customFlexbox="row" cFAlign="space-between center" class="cliente-card" style="background-color: #f1a2a2; padding: 10px; margin-bottom: 10px; border-radius: 5px;">
+      <span>{{ cliente.nombre }}</span>
+      <div customFlexbox="row" cFAlign="center center" cfGap="10px">
+        <button class="buttonWidth" mat-raised-button color="primary" (click)="verPartes(cliente)">PARTES</button>
+        <button class="buttonWidth" mat-raised-button color="accent" (click)="detalleCliente(cliente)">DETALLE</button>
+        <button class="buttonWidth" mat-raised-button color="warn" (click)="eliminarCliente(cliente)">ELIMINAR</button>
+      </div>
+    </div>
+  </div>
+
+  <button mat-raised-button style="background-color: rgb(114, 218, 114); width: 100%;"(click)="crearCliente()">Añadir Cliente</button>
+
+</div>

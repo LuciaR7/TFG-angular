@@ -78,4 +78,9 @@ export class NewClientePageComponent {
           });
   }
 
+  //Botón volver pantalla principal
+  volverHome():void {
+    this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_HOME_ADMIN])
+  }
+
 }

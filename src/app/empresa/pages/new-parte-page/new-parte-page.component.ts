@@ -1,17 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { RoutesConstants } from '../../../shared/constants/routes.constants';
 import { Router } from '@angular/router';
+import { map, startWith } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-new-parte-page',
   templateUrl: './new-parte-page.component.html',
   styleUrl: './new-parte-page.component.css'
 })
+
 export class NewPartePageComponent {
   clienteForm: FormGroup;
   intervencionForm: FormGroup;
   clienteControl = this.fb.control('');
+  clientesFiltrados!: Observable<any[]>;
+
+  currentDate: Date = new Date();
+
+  // Lista de clientes (simulados)
+  clientes = [
+    { name: 'Pepa', surname: 'Martín López', email: 'pepa@gmail.com', tlf: '634456789' },
+    { name: 'Carlos', surname: 'González García', email: 'carlos@gmail.com', tlf: '612345678' },
+    { name: 'Lucía', surname: 'Fernández Ruiz', email: 'lucia@gmail.com', tlf: '698765432' }
+  ];
 
   // Dispositivos y estados de intervención (simulados)
   estados = [
@@ -21,17 +34,18 @@ export class NewPartePageComponent {
     { label: 'Anulada (AN)', valor: 'AN' },
     { label: 'Finalizada (OK)', valor: 'OK' }
   ];
-  
-  progreso = 0;
 
   constructor( private fb: FormBuilder, private router: Router ) {
    
+    //Formulario clientes
     this.clienteForm = this.fb.group({
-      nombre: [''],
-      apellidos: [''],
+      name: [''],
+      surname: [''],
       email: [''],
-      telefono: [''],
+      tlf: [''],
     });
+
+    //Formulario intervención
     this.intervencionForm = this.fb.group({
       dispositivo: [''],
       otrosMateriales: [''],
@@ -42,46 +56,35 @@ export class NewPartePageComponent {
       documentacionTecnica: ['no']
     });
 
-    // Simular cargar datos al seleccionar cliente
-    this.clienteControl.valueChanges.subscribe(cliente => {
-      if (cliente) {
-        this.cargarDatosCliente(cliente);
-      }
-    });
+    // Filtrar clientes en función de la búsqueda
+    this.clientesFiltrados = this.clienteControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this.filtrarClientes(value || ''))
+    );
 
   }
 
-  cargarDatosCliente(cliente: string) {
-    // Aquí se pueden cargar los datos reales del cliente seleccionado
-    this.intervencionForm.patchValue({
-      nombre: 'Pepa',
-      apellidos: 'Martín López',
-      email: 'pepa@gmail.com',
-      telefono: '634456789'
-    });
+    // Método para filtrar clientes
+    filtrarClientes(value: string): any[] {
+      const filterValue = value.toLowerCase();
+      return this.clientes.filter(cliente => 
+        cliente.name.toLowerCase().includes(filterValue) || 
+        cliente.surname.toLowerCase().includes(filterValue)
+      );
   }
+  
+    // Método para seleccionar un cliente y cargar sus datos
+    seleccionarCliente(cliente: any) {
+      // Asigna el nombre completo al campo de búsqueda
+      this.clienteControl.setValue(`${cliente.name} ${cliente.surname}`);
 
-  actualizarProgreso() {
-    const estado = this.intervencionForm.get('estadoIntervencion')?.value;
-    switch (estado.valor) {
-      case 'PE':
-        this.progreso = 25;
-        break;
-      case 'EP':
-        this.progreso = 50;
-        break;
-      case 'EC':
-        this.progreso = 75;
-        break;
-      case 'OK':
-        this.progreso = 100;
-        break;
-      case 'AN':
-        this.progreso = 0;
-        break;
-      default:
-        this.progreso = 0;
-    }
+      // Autocompleta los campos del cliente en el formulario
+      this.clienteForm.patchValue({
+        name: cliente.name,
+        surname: cliente.surname,
+        email: cliente.email,
+        tlf: cliente.tlf
+    });
   }
 
   crearParte() {
@@ -96,7 +99,5 @@ export class NewPartePageComponent {
     console.log('QR generado');
   }
 
-  volverHome():void {
-    this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_HOME_ADMIN])
-  }
+
 }

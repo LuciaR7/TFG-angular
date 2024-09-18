@@ -1,27 +1,22 @@
 <!-- Toolbar Auth -->
-<mat-toolbar color="primary">
 
-    <!-- Toolbar en baja resolucion -->
-    <div cfHide cfShow.xs>
-          <!-- TODO: añadir funciones toolbar baja resolución -->
-          <!-- ... -->
-    </div>
-
-    <span>RicoSoft</span>
-
-    <!-- Toolbar en alta resolución -->
-    <div cfShow cfHide.xs>
-      <button mat-button>
-        <mat-icon>info</mat-icon>
-        <!-- TODO: añadir funciones toolbar alta resolución -->
+<!-- Toolbar en baja resolucion -->
+<mat-toolbar color="primary" cfHide cfShow.xs>
+    <img class="logo-rs" src="assets/images/logo-rs.png"> 
+    <button mat-button>
+      <mat-icon>info</mat-icon>
+        <!-- TODO: añadir funciones toolbar baja resolución -->
         <!-- ... -->
-      </button>
-    </div>
-
-
-   <span class="spacer"></span>
-
-    <!-- <img cfClass.m="logo_md" cfClass.s="logo_sm" cfClass.xs="logo_xs"
-        src="assets/...">  -->
-
+    </button>
+</mat-toolbar>
+      
+<!-- Toolbar en alta resolución -->
+<mat-toolbar color="primary" cfShow cfHide.xs>
+    <img class="logo-rs" src="assets/images/logo-rs.png"> 
+    <span class="spacer"></span> 
+    <button mat-button>
+      <mat-icon>info</mat-icon>
+      <!-- TODO: añadir funciones toolbar alta resolución -->
+      <!-- ... -->
+    </button>
 </mat-toolbar>

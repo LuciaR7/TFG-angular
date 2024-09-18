@@ -1,11 +1,13 @@
 <!-- Título central -->
 <div class="title" customFlexbox="row" cFAlign="center center" cFGap="10px">RicoRepair</div>
 
-<!-- Botones centrales -->
-<div class="menuContainer" customFlexbox="row" customFlexbox.xs="column" cFAlign="center start" cFGap="20px">
+<!-- Contenedor general -->
+<div class="principContainer" customFlexbox="column" customFlexbox.xs="column" 
+     cFAlign="center center" cFGap="20px">
+     
     <!-- Bloque 1 -->
     <div class="menu-block" customFlexbox="row" customFlexbox.s="column" customFlexbox.xs="column"
-            cFAlign="center center" cFGap="20px">
+            cFAlign="space-around center" cFGap="20px">
         <mat-card class="menu-item" customFlexbox="column" (click)="goNewClient()">
             <div>ALTA CLIENTE</div>
             <mat-icon>person_add</mat-icon>
@@ -15,10 +17,10 @@
             <mat-icon>add</mat-icon>
         </mat-card>
     </div>
-
+    
     <!-- Bloque 2 -->
     <div class="menu-block" customFlexbox="row" customFlexbox.s="column" customFlexbox.xs="column"
-            cFAlign="center center" cFGap="20px">
+            cFAlign="space-around center" cFGap="20px">
         <mat-card class="menu-item" customFlexbox="column" (click)="goListClients()">
             <div>LISTADO CLIENTES</div>
             <mat-icon>people</mat-icon>
@@ -29,12 +31,11 @@
         </mat-card>
     </div>
 
-</div>
+    <!-- Ir a Usuario -->
+    <div customFlexbox="column" cFAlign="center center">
+        <button mat-flat-button color="primary" (click)="onUsuario()">
+        IR A USUARIO
+        </button>
+    </div>
 
-
-<!-- Ir a Usuario -->
-<div customFlexbox="column" cFAlign="center center">
-  <button mat-flat-button color="primary" (click)="onUsuario()">
-    IR A USUARIO
-  </button>
-</div>
+</div> <!-- FIN Contenedor general -->
