@@ -7,10 +7,10 @@
 </div>
 
 <!-- Contenedor Registro -->
-<div class="authContainer" customFlexbox="column" cFGap="40px" cFAlign="center center">
+<div class="principContainer" cFAlign="center center">
 
   <!-- Mat-card -->
-  <div><mat-card style="background-color: rgb(236, 217, 243);">
+  <mat-card style="background-color: rgb(236, 217, 243);">
     <!-- Cabecera mat-card-->
     <mat-card-header>
           <mat-card-title>
@@ -25,11 +25,10 @@
 
       <!-- Contenido mat-card-->
       <mat-card-content>
-        <div customFlexbox="column" cFAlign="center center" cFGap="25px">
+        <div customFlexbox="column">
 
           <!-- Bloque nombre y email -->
-            <div  customFlexbox="row" customFlexbox.xs="column"
-                  cFAlign="space-around center" cFGap="25px">
+            <div  customFlexbox="row" customFlexbox.xs="column" cFGap="25px">
                 <!-- Nombre -->
                 <div customFlexbox="column">
                   <mat-form-field>
@@ -59,8 +58,7 @@
             </div> <!-- FIN bloque nombre y apellidos -->
 
           <!-- Bloque email y teléfono -->
-          <div  customFlexbox="row" customFlexbox.xs="column"
-          cFAlign="space-around center" cFGap="25px">
+          <div  customFlexbox="row" customFlexbox.xs="column" cFGap="25px">
               <!-- E-Mail -->
               <div customFlexbox="column">
                 <mat-form-field>
@@ -168,7 +166,8 @@
 
     </form> <!-- FIN Formulario login-->
 
-  </mat-card></div>
+  </mat-card>
+
   <div customFlexbox="row">
 
     <div class="col">

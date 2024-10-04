@@ -1,7 +1,83 @@
-<p>listado-partes-page works usuario!</p>
+<!-- Título central -->
+<div class="title" customFlexbox="row" cFAlign="center center" cFGap="10px">RicoRepair</div>
+
+<!-- Contenedor general listado partes del cliente -->
+<div class="principContainer" customFlexbox="row" cFAlign="space-evenly stretch" cFGap="20px">
+  
+  <!-- Listado de partes con scroll virtualizado -->
+  <div class="listScroll" customFlexbox="column" cFGap="20px">
+      <h1>Listado de Partes</h1>
+      <cdk-virtual-scroll-viewport itemSize="100" style="height: 100%; width: 100%;">
+        <mat-card *cdkVirtualFor="let parte of partes$ | async" matTooltip="Abrir" (click)="onSelectParte(parte)">
+          <mat-card-header>
+            <mat-card-title>{{ parte.id }}</mat-card-title>
+            <mat-card-subtitle>{{ parte.fechaCreacion | date: 'dd/MM/yyyy' }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p><strong>Dispositivo:</strong> {{ parte.dispositivo }}</p>
+          </mat-card-content>
+        </mat-card>
+      </cdk-virtual-scroll-viewport>
+    </div>
+
+  <!-- Detalles del parte seleccionado -->
+  <div customFlexbox="" cFGap="20px" *ngIf="selectedParte" style="background-color: rgb(247, 218, 247); padding: 30px;">
+        <h1>Detalles del Parte</h1>
+        <form>
+          <!-- Fila 1 -->
+          <div customFlexbox="row" customFlexbox.xs="column" cFGap="20px">
+            <mat-form-field appearance="fill">
+              <mat-label>ID</mat-label>
+              <input matInput [value]="selectedParte.id" readonly>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Fecha de Creación</mat-label>
+              <input matInput [value]="selectedParte.fechaCreacion | date: 'dd/MM/yyyy'" readonly>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Dispositivo</mat-label>
+              <input matInput [value]="selectedParte.dispositivo" readonly>
+            </mat-form-field>
+          </div>
+          <!-- Fila 2 -->
+          <div customFlexbox="row" customFlexbox.xs="column" cFGap="20px">
+            <mat-form-field appearance="fill">
+              <mat-label>Otros Materiales</mat-label>
+              <input matInput [value]="selectedParte.otrosMateriales" readonly>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Estado</mat-label>
+              <input matInput [value]="selectedParte.estado" readonly>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Fecha Estimada Fin</mat-label>
+              <input matInput [value]="selectedParte.fechaEstimada | date: 'dd/MM/yyyy'" readonly>
+            </mat-form-field>
+          </div>
+          <!-- Fila 3 -->
+          <div customFlexbox="row" customFlexbox.xs="column" cFGap="20px">
+            <mat-form-field appearance="fill">
+              <mat-label>Motivo Cliente</mat-label>
+              <input matInput [value]="selectedParte.motivoCliente" readonly>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Informe Empresa</mat-label>
+              <textarea matInput [value]="selectedParte.informeEmpresa" readonly></textarea>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Documentación Técnica</mat-label>
+              <textarea matInput [value]="selectedParte.documentacionTecnica" readonly></textarea>
+            </mat-form-field>
+          </div>
+        </form>
+        <!-- Botón de Cerrar -->
+        <div customFlexbox="row" cFAlign="end end" cFGap="20px">
+        <button mat-raised-button color="warn" (click)="onCloseParte()">Cerrar</button>
+      </div>
+  </div>
+</div>
 
 
-<button mat-flat-button color="primary"
-                    (click)="onAdmin()">
-                      IR A ADMIN
-                  </button>
+<!-- NOTA: Aquí, *ngFor="let parte of partes$ | async" utiliza el async pipe para subscribirse 
+     automáticamente al Observable, permitiendo que parte se actualice cada vez que partes$ emite un nuevo valor. 
+     Esto simplifica el manejo de suscripciones y mejora la legibilidad del código. -->

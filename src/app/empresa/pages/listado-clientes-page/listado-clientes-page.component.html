@@ -1,43 +1,77 @@
 <!-- Título central -->
-<div class="title" customFlexbox="row" cFAlign="center center" cFGap="10px">RicoRepair</div>
+<div class="title" customFlexbox="row" cFAlign="space-between center" cFGap="10px" style="padding-inline: 40px;">
+  <div>RicoRepair: Listado de clientes</div>
+    <!-- Botón añadir nuevo cliente -->
+  <div>
+    <button mat-raised-button style="background-color: rgb(153, 238, 153);" 
+          (click)="goNewClient()">Nuevo Cliente
+          <mat-icon>add</mat-icon>
+        </button>
+  </div>
+</div>
 
-<!-- Contenedor principal listado clientes -->
-<div class="principContainer" customFlexbox="column" style="background-color: #e6d0ff; padding: 20px;" 
-     cFAlign="center center" cfGap="20px">
+<!-- Contenedor general listado clientes -->
+<div class="principContainer" cFAlign="center center" cfGap="20px">
+
+  <mat-form-field appearance="fill">
+    <mat-label>Filtrar</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Filtrar..." #input>
+  </mat-form-field>
+
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-table">
+
+      <!-- Columna ID -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+        <td mat-cell *matCellDef="let cliente"> {{cliente.id}} </td>
+      </ng-container>
+
+      <!-- Columna Nombre -->
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> NOMBRE </th>
+        <td mat-cell *matCellDef="let cliente"> {{cliente.name}} </td>
+      </ng-container>
+
+      <!-- Columna Email -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> EMAIL </th>
+        <td mat-cell *matCellDef="let cliente"> {{cliente.email}} </td>
+      </ng-container>
+
+      <!-- Columna Acciones -->
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef> ACCIONES </th>
+        <td mat-cell *matCellDef="let cliente">
+          <div class="action-buttons">
+            <button mat-mini-fab color="primary" matTooltip="Detalle"
+                    (click)="detalleCliente(cliente.id)">
+              <mat-icon>visibility</mat-icon>
+            </button>
+    
+            <button mat-mini-fab color="accent" matTooltip="Partes"
+                    (click)="verPartes(cliente.id)">
+              <mat-icon>filter_none</mat-icon>
+            </button>
+    
+            <button mat-mini-fab color="warn" matTooltip="Eliminar"
+                    (click)="eliminarCliente(cliente.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Cabecera y columnas de la tabla -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let parte; columns: displayedColumns;"></tr>
   
-  <!-- Encabezado -->
-  <div customFlexbox="row" cFAlign="space-between" style="width: 100%;">
-    <h2>Listado de Clientes</h2>
-  </div>
-  
-  <!-- Filtros de búsqueda y ordenamiento -->
-  <div customFlexbox="row" cFAlign="space-between" style="width: 100%;">
-    <mat-form-field appearance="outline">
-      <mat-label>Buscar Cliente</mat-label>
-      <input matInput [(ngModel)]="filtroNombre" placeholder="Buscar Cliente">
-      <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
+      <!-- No coincide la búsqueda del filtro-->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="5">No hay clientes que coincidan con el filtro "{{input.value}}"</td>
+      </tr>
+    </table>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Ordenar por: Nombre</mat-label>
-      <mat-select [(ngModel)]="orden" (selectionChange)="ordenarClientes()">
-        <mat-option value="asc">Ascendente</mat-option>
-        <mat-option value="desc">Descendente</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
   </div>
-  <!-- Listado de Clientes -->
-  <div customFlexbox="column" style="width: 100%;" cfGap="20px">
-    <div *ngFor="let cliente of clientesFiltrados" customFlexbox="row" cFAlign="space-between center" class="cliente-card" style="background-color: #f1a2a2; padding: 10px; margin-bottom: 10px; border-radius: 5px;">
-      <span>{{ cliente.nombre }}</span>
-      <div customFlexbox="row" cFAlign="center center" cfGap="10px">
-        <button class="buttonWidth" mat-raised-button color="primary" (click)="verPartes(cliente)">PARTES</button>
-        <button class="buttonWidth" mat-raised-button color="accent" (click)="detalleCliente(cliente)">DETALLE</button>
-        <button class="buttonWidth" mat-raised-button color="warn" (click)="eliminarCliente(cliente)">ELIMINAR</button>
-      </div>
-    </div>
-  </div>
-
-  <button mat-raised-button style="background-color: rgb(114, 218, 114); width: 100%;"(click)="crearCliente()">Añadir Cliente</button>
-
 </div>

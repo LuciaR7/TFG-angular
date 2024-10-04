@@ -25,8 +25,8 @@ export class PublicGuard implements CanMatch, CanActivate {
           return false;
         } else if (rol === Rol.USER) {
           // si es USER
-        this.router.navigate([RoutesConstants.RUTA_USERS])
-          return false
+          this.router.navigate([RoutesConstants.RUTA_USERS])
+            return false
         }
         else {
          return true

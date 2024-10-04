@@ -10,6 +10,9 @@ import { ListadoPartesPageComponent } from './pages/listado-partes-page/listado-
 import { ListadoClientesPageComponent } from './pages/listado-clientes-page/listado-clientes-page.component';
 import { HomeEmpresaPageComponent } from './pages/home-empresa-page/home-empresa-page.component';
 import { EmpresaToolbarComponent } from './components/empresa-toolbar/empresa-toolbar.component';
+import { DetallePartePageComponent } from './pages/detalle-parte-page/detalle-parte-page.component';
+import { HistorialPartePageComponent } from './pages/historial-parte-page/historial-parte-page.component';
+import { DetalleClientePageComponent } from './pages/detalle-cliente-page/detalle-cliente-page.component';
 
 
 
@@ -23,6 +26,9 @@ import { EmpresaToolbarComponent } from './components/empresa-toolbar/empresa-to
     ListadoClientesPageComponent,
     HomeEmpresaPageComponent,
     EmpresaToolbarComponent,
+    DetallePartePageComponent,
+    HistorialPartePageComponent,
+    DetalleClientePageComponent,
   ],
   imports: [
     MaterialModule,

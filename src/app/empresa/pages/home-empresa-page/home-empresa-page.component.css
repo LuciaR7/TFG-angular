@@ -1,3 +1,27 @@
-mat-card{
-    background-color: #d4d4d4;
-  }
+/** Bloques **/
+.bloque {
+  margin: 30px; /*t,r,b,l*/
+}
+
+/** Estilo como botones **/
+.bloque-item {
+  cursor: pointer;
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease; /* Transición suave */
+  width: 100%;
+  height: 250px;
+  font-size: 25px; 
+  font-weight: bold; 
+  padding: 25px;
+}
+
+/** Activar sombra al hacer hover **/
+.bloque-item:hover {
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4); /* Sombra al pasar el cursor */
+}
+
+/** Ajustar el tamaño del icono **/
+mat-icon {
+  transform: scale(3); 
+}
+

@@ -5,88 +5,61 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 /** LOGO RS **/
 .logo-rs{
-  width: 50px;
-  height: 50px;
-  margin: 20px 20px 20px 5px; /*t,r,b,l*/
+    height: 50px;
+    margin: 20px 20px 20px 5px; /*t,r,b,l*/
 }
 
 /** Título central **/
 .title {
-  font-size: 30px;
-  text-align: center;
-  font-weight: bold;
-  margin-top: 40px;
-}
-
-/** Separación de elementos en los extremos opuestos **/
-.spacer {
-  flex: 1 1 auto;
-}
-
-.alto10{
-  margin-top: 10px;
-}
-
-/** Separacion vertical **/
-.alto20{
-  margin-top: 20px;
-}
-
-.alto40{
-  margin-top: 40px;
-}
-
-.alto75{
-  margin-top: 75px;
-}
-
-/** Separacion horizontal **/
-.anchoIzq20{
-  margin-left: 20px;
+    font-size: 30px;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 40px;
+    white-space: normal;
+    line-height: 1.5;
 }
 
 /** Contenedor principal **/
 .principContainer {
-  min-height: 100px;
-  padding: 30px;
-  margin: 20px auto 20px auto; /*t,r,b,l*/
-}
-
-/** Ajustar al ancho de la pantalla **/
-.menu-block {
-  width: 100%;
-}
-
-/** Estilo para mat-card como botones **/
-.menu-item {
-  cursor: pointer;
-  border-radius: 8px;
-  transition: background-color 0.3s, box-shadow 0.3s;
-  width: 100%;
-  height: 250px;
-  justify-content: center;
-  align-items: center;
-  font-size: 25px;
-  text-align: center; 
-  font-weight: bold; 
-  padding: 25px;
-}
-
-/** Ajustar el tamaño del icono y espacio entre el icono y el texto **/
-.menu-item mat-icon {
-  font-size: 1em; /* Tamaño del icono */
-  margin: 30px 0; /* Espacio arriba y abajo del icono */
-}
-
-/** Activar color **/
-.menu-item:hover {
-  background-color: #e06769;
+    min-height: 100px;
+    padding: 30px;
 }
 
 .buttonWidth{
   width: 100px;
   margin-left: 10px;
 }
+
+/** Separación de elementos en los extremos opuestos **/
+.spacer {
+    flex: 1 1 auto;
+}
+
+.alto10{
+    margin-top: 10px;
+}
+
+/** Separacion vertical **/
+.alto20{
+    margin-top: 20px;
+}
+
+.alto40{
+    margin-top: 40px;
+}
+
+.alto75{
+    margin-top: 75px;
+}
+
+/** Separacion horizontal **/
+.anchoIzq20{
+    margin-left: 20px;
+}
+
+
+
+
 
 
 

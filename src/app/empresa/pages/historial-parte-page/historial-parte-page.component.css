@@ -22,12 +22,3 @@ td, th {
     background-color: #ada6a6; /* Color de fondo del encabezado */
     color: #fff; /* Color del texto del encabezado */
 }
-
-.action-buttons button {
-    margin: 5px 8px 5px auto; /*t,r,b,l*/
-}
-  
-.action-buttons button:last-child {
-    margin-right: 0; /* Elimina el margen del último botón */
-}
-  

@@ -1,11 +1,14 @@
 <!-- Título central -->
-<div class="title" customFlexbox="row" cFAlign="center center" cFGap="10px">RicoRepair</div>
+<div class="title" customFlexbox="row" cFAlign="center center" cFGap="10px">
+  RicoRepair: Añadir nuevo cliente
+</div>
   
   <!-- Contenedor Registro -->
-  <div class="principContainer" customFlexbox="column" cFGap="40px" cFAlign="center center">
+  <div class="principContainer" customFlexbox="row" cFAlign="center center" cFflex="100">
   
     <!-- Mat-card -->
-    <div><mat-card style="background-color: rgb(236, 217, 243);">
+    <div customFlexbox="" cFflex="80">  
+    <mat-card>
       <!-- Cabecera mat-card-->
       <mat-card-header>
             <mat-card-title>
@@ -20,13 +23,11 @@
   
         <!-- Contenido mat-card-->
         <mat-card-content>
-          <div customFlexbox="column" cFAlign="center center" cFGap="25px">
+          <div customFlexbox="column" cFAlign="space-around stretch" cFGap="25px">
   
             <!-- Bloque nombre y apellidos -->
-              <div  customFlexbox="row" customFlexbox.xs="column"
-                    cFAlign="space-around center" cFGap="25px">
+              <div customFlexbox="row" customFlexbox.xs="column" cFGap="25px">
                   <!-- Nombre -->
-                  <div customFlexbox="column">
                     <mat-form-field>
                         <mat-label>Nombre</mat-label>
                         <input type="text" matInput formControlName="name"
@@ -37,9 +38,7 @@
                           }
                         </mat-error>
                     </mat-form-field>
-                  </div>
                   <!-- Apellidos -->
-                  <div customFlexbox="column">
                     <mat-form-field>
                         <mat-label>Apellidos</mat-label>
                         <input type="text" matInput formControlName="surname"
@@ -50,14 +49,11 @@
                           }
                         </mat-error>
                     </mat-form-field>
-                  </div>
               </div> <!-- FIN bloque nombre y apellidos -->
   
             <!-- Bloque email y teléfono -->
-            <div  customFlexbox="row" customFlexbox.xs="column"
-            cFAlign="space-around center" cFGap="25px">
+            <div customFlexbox="row" customFlexbox.xs="column" cFGap="25px">
                 <!-- E-Mail -->
-                <div customFlexbox="column">
                   <mat-form-field>
                       <mat-label>E-Mail</mat-label>
                       <input type="text" matInput formControlName="email"
@@ -68,9 +64,7 @@
                         }
                       </mat-error>
                   </mat-form-field>
-                </div>
                 <!-- TELÉFONO -->
-                <div customFlexbox="column">
                   <mat-form-field>
                       <mat-label>Teléfono</mat-label>
                       <input type="text" matInput formControlName="tlf"
@@ -81,14 +75,11 @@
                         }
                       </mat-error>
                   </mat-form-field>
-                </div>
             </div> <!-- FIN bloque email y teléfono-->
   
             <!-- Bloque password1 y password2 -->
-              <div  customFlexbox="row" customFlexbox.xs="column"
-                    cFAlign="space-around center" cFGap="25px">
+              <div customFlexbox="row" customFlexbox.xs="column" cFGap="25px">
                   <!-- Password1 -->
-                  <div customFlexbox="column">
                     <mat-form-field>
                         <mat-label>Contraseña</mat-label>
                         <input type="password" matInput
@@ -99,7 +90,6 @@
                           }
                         </mat-error>
                     </mat-form-field>
-                  </div>
   
                   <!-- Si hay error en password1, como el mensaje es largo,
                    mete un espacio entre campos-->
@@ -110,7 +100,6 @@
                   }
   
                   <!-- Password2 -->
-                  <div customFlexbox="column">
                     <mat-form-field>
                         <mat-label>Confirmar Contraseña</mat-label>
                         <input type="password" matInput
@@ -122,7 +111,6 @@
                           }
                         </mat-error>
                     </mat-form-field>
-                  </div>
                 </div> <!-- FIN bloque password1 y password2 -->
           </div>  <!-- FIN inputs -->
   
@@ -138,14 +126,12 @@
                   }
   
               <!-- Boton Ingresar -->
-              <div customFlexbox="row" cFAlign="center center" >
-                <div>
-                    <button mat-flat-button color="primary"
-                      (click)="onRegister()">
-                        Crear Cuenta
-                      <mat-icon>add_circle</mat-icon>
-                    </button>
-                </div>
+              <div customFlexbox="" cFAlign="space-around center">
+                  <button mat-flat-button color="primary"
+                    (click)="onRegister()">
+                      Crear Cuenta
+                    <mat-icon>add_circle</mat-icon>
+                  </button>
               </div>
   
         </mat-card-content>
@@ -163,41 +149,43 @@
   
       </form> <!-- FIN Formulario login-->
   
-    </mat-card></div>
-    <div customFlexbox="row">
-  
-      <div class="col">
-        <span>Valid</span>
-        <pre>{{ formRegister.valid | json }}</pre>
-  
-        <span>Pristine</span>
-        <pre>{{ formRegister.pristine | json }}</pre>
-  
-        <span>Touched</span>
-        <pre>{{ formRegister.touched | json }}</pre>
-  
-        <span>Value</span>
-        <pre>{{ formRegister.value | json }}</pre>
-      </div>
-  
-      <div style="padding: 50px;">
-      </div>
-  
-      <div>
-  
-        <span>Nombre</span>
-        <pre>{{ formRegister.controls['name'].value | json }}</pre>
-  
-        <span>E-Mail</span>
-        <pre>{{ formRegister.controls['email'].value | json }}</pre>
-  
-        <span>Password2 Errores</span>
-        <pre>{{ formRegister.controls['password2'].errors | json }}</pre>
-  
-        <span>Password1 Errores</span>
-        <pre>{{ formRegister.controls['password1'].errors | json }}</pre>
-      </div>
-  
-  
+    </mat-card>
     </div>
   </div>
+
+  <!-- <div customFlexbox="row" cFflex="40" cFAlign="center center" style="background-color: antiquewhite;">
+  
+    <div customFlexbox="column">
+      <span>Valid</span>
+      <pre>{{ formRegister.valid | json }}</pre>
+
+      <span>Pristine</span>
+      <pre>{{ formRegister.pristine | json }}</pre>
+
+      <span>Touched</span>
+      <pre>{{ formRegister.touched | json }}</pre>
+
+      <span>Value</span>
+      <pre>{{ formRegister.value | json }}</pre>
+    </div>
+
+    <div style="padding: 50px;">
+    </div>
+
+    <div>
+
+      <span>Nombre</span>
+      <pre>{{ formRegister.controls['name'].value | json }}</pre>
+
+      <span>E-Mail</span>
+      <pre>{{ formRegister.controls['email'].value | json }}</pre>
+
+      <span>Password2 Errores</span>
+      <pre>{{ formRegister.controls['password2'].errors | json }}</pre>
+
+      <span>Password1 Errores</span>
+      <pre>{{ formRegister.controls['password1'].errors | json }}</pre>
+    </div>
+
+
+  </div> -->

@@ -1,12 +1,15 @@
-export enum Rol{
-  USER   = 'Usuario',
-  ADMIN = 'Administrador',
+export interface User {
+  id        : string;
+  name      : string;
+  surname   : string;
+  email     : string;
+  tlf       : string;
+  password  : string;
+  rol       : Rol;
 }
 
 
-export interface User {
-  id   :  number;
-  user :  string;
-  email:  string;
-  rol  :  Rol;
+export enum Rol{
+  USER   = 'Usuario',
+  ADMIN = 'Administrador',
 }

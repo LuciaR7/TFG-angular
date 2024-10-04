@@ -53,7 +53,7 @@ export class ValidatorsService {
  */
 
  // Validator password
- readonly passwordPattern = '^(?=\D*\d)(?=[^a-z]*[a-z])(?=.*[.$@$!%*?&])(?=[^A-Z]*[A-Z]).{8,30}$';
+ readonly passwordPattern: string = '^(?=\D*\d)(?=[^a-z]*[a-z])(?=.*[.$@$!%*?&])(?=[^A-Z]*[A-Z]).{8,30}$';
 
  /* Explicacion patron password
 

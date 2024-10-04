@@ -1,0 +1,8 @@
+
+.mat-menu.show {
+    display: block; /* O la propiedad que necesites para mostrar el menú */
+}
+
+.mat-menu {
+    display: none; /* Por defecto, oculta el menú */
+}

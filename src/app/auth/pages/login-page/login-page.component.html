@@ -5,10 +5,11 @@
 <div class="title" customFlexbox="row" cFAlign="center center" cFGap="10px">RicoRepair</div>
 
 <!-- Contenedor Login -->
-<div class="principContainer" customFlexbox="column" cFGap="40px" cFAlign="center center">
+<div class="principContainer" customFlexbox="row" cFAlign="center center" cFflex="100">
 
   <!-- Mat-card -->
-  <div><mat-card style="background-color: rgb(236, 217, 243);">
+  <div customFlexbox="" cFflex="50">  
+  <mat-card>
     <!-- Cabecera mat-card-->
     <mat-card-header>
           <mat-card-title>
@@ -23,9 +24,9 @@
 
       <!-- Contenido mat-card-->
       <mat-card-content>
-        <div customFlexbox="column" cFAlign="center">
+        <div customFlexbox="column">
 
-            <div  customFlexbox="column" cFGap="28px">
+            <div customFlexbox="column" cFGap="20px">
                 <!-- E-Mail -->
                 <div>
                   <mat-form-field>
@@ -59,15 +60,13 @@
             <div style="height: 50px;"></div>
 
             <!-- Boton Ingresar -->
-            <div customFlexbox="row" cFAlign="center center" >
-              <div>
-                  <button mat-flat-button color="primary"
-                    (click)="onLogin()">
-                      Acceder
-                    <mat-icon>save</mat-icon>
-                  </button>
-              </div>
-              </div>
+            <div customFlexbox="row" cFAlign="center center">
+                <button mat-flat-button color="primary"
+                  (click)="onLogin()">
+                    Acceder
+                  <mat-icon>save</mat-icon>
+                </button>
+            </div>
 
         </div>
 
@@ -87,35 +86,37 @@
 
     </form> <!-- FIN Formulario login-->
 
-  </mat-card></div>
-  <div customFlexbox="row">
-
-    <div class="col">
-      <span>Valid</span>
-      <pre>{{ formLogin.valid | json }}</pre>
-
-      <span>Pristine</span>
-      <pre>{{ formLogin.pristine | json }}</pre>
-
-      <span>Touched</span>
-      <pre>{{ formLogin.touched | json }}</pre>
-    </div>
-
-    <div style="padding: 50px;">
-    </div>
-
-    <div>
-      <span>Value</span>
-      <pre>{{ formLogin.value | json }}</pre>
-
-      <span>E-Mail</span>
-      <pre>{{ formLogin.controls['email'].value | json }}</pre>
-
-      <span>Password Errores</span>
-      <pre>{{ formLogin.controls['password'].errors | json }}</pre>
-    </div>
-
-
+  </mat-card>
   </div>
 </div>
+
+<!-- <div customFlexbox="row" cFflex="40" cFAlign="center center" style="background-color: antiquewhite;">
+
+  <div customFlexbox="column">
+    <span>Valid</span>
+    <pre>{{ formLogin.valid | json }}</pre>
+
+    <span>Pristine</span>
+    <pre>{{ formLogin.pristine | json }}</pre>
+
+    <span>Touched</span>
+    <pre>{{ formLogin.touched | json }}</pre>
+  </div>
+
+  <div style="padding: 50px;">
+  </div>
+
+  <div customFlexbox="row">
+    <span>Value</span>
+    <pre>{{ formLogin.value | json }}</pre>
+
+    <span>E-Mail</span>
+    <pre>{{ formLogin.controls['email'].value | json }}</pre>
+
+    <span>Password Errores</span>
+    <pre>{{ formLogin.controls['password'].errors | json }}</pre>
+  </div>
+
+
+</div> -->
 

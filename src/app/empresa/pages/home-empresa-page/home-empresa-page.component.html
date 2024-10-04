@@ -1,41 +1,34 @@
 <!-- Título central -->
 <div class="title" customFlexbox="row" cFAlign="center center" cFGap="10px">RicoRepair</div>
 
-<!-- Contenedor general -->
-<div class="principContainer" customFlexbox="column" customFlexbox.xs="column" 
-     cFAlign="center center" cFGap="20px">
-     
-    <!-- Bloque 1 -->
-    <div class="menu-block" customFlexbox="row" customFlexbox.s="column" customFlexbox.xs="column"
-            cFAlign="space-around center" cFGap="20px">
-        <mat-card class="menu-item" customFlexbox="column" (click)="goNewClient()">
-            <div>ALTA CLIENTE</div>
-            <mat-icon>person_add</mat-icon>
-        </mat-card>
-        <mat-card class="menu-item" customFlexbox="column" (click)="goNewParte()">
-            <div>CREAR PARTE</div>
-            <mat-icon>add</mat-icon>
-        </mat-card>
+<!-- Contenedor bloque 1-->
+<div class="bloque" customFlexbox="row" customFlexbox.xs="column" cFGap="20px" cFflex="100">
+
+    <div class="bloque-item" customFlexbox="column" cFAlign="space-evenly center" cFGap="20px" cFflex="50" 
+         (click)="goNewClient()" style="background-color:rgb(247, 210, 219);">
+         ALTA CLIENTE
+         <mat-icon>person_add</mat-icon>
     </div>
+    <div class="bloque-item" customFlexbox="column" cFAlign="space-evenly center" cFGap="20px" cFflex="50" 
+         (click)="goNewParte()" style="background-color:rgb(247, 210, 219);">
+         CREAR PARTE
+         <mat-icon>add</mat-icon>
+    </div>
+
+</div> <!-- FIN Contenedor 1 -->
+
+<!-- Contenedor bloque 2-->
+<div class="bloque" customFlexbox="row" customFlexbox.xs="column" cFGap="20px" cFflex="100">
     
-    <!-- Bloque 2 -->
-    <div class="menu-block" customFlexbox="row" customFlexbox.s="column" customFlexbox.xs="column"
-            cFAlign="space-around center" cFGap="20px">
-        <mat-card class="menu-item" customFlexbox="column" (click)="goListClients()">
-            <div>LISTADO CLIENTES</div>
-            <mat-icon>people</mat-icon>
-        </mat-card>
-        <mat-card class="menu-item" customFlexbox="column" (click)="goListPartes()">
-            <div>LISTADO PARTES</div>
-            <mat-icon>inventory</mat-icon>
-        </mat-card>
+    <div class="bloque-item" customFlexbox="column" cFAlign="space-evenly center" cFGap="20px" cFflex="50" 
+         (click)="goListClients()" style="background-color:rgb(230, 230, 236);">
+         LISTADO CLIENTES
+         <mat-icon>people</mat-icon>
+    </div>
+    <div class="bloque-item" customFlexbox="column" cFAlign="space-evenly center" cFGap="20px" cFflex="50" 
+         (click)="goListPartes()" style="background-color:rgb(230, 230, 236);">
+         LISTADO PARTES
+         <mat-icon>inventory</mat-icon>
     </div>
 
-    <!-- Ir a Usuario -->
-    <div customFlexbox="column" cFAlign="center center">
-        <button mat-flat-button color="primary" (click)="onUsuario()">
-        IR A USUARIO
-        </button>
-    </div>
-
-</div> <!-- FIN Contenedor general -->
+</div> <!-- FIN Contenedor 2 -->

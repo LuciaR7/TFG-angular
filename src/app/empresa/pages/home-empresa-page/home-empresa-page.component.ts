@@ -21,11 +21,11 @@ export class HomeEmpresaPageComponent {
   }
 
   goNewClient(): void {
-    this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_NEW_CLIENT]);
+    this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_NEW_CLIENT_ADMIN]);
   }
 
   goNewParte():void  {
-    this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_NEW_PARTE]);
+    this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_NEW_PARTE_ADMIN]);
   }
   
   goListClients():void  {
@@ -39,14 +39,6 @@ export class HomeEmpresaPageComponent {
   onLogout():void  {
     this.authService.logout();
     this.router.navigate([RoutesConstants.RUTA_AUTENTICACION])
-  }
-
-  onUsuario():void {
-    this.router.navigate([RoutesConstants.RUTA_USERS])
-  }
-
-  onNuevoCliente():void {
-    this.router.navigate([RoutesConstants.RUTA_NEW_CLIENT])
   }
   
 }

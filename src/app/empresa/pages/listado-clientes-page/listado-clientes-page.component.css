@@ -1,9 +1,35 @@
-.cliente-card {
-    background-color: #ff806f;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+td, th {
+  width: 20%;
+}
+
+.mat-table {
+  background-color: #f0eaea; /* Color de fondo de la tabla */
+}
+
+.mat-mdc-row {
+  background-color: #fff4f4; /* Color de fondo de las filas */
+}
+
+.mat-mdc-row:hover {
+  background-color: #e0e0e0; /* Color al pasar el mouse sobre una fila */
+}
+
+.mat-mdc-header-row{
+  background-color: #ada6a6; /* Color de fondo del encabezado */
+  color: #fff; /* Color del texto del encabezado */
+}
+
+.action-buttons button {
+  margin: 5px 8px 5px auto; /*t,r,b,l*/
+}
+
+.action-buttons button:last-child {
+  margin-right: 0; /* Elimina el margen del último botón */
+}
+
+
+  

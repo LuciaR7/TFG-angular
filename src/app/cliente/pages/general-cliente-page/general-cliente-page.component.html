@@ -1,70 +1,15 @@
-<mat-sidenav-container fullscreen>
 
-  <!-- Menú desplegable izquierda (Sidenav) -->
-  <mat-sidenav #sidenav mode="push">
-    <!-- Toolbar Menú -->
-    <mat-toolbar color="warn">
-      <span>Menú</span>
-      <span class="spacer"></span>
-      <button mat-icon-button (click)="sidenav.toggle()">
-        <mat-icon>menu</mat-icon>
-      </button>
-    </mat-toolbar>
-  </mat-sidenav>
+<div>
+  <div>
+    <!-- Barra de navegación superior -->
+    <app-cliente-toolbar></app-cliente-toolbar>
 
-  <!-- Toolbar pantalla principal -->
-  <mat-toolbar color="primary">
+    <div>
 
-    <!-- Boton Menu Tres Rayas -->
-    <button mat-icon-button (click)="sidenav.toggle()">
-      <mat-icon>menu</mat-icon>
-    </button>
-
-    <span class="spacer"></span>
-
-    <!-- Perfil del Usuario -->
-    <span>{{ user?.user }}</span>
-    <span style="margin-right: 5px;"></span>
-    <span>{{ user?.rol }}</span>
-
-     <!-- Boton Logout -->
-    <button mat-button (click)="onLogout()">
-      Logout
-    </button>
-
-  </mat-toolbar>
-
-<!-- Formulario -->
-<div style="background-color:lightblue">
-
-  <!-- Margen izquierdo -->
-  <!--<div cFflex style="background-color: rgb(187, 203, 197);">
-
-  </div>-->
-
-  <!-- Contenedor campos-->
-  <div customFlexbox="colum"
-      style="background-color: rgb(231, 223, 253); "
-      cFAlign="center center">
-
-      <!-- Bloque título y logo -->
-      <div customFlexbox="colum">
-
-          <h1>RicoRepair</h1>
-          <h2>Partes de intervención de {{user?.user}}</h2>
-
-      </div>
+      <!-- Aquí se renderizarán los componentes de las rutas hijas -->
       <router-outlet></router-outlet>
-
 
     </div>
 
+  </div>
 </div>
-
-</mat-sidenav-container>
-
-
-
-
-
-

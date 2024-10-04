@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { RoutesConstants } from '../../../shared/constants/routes.constants';
-import { Router } from '@angular/router';
 import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { User } from '../../../auth/interfaces/user.interface';
+import { Parte } from '../../../shared/interfaces/parte.interface';
+import { AuthService } from '../../../auth/services/auth.service';
 
 @Component({
   selector: 'app-new-parte-page',
@@ -11,21 +12,18 @@ import { Observable } from 'rxjs';
   styleUrl: './new-parte-page.component.css'
 })
 
-export class NewPartePageComponent {
+export class NewPartePageComponent implements OnInit{
   clienteForm: FormGroup;
   intervencionForm: FormGroup;
   clienteControl = this.fb.control('');
-  clientesFiltrados!: Observable<any[]>;
+  clientesFiltrados!: Observable<User[]>;
 
   currentDate: Date = new Date();
+  today: Date = new Date(); // Obtener la fecha actual
 
-  // Lista de clientes (simulados)
-  clientes = [
-    { name: 'Pepa', surname: 'Martín López', email: 'pepa@gmail.com', tlf: '634456789' },
-    { name: 'Carlos', surname: 'González García', email: 'carlos@gmail.com', tlf: '612345678' },
-    { name: 'Lucía', surname: 'Fernández Ruiz', email: 'lucia@gmail.com', tlf: '698765432' }
-  ];
-
+  clientes: User[] = []; // Lista de clientes obtenida del servicio
+  partes: Parte[] = []; // Lista de partes obtenida del servicio
+  
   // Dispositivos y estados de intervención (simulados)
   estados = [
     { label: 'Pendiente (PE)', valor: 'PE' },
@@ -35,7 +33,10 @@ export class NewPartePageComponent {
     { label: 'Finalizada (OK)', valor: 'OK' }
   ];
 
-  constructor( private fb: FormBuilder, private router: Router ) {
+  constructor( 
+    private fb: FormBuilder, 
+    private authService: AuthService,
+  ) {
    
     //Formulario clientes
     this.clienteForm = this.fb.group({
@@ -55,17 +56,21 @@ export class NewPartePageComponent {
       informeEmpresa: [''],
       documentacionTecnica: ['no']
     });
-
-    // Filtrar clientes en función de la búsqueda
-    this.clientesFiltrados = this.clienteControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this.filtrarClientes(value || ''))
-    );
-
   }
 
+    ngOnInit(): void {
+      // Obtener los clientes desde AuthService
+      this.authService.getUsers().subscribe(clientes => {
+        this.clientes = clientes;
+        this.clientesFiltrados = this.clienteControl.valueChanges.pipe(
+          startWith(''),
+          map(value => this.filtrarClientes(value || ''))
+        );
+      });
+    }
+
     // Método para filtrar clientes
-    filtrarClientes(value: string): any[] {
+    filtrarClientes(value: string): User[] {
       const filterValue = value.toLowerCase();
       return this.clientes.filter(cliente => 
         cliente.name.toLowerCase().includes(filterValue) || 
@@ -74,7 +79,7 @@ export class NewPartePageComponent {
   }
   
     // Método para seleccionar un cliente y cargar sus datos
-    seleccionarCliente(cliente: any) {
+    seleccionarCliente(cliente: User) {
       // Asigna el nombre completo al campo de búsqueda
       this.clienteControl.setValue(`${cliente.name} ${cliente.surname}`);
 
@@ -98,6 +103,5 @@ export class NewPartePageComponent {
   generarQR() {
     console.log('QR generado');
   }
-
 
 }

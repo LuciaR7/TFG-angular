@@ -3,9 +3,5 @@ mat-card-title{
 }
 
 mat-form-field{
-  width: 210px;
-}
-
-mat-card-content{
-  padding: 60px;
+  width: 100%;
 }

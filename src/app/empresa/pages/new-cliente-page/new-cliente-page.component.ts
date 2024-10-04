@@ -8,7 +8,7 @@ import { ValidatorsService } from '../../../shared/service/validators.service';
 @Component({
   selector: 'app-new-cliente-page',
   templateUrl: './new-cliente-page.component.html',
-  styles: ``
+  styleUrl: './new-cliente-page.component.css',
 })
 export class NewClientePageComponent {
   public formRegister: FormGroup = this.fb.group({

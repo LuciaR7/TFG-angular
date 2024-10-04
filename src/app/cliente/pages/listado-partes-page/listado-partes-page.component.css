@@ -1,0 +1,18 @@
+.listScroll{
+    height: 500px;
+    width: 100%;
+}
+
+mat-card {
+    margin-bottom: 10px; /* Espaciado entre los cards */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el card */
+    background-color:rgb(247, 218, 247);
+}
+  
+mat-card:hover {
+    background-color: #f0f0f0; /* Cambia el fondo al pasar el mouse */
+}
+
+.mat-mdc-form-field {
+    width: 100%;
+}

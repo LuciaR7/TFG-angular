@@ -1,121 +1,84 @@
 <!-- Título central -->
-<div class="title" customFlexbox="row" cFAlign="center center" cFGap="10px">RicoRepair</div>
-
-<!-- Contenedor general listado partes -->
-<div class="principContainer" customFlexbox="row" customFlexbox.s="column" customFlexbox.xs="column" 
-     cFAlign="center center" cfGap="20px">
-  
-  <!-- Panel de Filtros -->
-  <div customFlexbox="column" customFlexbox.s="row" customFlexbox.xs="row" cfGap="20px">
-    <mat-card style="background-color: rgb(244, 213, 252);" >
-      <!-- Cabecera mat-card filtros-->
-      <mat-card-header>
-        <mat-card-title customFlexbox="column">
-            <span>
-                FILTROS
-            </span>
-          </mat-card-title>
-        </mat-card-header>
-        
-        <!-- Separacion vertical-->
-        <div class="alto10"></div>
-        
-        <!-- Filtros a aplicar -->
-        <div customFlexbox="column" customFlexbox.s="row" customFlexbox.xs="row" cfGap="20px" style="padding: 20px;">
-         
-              <!-- Estados (Alta Resolución)-->  
-              <div cfShow cfHide.s cfHide.xs customFlexbox="column">
-                <h3>Estados:</h3>
-                <mat-radio-group customFlexbox="column" aria-label="Estado">
-                  <mat-radio-button value="PE">Pendiente</mat-radio-button>
-                  <mat-radio-button value="EC">En Curso</mat-radio-button>
-                  <mat-radio-button value="AN">Anulada</mat-radio-button>
-                  <mat-radio-button value="OK">Finalizada</mat-radio-button>
-                </mat-radio-group>
-              </div>
-
-              <!-- Estados (Baja Resolución)-->  
-              <div cfShow.s cfShow.xs cfHide customFlexbox="column">
-                <h3>Estados:</h3>
-                <mat-form-field>
-                  <mat-label>Selecciona estados</mat-label>
-                  <mat-select [(ngModel)]="selectedEstados" multiple>
-                    <mat-option value="PE">Pendiente</mat-option>
-                    <mat-option value="EC">En Curso</mat-option>
-                    <mat-option value="AN">Anulada</mat-option>
-                    <mat-option value="OK">Finalizada</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-
-              <!-- Separacion vertical-->
-              <div class="alto10"></div>
-
-              <!-- Aparece en baja resolución-->
-              <div cfShow.s cfShow.xs cfHide style="padding: 20px;"></div>
-          
-              <!-- Fecha Fin -->
-              <div customFlexbox="column">
-                <h3>Fecha Fin:</h3>
-                <mat-form-field style="width: 200px;">
-                  <input matInput [matDatepicker]="picker">
-                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                  <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-              </div>
-
-          </div>
-            
-          <div customFlexbox="row" cFAlign="center center" cFGap="20px" style="padding-bottom: 20px;">
-            <button mat-raised-button color="primary">Aplicar</button>
-            <button mat-raised-button color="warn">Borrar todos</button>
-          </div>
-
-    </mat-card>
-  </div>
-
-  <!-- Div separación entre bloques -->
-  <div customFlexbox="column" customFlexbox.s="row" customFlexbox.xs="row" style="width: 2%; opacity: 0;" cfGap="20px">
-   <!-- Contenido invisible que actúa como separador -->
-   Separador invisible
-  </div>
-    
-  <!-- Listado de Partes -->
-  <div customFlexbox="column" style="width: 100%;" cfGap="20px">
-      <mat-card customFlexbox="column" style=" background-color: #e8c6c6; padding: 10px;">
-        <!-- Cabecera mat-card listado-->
-        <mat-card-header customFlexbox="row" cFAlign="space-between center">
-          <mat-card-title>
-              <span>
-                LISTADO DE PARTES DE INTERVENCIÓN
-              </span>
-            </mat-card-title>
-            <mat-form-field>
-              <mat-label>Orden:</mat-label>
-              <mat-select>
-                <mat-option value="asc">Ascendente</mat-option>
-                <mat-option value="desc">Descendente</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </mat-card-header>
-        
-        <!-- Partes de intervención -->
-        <div *ngFor="let parte of partes" customFlexbox="row" cFAlign="space-between center" cfGap="20px"
-              style="background-color: #f1a2a2; padding: 10px; margin-bottom: 10px;">
-              <span>{{ parte.id }}</span>
-              <span>{{ parte.estado }}</span>
-              <span>{{ parte.fecha }}</span>
-
-              <!-- Botones -->
-              <div customFlexbox="row" customFlexbox.s="column" customFlexbox.xs="column" cFAlign="start center" cfGap="20px">
-                <button class="buttonWidth" mat-raised-button color="primary" (click)="detalleParte(parte.id)">DETALLE</button>
-                <button class="buttonWidth" mat-raised-button color="accent" (click)="verHistorial(parte.id)">HISTORIAL</button>
-                <button class="buttonWidth" mat-raised-button color="warn" (click)="eliminarParte(parte.id)">ELIMINAR</button>
-              </div>
-        </div>
-
-        <button mat-raised-button style="background-color: rgb(114, 218, 114);">Crear Nuevo Parte</button>
-      
-      </mat-card>
+<div class="title" customFlexbox="row" cFAlign="space-between center" cFGap="10px" style="padding-inline: 40px;">
+  <div>RicoRepair: Listado de partes de intervención</div>
+    <!-- Botón añadir nuevo parte -->
+  <div>
+    <button mat-raised-button style="background-color: rgb(153, 238, 153);" 
+          (click)="goNewParte()">Nuevo Parte
+          <mat-icon>add</mat-icon>
+        </button>
   </div>
 </div>
+
+<!-- Contenedor general listado partes -->
+<div class="principContainer" cFAlign="center center" cfGap="20px">
+  
+    <mat-form-field appearance="fill">
+      <mat-label>Filtrar</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Filtrar..." #input>
+    </mat-form-field>
+    
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource" matSort class="mat-table">
+    
+        <!-- Columna ID -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+          <td mat-cell *matCellDef="let parte"> {{parte.id}} </td>
+        </ng-container>
+
+        <!-- Columna Cliente -->
+        <ng-container matColumnDef="cliente">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> CLIENTE </th>
+          <td mat-cell *matCellDef="let parte"> {{parte.clienteId}} </td>
+        </ng-container>
+    
+        <!-- Columna Estado -->
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> ESTADO </th>
+          <td mat-cell *matCellDef="let parte"> {{parte.estado}} </td>
+        </ng-container>
+    
+        <!-- Columna Fecha -->
+        <ng-container matColumnDef="fechaEstimada">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA ESTIMADA </th>
+          <td mat-cell *matCellDef="let parte"> {{parte.fechaEstimada | date: 'dd/MM/yyyy'}} </td>
+        </ng-container>
+    
+        <!-- Columna Acciones -->
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef> ACCIONES </th>
+          <td mat-cell *matCellDef="let parte">
+            <div class="action-buttons">
+              <button mat-mini-fab color="primary" matTooltip="Detalle"
+                      (click)="detalleParte(parte.id)">
+                <mat-icon>visibility</mat-icon>
+              </button>
+      
+              <button mat-mini-fab color="accent" matTooltip="Historial"
+                      (click)="verHistorial(parte.id)">
+                <mat-icon>view_list</mat-icon>
+              </button>
+      
+              <button mat-mini-fab color="warn" matTooltip="Eliminar"
+                      (click)="eliminarParte(parte.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+    
+        <!-- Cabecera y columnas de la tabla -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let parte; columns: displayedColumns;"></tr>
+    
+        <!-- No coincide la búsqueda del filtro-->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="5">No hay partes que coincidan con el filtro "{{input.value}}"</td>
+        </tr>
+      </table>
+    
+      <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+    </div>
+</div>
+

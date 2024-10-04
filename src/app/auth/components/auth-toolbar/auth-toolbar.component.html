@@ -1,22 +1,42 @@
 <!-- Toolbar Auth -->
 
-<!-- Toolbar en baja resolucion -->
+<!-- Toolbar en baja resolución -->
 <mat-toolbar color="primary" cfHide cfShow.xs>
-    <img class="logo-rs" src="assets/images/logo-rs.png"> 
-    <button mat-button>
-      <mat-icon>info</mat-icon>
-        <!-- TODO: añadir funciones toolbar baja resolución -->
-        <!-- ... -->
+  <img class="logo-rs" src="assets/images/logo-rs.png">
+  <span class="spacer"></span>
+  <button mat-button matTooltip="Abrir menú" [matMenuTriggerFor]="menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <!-- Menú desplegable -->
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>
+      <mat-icon>phone</mat-icon> 
+      921 43 34 30
     </button>
+    <button mat-menu-item matTooltip="Visitar sitio web" (click)="openWebsite()">
+      <mat-icon>language</mat-icon>
+      Sitio Web
+    </button>
+    <button mat-menu-item matTooltip="Visitar Facebook" (click)="openFacebook()">
+      <mat-icon>facebook</mat-icon>
+      Facebook
+    </button>
+  </mat-menu>
 </mat-toolbar>
-      
+
 <!-- Toolbar en alta resolución -->
 <mat-toolbar color="primary" cfShow cfHide.xs>
-    <img class="logo-rs" src="assets/images/logo-rs.png"> 
-    <span class="spacer"></span> 
-    <button mat-button>
-      <mat-icon>info</mat-icon>
-      <!-- TODO: añadir funciones toolbar alta resolución -->
-      <!-- ... -->
-    </button>
+  <img class="logo-rs" src="assets/images/logo-ricosoft.png">
+  <span class="spacer"></span>
+  <button mat-button (click)="openWebsite()" matTooltip="Visitar sitio web">
+      <mat-icon>language</mat-icon>
+  </button>
+  <button mat-button (click)="openFacebook()" matTooltip="Visitar Facebook">
+      <mat-icon>facebook</mat-icon>
+  </button>
+  <button mat-button>
+    <mat-icon>phone</mat-icon>
+    921 43 34 30
+</button>
 </mat-toolbar>
