@@ -1,7 +1,7 @@
 <!-- Título central -->
 <div class="title" customFlexbox="row" cFAlign="space-between center" cFGap="10px" style="padding-inline: 40px;">
     
-    <div>Detalle cliente: {{ cliente.id }}</div>
+    <div>Detalle cliente: {{ cliente.name }} {{cliente.surname}}</div>
     <!-- Botón volver listado partes -->
     <div>
         <button mat-raised-button color="warn"
@@ -12,32 +12,45 @@
 </div>
 
 <!-- Contenedor de Datos del Cliente -->
-<div class="principContainer" customFlexbox="column" cFGap="20px" style="background-color: rgb(232, 219, 236); padding: 30px;">
-       
-       
-        <mat-form-field>
-            <mat-label>Nombre</mat-label>
-            <input matInput placeholder="Nombre" [(ngModel)]="cliente.name">
-        </mat-form-field>
-
-        <mat-form-field>
-            <mat-label>Apellidos</mat-label>
-            <input matInput placeholder="Apellidos" [(ngModel)]="cliente.surname">
-        </mat-form-field>
-
-        <mat-form-field>
-            <mat-label>E-Mail</mat-label>
-            <input matInput placeholder="E-mail" [(ngModel)]="cliente.email">
-        </mat-form-field>
-
-        <mat-form-field>
-            <mat-label>Teléfono</mat-label>
-            <input matInput placeholder="Teléfono" [(ngModel)]="cliente.tlf">
-        </mat-form-field>
-
+<div class="principContainer" customFlexbox="row" cFAlign="center center">
+    
+    <!-- Mat-card -->
+    <div customFlexbox="" cFGap="20px" cFflex="90">  
+        <mat-card>
+            <!-- Contenido mat-card-->
+            <mat-card-content>
+                <div customFlexbox="column" cFGap="20px">
+                    <!-- Bloque nombre y apellidos -->
+                    <div customFlexbox="column" customFlexbox.s="row" customFlexbox.xs="row" cFGap="20px">
+                        <mat-form-field>
+                            <mat-label>Nombre</mat-label>
+                            <input matInput placeholder="Nombre" [(ngModel)]="cliente.name">
+                        </mat-form-field>
+                
+                        <mat-form-field>
+                            <mat-label>Apellidos</mat-label>
+                            <input matInput placeholder="Apellidos" [(ngModel)]="cliente.surname">
+                        </mat-form-field>
+                    </div>
+                    
+                    <!-- Bloque email y teléfono -->
+                    <div customFlexbox="column" customFlexbox.s="row" customFlexbox.xs="row" cFGap="20px">
+                        <mat-form-field>
+                            <mat-label>E-Mail</mat-label>
+                            <input matInput placeholder="E-mail" [(ngModel)]="cliente.email">
+                        </mat-form-field>
+                    
+                        <mat-form-field>
+                            <mat-label>Teléfono</mat-label>
+                            <input matInput placeholder="Teléfono" [(ngModel)]="cliente.tlf">
+                        </mat-form-field> 
+                    </div>
+                </div>
+            </mat-card-content>
+    </mat-card>
 
     <!-- Botones de Guardar y Cancelar -->
-    <div customFlexbox="row" cFAlign="end end" cFGap="15px">
+    <div customFlexbox="row" cFAlign="end" cFGap="15px">
         <button mat-raised-button color="primary" (click)="guardarCambios()">
             Guardar Cambios
             <mat-icon>check</mat-icon>
@@ -47,6 +60,5 @@
             <mat-icon>clear</mat-icon>
         </button>
     </div>
-
 
 </div>

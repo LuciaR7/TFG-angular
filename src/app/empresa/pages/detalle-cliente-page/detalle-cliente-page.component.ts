@@ -49,7 +49,6 @@ export class DetalleClientePageComponent implements OnInit {
     if (confirm('¿Estás seguro de que deseas guardar los cambios?')) {
       this.authService.updateUser(this.clienteId, this.cliente).subscribe(
           () => {
-              alert('Cambios guardados correctamente');
               this.goBack();
           },
           error => {
@@ -57,12 +56,16 @@ export class DetalleClientePageComponent implements OnInit {
               alert('No se pudieron guardar los cambios. Intenta de nuevo más tarde.');
           }
       );
+    } else {
+      this.cliente = { ...this.originalCliente };
     }
   }
 
   reestablecerCambios() {
     // Restaurar los datos originales
-    this.cliente = { ...this.originalCliente };
+    if (confirm('¿Estás seguro de que deseas reestablecer los cambios?')) {
+      this.cliente = { ...this.originalCliente };
+    }
   }
 
   // Navegación para volver al listado de clientes

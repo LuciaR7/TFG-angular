@@ -83,7 +83,6 @@ export class DetallePartePageComponent implements OnInit {
       if (confirm('¿Estás seguro de que deseas guardar los cambios?')) {
         this.parteService.updateParte(this.parteId, this.parte).subscribe(
             () => {
-                alert('Cambios guardados correctamente');
                 this.goBack();
             },
             error => {
@@ -91,15 +90,19 @@ export class DetallePartePageComponent implements OnInit {
                 alert('No se pudieron guardar los cambios. Intenta de nuevo más tarde.');
             }
         );
+      } else {
+        this.parte = { ...this.originalParte };
+        this.cliente = { ...this.originalCliente };
       }
   }
 
 
   reestablecerCambios() {
+    // Restaurar los datos originales
     if (confirm('¿Estás seguro de que deseas reestablecer los cambios?')) {
       this.parte = { ...this.originalParte };
       this.cliente = { ...this.originalCliente };
-  }
+    }
   }
 
   // Navegación para volver al listado de partes
