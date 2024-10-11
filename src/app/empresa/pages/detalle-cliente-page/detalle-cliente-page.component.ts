@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RoutesConstants } from '../../../shared/constants/routes.constants';
-import { User } from '../../../auth/interfaces/user.interface';
-import { AuthService } from '../../../auth/services/auth.service';
+import { UsuarioService } from '../../../shared/service/usuario.service';
+import { EmailValidator, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ValidatorsService } from '../../../shared/service/validators.service';
+import { Usuario } from '../../../shared/interfaces/usuario.interface';
 
 @Component({
   selector: 'app-detalle-cliente-page',
@@ -10,61 +12,84 @@ import { AuthService } from '../../../auth/services/auth.service';
   styleUrl: './detalle-cliente-page.component.css'
 })
 export class DetalleClientePageComponent implements OnInit {
-  cliente!: User; // Datos del cliente (editable)
-  originalCliente!: User; // Para restaurar en caso de cancelar
-  clienteId!: string; // ID del usuario a cargar
 
   constructor(
+    private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
-    private authService: AuthService
+    private usuarioService: UsuarioService,
+    private validatorsService: ValidatorsService,
   ) {}
+
+  form?: FormGroup;
+  user?: Usuario;
+  initialUserValues?: Partial<Usuario>;
 
   ngOnInit(): void {
     // Obtén el ID del usuario desde la ruta
-    this.route.paramMap.subscribe(params => {
-      this.clienteId = params.get('id') || ''; // Asigna el ID de la ruta
-      this.cargarUsuario(); // Carga el usuario
-    });
-  }
-
-  cargarUsuario(): void {
-    // Inicializar datos del parte
-    this.authService.getUserById(this.clienteId).subscribe(
-      cliente => {
-          if (cliente) {
-              this.cliente = { ...cliente };
-              this.originalCliente = { ...cliente };
-            }
-          },
-          error => {
-            console.error('Error al cargar el parte:', error);
-            alert('No se pudo cargar el parte. Intenta de nuevo más tarde.');
-          }
-    );
-  }
-
-  guardarCambios() {
-    // Simulación de guardar cambios
-    if (confirm('¿Estás seguro de que deseas guardar los cambios?')) {
-      this.authService.updateUser(this.clienteId, this.cliente).subscribe(
-          () => {
-              this.goBack();
-          },
-          error => {
-              console.error('Error al guardar cambios:', error);
-              alert('No se pudieron guardar los cambios. Intenta de nuevo más tarde.');
-          }
-      );
+    const id = this.route.snapshot.paramMap.get('id');
+    
+    if (id) {
+      this.usuarioService.get(parseInt(id))
+        .subscribe(user => {
+          this.user = user;
+          this.initialUserValues = { ...user }; // Almacena los valores iniciales
+         
+          this.form = this.fb.group({
+            name: [user.name, [ Validators.required,  Validators.pattern( this.validatorsService.namePattern ) ]],
+            surname: [user.surname, [ Validators.required,  Validators.pattern( this.validatorsService.surnamePattern ) ]],
+            email: [user.email, [ Validators.required, Validators.pattern(this.validatorsService.emailPattern) ]],
+            tlf: [user.tlf, [ Validators.required,  Validators.pattern( this.validatorsService.tlfPattern ) ]],
+            password: [user.password, [ Validators.required, ]],
+            password2: [user.password, [ Validators.required, ]],
+          },{
+            validators: [
+              this.validatorsService.isFieldOneEqualFieldTwo('password', 'password2'),
+            ]
+        
+          });
+        })
     } else {
-      this.cliente = { ...this.originalCliente };
+      console.log("no existe el usuario");
     }
   }
 
-  reestablecerCambios() {
-    // Restaurar los datos originales
-    if (confirm('¿Estás seguro de que deseas reestablecer los cambios?')) {
-      this.cliente = { ...this.originalCliente };
+  save() {
+
+    if(this.form?.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+    
+    const userForm = this.form!.value;
+
+    if (this.user){
+      this.usuarioService.update(this.user.id, userForm)
+        .subscribe(() => {
+          this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_CLIENTS_ADMIN])
+        });
+    } else {
+      this.usuarioService.create(userForm)
+        .subscribe(() => {
+          this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_CLIENTS_ADMIN])
+        });
+     }
+  }
+
+  // Comprueba si en el campo hay errores cuando toca
+  isValidField( field: string ) {
+    return this.validatorsService.isValidField( this.form!, field );
+  }
+
+  // Muestra mensaje de error específico dependiendo del campo
+  getFieldError( field: string ): string | null {
+    return this.validatorsService.getFieldError( this.form!, field );
+  }
+
+  // Método para restablecer los valores del formulario a los originales
+  resetForm() {
+    if (this.initialUserValues) {
+      this.form?.reset({ ...this.initialUserValues, password2: this.initialUserValues.password });
     }
   }
 
@@ -72,4 +97,6 @@ export class DetalleClientePageComponent implements OnInit {
   goBack():void {
     this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_CLIENTS_ADMIN]);
   }
+  
+  
 }

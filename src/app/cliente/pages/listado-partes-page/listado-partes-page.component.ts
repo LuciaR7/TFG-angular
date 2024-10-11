@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RoutesConstants } from '../../../shared/constants/routes.constants';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Parte } from '../../../shared/interfaces/parte.interface';
 import { ParteService } from '../../../shared/service/parte.service';
 import { Observable } from 'rxjs';
@@ -17,14 +17,24 @@ export class ListadoPartesPageComponent implements OnInit {
 
   constructor(
     private parteService: ParteService,
-    private router: Router,
+    private route: ActivatedRoute
   ){}
 
   ngOnInit(): void {
-    // Asigna el Observable a la propiedad partes$
-    this.partes$ = this.parteService.getPartes().pipe(
-      filter(partes => partes.length > 0) // Filtra listas no vacías
-    );
+    // Obtener el clienteId de los parámetros de la ruta
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id) {
+        this.loadPartes(+id); // Cargar partes del cliente específico
+      } else {
+        console.error('No se encontró un ID de cliente en la ruta.');
+      }
+    });
+  }
+
+  // Método para cargar los partes del cliente específico
+  loadPartes(clienteId: number): void {
+    this.partes$ = this.parteService.getPartesByClienteId(clienteId);
   }
 
   // Al hacer clic en un parte, se actualiza el parte seleccionado

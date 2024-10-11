@@ -1,6 +1,6 @@
 export interface Parte {
-    clienteId            : string;
-    id                   : string;
+    id                   : number;
+    clienteId            : number;
     fechaCreacion        : Date;
     dispositivo          : string;
     otrosMateriales      : string;

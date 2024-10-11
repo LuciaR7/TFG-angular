@@ -50,9 +50,9 @@
           <th mat-header-cell *matHeaderCellDef> ACCIONES </th>
           <td mat-cell *matCellDef="let parte">
             <div class="action-buttons">
-              <button mat-mini-fab color="primary" matTooltip="Detalle"
+              <button mat-mini-fab color="primary" matTooltip="Editar"
                       (click)="detalleParte(parte.id)">
-                <mat-icon>visibility</mat-icon>
+                <mat-icon>edit</mat-icon>
               </button>
       
               <button mat-mini-fab color="accent" matTooltip="Historial"
@@ -61,7 +61,7 @@
               </button>
       
               <button mat-mini-fab color="warn" matTooltip="Eliminar"
-                      (click)="eliminarParte(parte.id)">
+                      (click)="deleteParte(parte)">
                 <mat-icon>delete</mat-icon>
               </button>
             </div>

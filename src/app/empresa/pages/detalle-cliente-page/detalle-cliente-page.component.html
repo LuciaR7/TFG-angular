@@ -1,7 +1,7 @@
 <!-- Título central -->
 <div class="title" customFlexbox="row" cFAlign="space-between center" cFGap="10px" style="padding-inline: 40px;">
     
-    <div>Detalle cliente: {{ cliente.name }} {{cliente.surname}}</div>
+    <div>Editar cliente</div>
     <!-- Botón volver listado partes -->
     <div>
         <button mat-raised-button color="warn"
@@ -17,48 +17,120 @@
     <!-- Mat-card -->
     <div customFlexbox="" cFGap="20px" cFflex="90">  
         <mat-card>
-            <!-- Contenido mat-card-->
-            <mat-card-content>
-                <div customFlexbox="column" cFGap="20px">
-                    <!-- Bloque nombre y apellidos -->
-                    <div customFlexbox="column" customFlexbox.s="row" customFlexbox.xs="row" cFGap="20px">
-                        <mat-form-field>
-                            <mat-label>Nombre</mat-label>
-                            <input matInput placeholder="Nombre" [(ngModel)]="cliente.name">
-                        </mat-form-field>
-                
-                        <mat-form-field>
-                            <mat-label>Apellidos</mat-label>
-                            <input matInput placeholder="Apellidos" [(ngModel)]="cliente.surname">
-                        </mat-form-field>
-                    </div>
-                    
-                    <!-- Bloque email y teléfono -->
-                    <div customFlexbox="column" customFlexbox.s="row" customFlexbox.xs="row" cFGap="20px">
-                        <mat-form-field>
-                            <mat-label>E-Mail</mat-label>
-                            <input matInput placeholder="E-mail" [(ngModel)]="cliente.email">
-                        </mat-form-field>
-                    
-                        <mat-form-field>
-                            <mat-label>Teléfono</mat-label>
-                            <input matInput placeholder="Teléfono" [(ngModel)]="cliente.tlf">
-                        </mat-form-field> 
-                    </div>
-                </div>
-            </mat-card-content>
-    </mat-card>
 
-    <!-- Botones de Guardar y Cancelar -->
-    <div customFlexbox="row" cFAlign="end" cFGap="15px">
-        <button mat-raised-button color="primary" (click)="guardarCambios()">
-            Guardar Cambios
-            <mat-icon>check</mat-icon>
-        </button>
-        <button mat-raised-button color="warn" (click)="reestablecerCambios()">
-            Reestablecer
-            <mat-icon>clear</mat-icon>
-        </button>
+            <!-- Formulario Registro -->
+            @if (form) {
+                <form [formGroup]="form" (ngSubmit)="save()">
+
+                    <!-- Contenido mat-card-->
+                    <mat-card-content>
+                        <div customFlexbox="column" cFAlign="space-around stretch" cFGap="25px">
+  
+                            <!-- Bloque nombre y apellidos -->
+                            <div customFlexbox="row" customFlexbox.xs="column" cFGap="25px">
+                                <!-- Nombre -->
+                                <mat-form-field>
+                                    <mat-label>Nombre</mat-label>
+                                    <input type="text" matInput formControlName="name" placeholder="Nombre">
+                                    <mat-error>
+                                        @if (isValidField('name')) {
+                                        <span> {{ getFieldError('name') }} </span>
+                                        }
+                                    </mat-error>
+                                </mat-form-field>
+                                <!-- Apellidos -->
+                                <mat-form-field>
+                                    <mat-label>Apellidos</mat-label>
+                                    <input type="text" matInput formControlName="surname" placeholder="Ej: apellido1 apellido2">
+                                    <mat-error>
+                                        @if (isValidField('surname')) {
+                                        <span> {{ getFieldError('surname') }} </span>
+                                        }
+                                    </mat-error>
+                                </mat-form-field>
+                            </div> <!-- FIN bloque nombre y apellidos -->
+
+                        <!-- Bloque email y teléfono -->
+                        <div customFlexbox="row" customFlexbox.xs="column" cFGap="25px">
+                            <!-- E-Mail -->
+                                <mat-form-field>
+                                    <mat-label>E-Mail</mat-label>
+                                    <input type="text" matInput formControlName="email" placeholder="Ej: usuario@example.com">
+                                    <mat-error>
+                                    @if (isValidField('email')) {
+                                        <span> {{ getFieldError('email') }} </span>
+                                    }
+                                    </mat-error>
+                                </mat-form-field>
+                            <!-- TELÉFONO -->
+                                <mat-form-field>
+                                    <mat-label>Teléfono</mat-label>
+                                    <input type="text" matInput formControlName="tlf" placeholder="Ej: +34 912-345-678">
+                                    <mat-error>
+                                    @if (isValidField('tlf')) {
+                                        <span> {{ getFieldError('tlf') }} </span>
+                                    }
+                                    </mat-error>
+                                </mat-form-field>
+                        </div> <!-- FIN bloque email y teléfono-->
+
+                        <!-- Bloque password y password2 -->
+                            <div customFlexbox="row" customFlexbox.xs="column" cFGap="25px">
+                                <!-- Password -->
+                                <mat-form-field>
+                                    <mat-label>Contraseña</mat-label>
+                                    <input type="password" matInput formControlName="password" placeholder="Contraseña">
+                                    <mat-error>
+                                        @if (isValidField('password')) {
+                                        <span> {{ getFieldError('password') }} </span>
+                                        }
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <!-- Si hay error en password, como el mensaje es largo,
+                                mete un espacio entre campos-->
+                                @if (isValidField('password') &&
+                                (form.controls['password'].hasError('pattern'))) {
+                                <div customFlexbox="" cfHide cfShow.xs
+                                        style="height: 42px;"></div>
+                                }
+
+                                <!-- Password2 -->
+                                <mat-form-field>
+                                    <mat-label>Confirmar Contraseña</mat-label>
+                                    <input type="password" matInput formControlName="password2"
+                                    placeholder="Confirmar la contraseña">
+                                    <mat-error>
+                                        @if (isValidField('password2')) {
+                                        <span> {{ getFieldError('password2') }} </span>
+                                        }
+                                    </mat-error>
+                                </mat-form-field>
+                            </div> <!-- FIN bloque password y password2 -->
+                            
+                        </div>  <!-- FIN inputs -->
+    
+                        <!-- Separacion normal inputs-boton-->
+                        <div style="height: 50px;"></div>
+
+                        <!-- Botones -->
+                        <div customFlexbox="row" cFAlign="end" cFGap="15px">
+                            <!-- Boton Reestablecer -->
+                            <button type="button" mat-flat-button color="warn" (click)="resetForm()">
+                                Reestablecer
+                            <mat-icon>clear</mat-icon>
+                            </button>
+                        
+                            <!-- Boton Guardar -->
+                            <button mat-flat-button color="primary">
+                                Guardar Cambios
+                            <mat-icon>check</mat-icon>
+                            </button>
+                        </div>
+    
+                    </mat-card-content>
+                </form> <!-- FIN Formulario editar-->
+            }
+        </mat-card>
     </div>
-
 </div>

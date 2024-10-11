@@ -1,6 +1,6 @@
 <!-- Título central -->
 <div class="title" customFlexbox="row" cFAlign="center center" cFGap="10px">
-    RicoRepair: Crear nuevo parte
+    RicoRepair: Crear nuevo parte de intervención
 </div>
 
 <!-- Contenedor general Parte -->
@@ -17,7 +17,7 @@
                     </span>
     
                     <!-- Campo Busca Cliente -->
-                    <mat-form-field appearance="outline">
+                    <mat-form-field>
                         <mat-label>Buscar cliente</mat-label>
                         <input matInput placeholder="Buscar cliente" [formControl]="clienteControl"
                                 [matAutocomplete]="auto">
@@ -32,7 +32,7 @@
                     </mat-autocomplete>
                     
                     <span>
-                        Datos Cliente:
+                        Datos Cliente ~ {{ clienteForm.get('clienteId')?.value }} ~
                     </span>
                 </mat-card-title>
             </mat-card-header>
@@ -45,20 +45,20 @@
                     <div customFlexbox="column" cFAlign="space-around stretch" cFGap="25px">
                         <div customFlexbox="row" customFlexbox.s="column" cFGap="25px">
                             <!-- Nombre, Apellidos -->
-                            <mat-form-field>
-                                <mat-label>Nombre</mat-label><input type="text" matInput formControlName="name">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Nombre</mat-label><input type="text" matInput formControlName="name" readonly>
                             </mat-form-field>
-                            <mat-form-field>
-                                <mat-label>Apellidos</mat-label><input type="text" matInput formControlName="surname">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Apellidos</mat-label><input type="text" matInput formControlName="surname" readonly>
                             </mat-form-field>
                         </div>
                         <div customFlexbox="row" customFlexbox.s="column" cFGap="25px">
                             <!-- Email, Teléfono -->
-                            <mat-form-field>
-                                <mat-label>E-Mail</mat-label><input type="text" matInput formControlName="email">
+                            <mat-form-field appearance="outline">
+                                <mat-label>E-Mail</mat-label><input type="text" matInput formControlName="email" readonly>
                             </mat-form-field>
-                            <mat-form-field>
-                                <mat-label>Teléfono</mat-label><input type="text" matInput formControlName="tlf">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Teléfono</mat-label><input type="text" matInput formControlName="tlf" readonly>
                             </mat-form-field>
                         </div>
                     </div>
@@ -74,7 +74,7 @@
             <mat-card-header customFlexbox="row" customFlexbox.s="column" cFAlign="space-between center">
                 <mat-card-title>
                     <span>
-                        Parte de Intervención -_____-
+                        Datos Parte Intervención
                     </span>
                 </mat-card-title>
                 <span>
@@ -83,7 +83,7 @@
             </mat-card-header>
     
             <!-- Formulario 2 Datos Intervención -->
-            <form [formGroup]="intervencionForm">
+            <form [formGroup]="intervencionForm" (ngSubmit)="create()">
                             
                 <!-- Contenido mat-card Datos Intervención-->
                 <mat-card-content>
@@ -94,14 +94,17 @@
                             <!-- Dispositivo -->
                                 <mat-form-field>
                                     <mat-label>Dispositivo</mat-label>
-                                    <input type="text" matInput formControlName="dispositivo" 
-                                            placeholder="Dispositivo">
+                                    <input type="text" matInput formControlName="dispositivo" placeholder="Dispositivo">
+                                    <mat-error>
+                                        @if (isValidField('dispositivo')) {
+                                          <span> {{ getFieldError('dispositivo') }} </span>
+                                        }
+                                    </mat-error>
                                 </mat-form-field>
                             <!-- Otros materiales -->
                                 <mat-form-field>
                                     <mat-label>Otros materiales</mat-label>
-                                    <input type="text" matInput formControlName="otrosMateriales" 
-                                            placeholder="Otros materiales">
+                                    <input type="text" matInput formControlName="otrosMateriales" placeholder="Otros materiales">
                                 </mat-form-field>
                         </div> <!-- FIN dispositivo y materiales -->
     
@@ -110,11 +113,16 @@
                             <!-- Estado -->
                                 <mat-form-field>
                                     <mat-label>Estado</mat-label>
-                                    <mat-select formControlName="estadoIntervencion">
-                                        <mat-option *ngFor="let estado of estados" [value]="estado">
+                                    <mat-select formControlName="estado">
+                                        <mat-option *ngFor="let estado of estados" [value]="estado.valor">
                                         {{ estado.label }}
                                         </mat-option>
                                     </mat-select>
+                                    <mat-error>
+                                        @if (isValidField('estado')) {
+                                          <span> {{ getFieldError('estado') }} </span>
+                                        }
+                                    </mat-error>
                                 </mat-form-field>
                             <!-- Fecha estimada de salida -->
                                 <mat-form-field>
@@ -123,6 +131,11 @@
                                             [matDatepicker]="picker" [min]="today">
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-datepicker #picker></mat-datepicker>
+                                    <mat-error>
+                                        @if (isValidField('fechaEstimada')) {
+                                          <span> {{ getFieldError('fechaEstimada') }} </span>
+                                        }
+                                    </mat-error>
                                 </mat-form-field>
                         </div> <!-- FIN  estado y fecha estimada salida -->
                 
@@ -132,11 +145,21 @@
                                 <mat-form-field>
                                     <mat-label>Motivo cliente</mat-label>
                                     <textarea matInput formControlName="motivoCliente" placeholder="Motivo cliente"></textarea>
+                                    <mat-error>
+                                        @if (isValidField('motivoCliente')) {
+                                          <span> {{ getFieldError('motivoCliente') }} </span>
+                                        }
+                                    </mat-error>
                                 </mat-form-field>
                             <!-- Informe Empresa -->
                                 <mat-form-field>
                                     <mat-label>Informe empresa</mat-label>
                                     <textarea matInput formControlName="informeEmpresa" placeholder="Informe empresa"></textarea>
+                                    <mat-error>
+                                        @if (isValidField('informeEmpresa')) {
+                                          <span> {{ getFieldError('informeEmpresa') }} </span>
+                                        }
+                                    </mat-error>
                                 </mat-form-field>
                         </div> <!-- FIN motivo cliente e informe empresa -->
                 
@@ -151,9 +174,9 @@
     
                         <!-- Botones -->
                         <div customFlexbox="row" cFAlign="space-between end" cFGap="60px">
-                            <button mat-raised-button color="primary" (click)="crearParte()">Crear Parte</button>
-                            <button mat-raised-button color="warn" (click)="cancelar()">Cancelar</button>
-                            <button mat-raised-button color="accent" (click)="generarQR()">Generar QR</button>
+                            <button mat-raised-button color="primary">Crear Parte</button>
+                            <button type="button" mat-raised-button color="warn" (click)="goBack()">Cancelar</button>
+                            <button type="button" mat-raised-button color="accent" (click)="generarQR()">Generar QR</button>
                         </div>
                     </div>
     

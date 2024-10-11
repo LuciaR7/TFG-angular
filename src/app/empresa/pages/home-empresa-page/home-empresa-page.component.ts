@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from '../../../auth/interfaces/user.interface';
+import { Usuario } from '../../../shared/interfaces/usuario.interface';
 import { AuthService } from '../../../auth/services/auth.service';
 import { RoutesConstants } from '../../../shared/constants/routes.constants';
+
 
 @Component({
   selector: 'app-home-empresa-page',
@@ -16,7 +17,7 @@ export class HomeEmpresaPageComponent {
     private router: Router
   ) {}
 
-  get user(): User | undefined {
+  get user(): Usuario | undefined {
     return this.authService.currentUser;
   }
 

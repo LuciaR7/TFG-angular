@@ -1,25 +1,15 @@
 import { Injectable } from '@angular/core';
+import { Observable, of, tap, throwError } from 'rxjs';
+import { Rol, Usuario } from '../../shared/interfaces/usuario.interface';
 
-import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
-
-import { Rol, User } from '../interfaces/user.interface';
 
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
 
-  private users: User[] = [
+  private users: Usuario[] = [
     {
-      id: 'C1', // Cliente 1
-      name: 'Ana',
-      surname: 'Pérez',
-      email: 'ana.perez@example.com',
-      tlf: '123456789',
-      password: 'password123',
-      rol: Rol.USER,
-    },
-    {
-      id: 'A1', // Administrador 1
+      id: 1, // Administrador 1
       name: 'Lucía',
       surname: 'Rico',
       email: 'lucia@gmail.com',
@@ -28,7 +18,25 @@ export class AuthService {
       rol: Rol.ADMIN,
     },
     {
-      id: 'C2', // Cliente 2
+      id: 2, // Administrador 2
+      name: 'Alfredo',
+      surname: 'Rico',
+      email: 'alfredo@gmail.com',
+      tlf: '444987654',
+      password: 'Alfre.R8',
+      rol: Rol.ADMIN,
+    },
+    {
+      id: 3, // Cliente 1
+      name: 'Ana',
+      surname: 'Pérez',
+      email: 'ana.perez@example.com',
+      tlf: '123456789',
+      password: 'password123',
+      rol: Rol.USER,
+    },
+    {
+      id: 4, // Cliente 2
       name: 'María',
       surname: 'González',
       email: 'maria.gonzalez@example.com',
@@ -37,19 +45,10 @@ export class AuthService {
       rol: Rol.USER,
     },
     {
-      id: 'A2', // Administrador 2
-      name: 'José',
-      surname: 'Martínez',
-      email: 'jose.martinez@example.com',
-      tlf: '444987654',
-      password: 'password101',
-      rol: Rol.ADMIN,
-    },
-    {
-      id: 'C3', // Cliente 3
-      name: 'Lucía',
+      id: 5, // Cliente 3
+      name: 'Carlos',
       surname: 'Fernández',
-      email: 'lucia.fernandez@example.com',
+      email: 'carlos.fernandez@example.com',
       tlf: '333654321',
       password: 'password202',
       rol: Rol.USER,
@@ -57,24 +56,24 @@ export class AuthService {
   ];
 
     // va a ser nulo cuando se cargue la app por primera vez y no hay auth
-    private user: User|undefined ;
+    private user: Usuario|undefined ;
 
     constructor() {}
 
     //Simulación de un API que devuelve un Observable
-    getUsers(): Observable<User[]> {
+    getUsers(): Observable<Usuario[]> {
       // Retornar los datos como un Observable
       return of(this.users);
     }
 
     // Método para obtener un usuario por su ID
-    getUserById(userId: string): Observable<User | undefined> {
+    getUserById(userId: number): Observable<Usuario | undefined> {
       const user = this.users.find(u => u.id === userId);
       return of(user);
     }
 
     //Método para actualizar un usuario
-    updateUser(userId: string, updatedUser: User): Observable<User | undefined> {
+    updateUser(userId: number, updatedUser: Usuario): Observable<Usuario | undefined> {
       const index = this.users.findIndex(u => u.id === userId);
       if (index !== -1) {
         this.users[index] = { ...this.users[index], ...updatedUser };
@@ -84,7 +83,7 @@ export class AuthService {
     }
 
       //Método para eliminar un usuario
-      deleteUser(userId: string): Observable<boolean> {
+      deleteUser(userId: number): Observable<boolean> {
         const index = this.users.findIndex(u => u.id === userId);
         if (index !== -1) {
           this.users.splice(index, 1);
@@ -93,8 +92,8 @@ export class AuthService {
         return of(false); // Indica que no se encontró el usuario
       }
 
-    private usuarioMock: User = {
-         id: "1",
+    private usuarioMock: Usuario = {
+         id: 1,
          name: "Lucía",
          surname: "Rico",
          email: "lucia@gmail.com",
@@ -104,7 +103,7 @@ export class AuthService {
     }
 
 
-    get currentUser():User | undefined {
+    get currentUser():Usuario | undefined {
         if ( !this.user ) return undefined;
         return structuredClone( this.user );
     }
@@ -116,7 +115,7 @@ export class AuthService {
     // su original, lo que representa un snapshoot del objeto en sí mismo
     // en un momento dado.
 
-    login( email: string, password: string ):Observable<User> {
+    login( email: string, password: string ):Observable<Usuario> {
 
       return of(this.usuarioMock)
        .pipe(
@@ -124,7 +123,7 @@ export class AuthService {
             this.user = usuarioDevuelto,
             console.log("CHEACK:",usuarioDevuelto)
          } ),
-         tap( usuadrioDevuelto => console.log('RolUsuario:',usuadrioDevuelto.rol) ),
+         tap( usuarioDevuelto => console.log('-RolUsuario: ', usuarioDevuelto.rol) ),
          //tap( user => localStorage.setItem('token', 'prueba' )),
          //tap( user => localStorage.setItem('rol', this.usuario.rol)),
        );
@@ -151,7 +150,7 @@ export class AuthService {
 
     }
 
-    register( name: string, email: string, password1: string, password2: string ):Observable<User> {
+    register( name: string, email: string, password1: string, password2: string ):Observable<Usuario> {
 
       if((name === 'Lucia Rico') && (email === 'lucia@gmail.com') &&
          (password1 === 'Lucia.R7') && (password2 === 'Lucia.R7')){
@@ -181,8 +180,6 @@ export class AuthService {
   }
 
   checkRolAuth(): Observable<Rol|undefined> {
-
-    console.log("VALOR USUARIO : ",this.user)
 
     //Devuelvo el usuario
     return of(this.user?.rol)

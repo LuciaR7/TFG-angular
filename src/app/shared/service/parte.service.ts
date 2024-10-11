@@ -1,16 +1,47 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { DocumentacionTecnica, Estado, Parte } from '../interfaces/parte.interface';
-import { User } from '../../auth/interfaces/user.interface';
 import { AuthService } from '../../auth/services/auth.service';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class ParteService {
+
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService
+  ) {}
+
+  list(){
+    return this.http.get<Parte[]>('http://localhost:8080/api/partes');
+  }
+
+  get(id: number){
+    return this.http.get<Parte>(`http://localhost:8080/api/partes/${id}`);
+  }
+
+  create(parte: any){
+    return this.http.post<Parte>('http://localhost:8080/api/partes', parte);
+  }
+
+  update(id: number, parte: any){
+    return this.http.put<Parte>(`http://localhost:8080/api/partes/${id}`, parte);
+  }
+
+  delete(id: number){
+    return this.http.delete<void>(`http://localhost:8080/api/partes/${id}`);
+  }
+
+  // Método para obtener partes por ID de cliente
+  getPartesByClienteId(clienteId: number): Observable<Parte[]> {
+    return this.http.get<Parte[]>(`http://localhost:8080/api/partes/users/${clienteId}`);
+  }
+
   
   private partes: Parte[] = [
     {
-      clienteId: 'C1',
-      id: 'P001',
+      clienteId: 1,
+      id: 1,
       fechaCreacion: new Date('2024-09-01'),
       dispositivo: 'Ordenador de escritorio',
       otrosMateriales: 'Teclado y ratón',
@@ -21,8 +52,8 @@ export class ParteService {
       documentacionTecnica: DocumentacionTecnica.SI,
     },
     {
-      clienteId: 'C1',
-      id: 'P002',
+      clienteId: 1,
+      id: 2,
       fechaCreacion: new Date('2024-09-02'),
       dispositivo: 'Portátil HP',
       otrosMateriales: 'Cargador',
@@ -33,8 +64,8 @@ export class ParteService {
       documentacionTecnica: DocumentacionTecnica.NO,
     },
     {
-      clienteId: 'C1',
-      id: 'P003',
+      clienteId: 1,
+      id: 3,
       fechaCreacion: new Date('2024-09-03'),
       dispositivo: 'Tablet Samsung Galaxy',
       otrosMateriales: 'Funda protectora',
@@ -45,8 +76,8 @@ export class ParteService {
       documentacionTecnica: DocumentacionTecnica.SI,
     },
     {
-      clienteId: 'C2',
-      id: 'P004',
+      clienteId: 2,
+      id: 4,
       fechaCreacion: new Date('2024-09-04'),
       dispositivo: 'Portátil Dell',
       otrosMateriales: 'Cargador y ratón',
@@ -57,8 +88,8 @@ export class ParteService {
       documentacionTecnica: DocumentacionTecnica.NO,
     },
     {
-      clienteId: 'C2',
-      id: 'P005',
+      clienteId: 2,
+      id: 5,
       fechaCreacion: new Date('2024-09-05'),
       dispositivo: 'Ordenador de escritorio',
       otrosMateriales: 'Teclado mecánico',
@@ -69,8 +100,8 @@ export class ParteService {
       documentacionTecnica: DocumentacionTecnica.SI,
     },
     {
-      clienteId: 'C2',
-      id: 'P006',
+      clienteId: 2,
+      id: 6,
       fechaCreacion: new Date('2024-09-06'),
       dispositivo: 'Tablet iPad',
       otrosMateriales: 'Apple Pencil',
@@ -81,8 +112,8 @@ export class ParteService {
       documentacionTecnica: DocumentacionTecnica.NO,
     },
     {
-      clienteId: 'C3',
-      id: 'P007',
+      clienteId: 3,
+      id: 7,
       fechaCreacion: new Date('2024-09-07'),
       dispositivo: 'Portátil Lenovo',
       otrosMateriales: 'Cargador y funda',
@@ -93,8 +124,8 @@ export class ParteService {
       documentacionTecnica: DocumentacionTecnica.SI,
     },
     {
-      clienteId: 'C3',
-      id: 'P008',
+      clienteId: 3,
+      id: 8,
       fechaCreacion: new Date('2024-09-08'),
       dispositivo: 'Ordenador de escritorio',
       otrosMateriales: 'Monitor y teclado',
@@ -105,8 +136,8 @@ export class ParteService {
       documentacionTecnica: DocumentacionTecnica.NO,
     },
     {
-      clienteId: 'C3',
-      id: 'P009',
+      clienteId: 3,
+      id: 9,
       fechaCreacion: new Date('2024-09-09'),
       dispositivo: 'Tablet Huawei',
       otrosMateriales: 'Cargador',
@@ -117,8 +148,8 @@ export class ParteService {
       documentacionTecnica: DocumentacionTecnica.SI,
     },
     {
-      clienteId: 'C3',
-      id: 'P010',
+      clienteId: 3,
+      id: 10,
       fechaCreacion: new Date('2024-09-10'),
       dispositivo: 'Portátil ASUS',
       otrosMateriales: 'Ratón inalámbrico',
@@ -130,8 +161,6 @@ export class ParteService {
     }
   ];
 
-  constructor(private authService: AuthService) {} // Inyectar AuthService
-
   //Simulación de un API que devuelve un Observable
   getPartes(): Observable<Parte[]> {
     // Retornar los datos como un Observable
@@ -139,7 +168,7 @@ export class ParteService {
   }
 
   //Método para obtener un parte por su ID
-  getParteById(parteId: string): Observable<Parte | undefined> {
+  getParteById(parteId: number): Observable<Parte | undefined> {
     const parte = this.partes.find(p => p.id === parteId);
     if (!parte) {
       throw new Error(`Parte con ID ${parteId} no encontrado`);
@@ -147,14 +176,8 @@ export class ParteService {
     return of(parte);
   }
 
-  //Método para crear un parte
-  addParte(nuevoParte: Parte): Observable<Parte> {
-    this.partes.push(nuevoParte);
-    return of(nuevoParte); // Retorna el nuevo parte agregado
-  }
-
   //Método para actualizar un parte
-  updateParte(parteId: string, updatedParte: Parte): Observable<Parte | undefined> {
+  updateParte(parteId: number, updatedParte: Parte): Observable<Parte | undefined> {
     const index = this.partes.findIndex(p => p.id === parteId);
     if (index !== -1) {
       this.partes[index] = { ...this.partes[index], ...updatedParte };
@@ -163,21 +186,7 @@ export class ParteService {
     return of(undefined); // Retorna undefined si no se encontró el parte
   }
   
-  //Método para eliminar un parte
-  deleteParte(parteId: string): Observable<boolean> {
-    const index = this.partes.findIndex(p => p.id === parteId);
-    if (index !== -1) {
-      this.partes.splice(index, 1);
-      return of(true); // Indica que se eliminó exitosamente
-    }
-    return of(false); // Indica que no se encontró el parte
-  }
 
-  // Método para obtener partes por clienteId
-  getPartesByClienteId(clienteId: string): Observable<Parte[]> {
-    const partesCliente = this.partes.filter(parte => parte.clienteId === clienteId);
-    return of(partesCliente); // Retorna los partes filtrados como un Observable
-  }
 
 
 }

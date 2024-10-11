@@ -11,8 +11,8 @@ const routes: Routes = [
     path: '',
     component: GeneralClientePageComponent,
     children: [
-      { path: RoutesConstants.RUTA_LIST_PARTES_USERS, component: ListadoPartesPageComponent },
-      { path: '**', redirectTo: RoutesConstants.RUTA_LIST_PARTES_USERS },
+      { path:  `${RoutesConstants.RUTA_LIST_PARTES_USERS}/:id`, component: ListadoPartesPageComponent },
+      { path: '**', redirectTo: `${RoutesConstants.RUTA_LIST_PARTES_USERS}/:id` },
     ]
   }
 

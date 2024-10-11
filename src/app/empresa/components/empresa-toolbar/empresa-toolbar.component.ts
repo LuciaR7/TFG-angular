@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from '../../../auth/interfaces/user.interface';
 import { AuthService } from '../../../auth/services/auth.service';
 import { RoutesConstants } from '../../../shared/constants/routes.constants';
+import { Usuario } from '../../../shared/interfaces/usuario.interface';
 
 @Component({
   selector: 'app-empresa-toolbar',
@@ -17,7 +17,7 @@ export class EmpresaToolbarComponent {
   ) {}
 
   // Coger usuario de sesión
-  get user(): User | undefined {
+  get user(): Usuario | undefined {
     return this.authService.currentUser;
   }
 

@@ -4,7 +4,8 @@ import { RoutesConstants } from '../../../shared/constants/routes.constants';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidatorsService } from '../../../shared/service/validators.service';
-import { Rol } from '../../interfaces/user.interface';
+import { Rol } from '../../../shared/interfaces/usuario.interface';
+
 
 @Component({
   selector: 'app-login-page',
@@ -62,7 +63,10 @@ export class LoginPageComponent {
             .subscribe({
                 next: user => {
                   if(user.rol === Rol.USER){
-                    this.router.navigate([RoutesConstants.RUTA_USERS])
+                    // Redirigir a la ruta que contiene el ID del usuario
+                    this.router.navigate([RoutesConstants.RUTA_USERS, 
+                                          RoutesConstants.RUTA_LIST_PARTES_USERS, user.id]);
+                    //this.router.navigate([RoutesConstants.RUTA_USERS])
                   }else{
                     this.router.navigate([RoutesConstants.RUTA_ADMIN])
                   }

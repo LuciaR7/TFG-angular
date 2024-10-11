@@ -13,29 +13,23 @@ export class AuthGuard implements CanMatch, CanActivate {
     private router: Router,
   ) { }
 
-  private checkAuthStatus(): boolean | Observable<boolean> {
-
-    return this.authService.checkLogin()
-    .pipe(
-      tap( isAuthenticated => console.log('Authenticated:', isAuthenticated) ),
-      tap( isAuthenticated =>  {
+  private checkAuthStatus(): Observable<boolean> {
+    return this.authService.checkLogin().pipe(
+      tap(isAuthenticated => {
+        console.log('Authenticated:', isAuthenticated);
         // si no esta autenticado navego al login
-        if ( !isAuthenticated ) {
-          this.router.navigate([RoutesConstants.RUTA_AUTENTICACION])
+        if (!isAuthenticated) {
+          this.router.navigate([RoutesConstants.RUTA_AUTENTICACION]);
         }
-      }),
-    )
-
+      })
+    );
   }
 
-  canMatch(): boolean | Observable<boolean> {
-   
+  canMatch(): Observable<boolean> {
     return this.checkAuthStatus();
-
   }
 
-  canActivate(): boolean | Observable<boolean> {
-
+  canActivate(): Observable<boolean> {
     return this.checkAuthStatus();
   }
 

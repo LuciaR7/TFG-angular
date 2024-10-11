@@ -48,8 +48,11 @@ export class DetallePartePageComponent implements OnInit {
   }
 
   cargarParte(): void {
+    // Convertir parteId a número
+    const parteIdNumber = Number(this.parteId);
+
     // Inicializar datos del parte
-    this.parteService.getParteById(this.parteId).subscribe(
+    this.parteService.getParteById(parteIdNumber).subscribe(
       parte => {
           if (parte) {
               this.parte = { ...parte };
@@ -81,7 +84,10 @@ export class DetallePartePageComponent implements OnInit {
   guardarCambios() {
     // Simulación de guardar cambios
       if (confirm('¿Estás seguro de que deseas guardar los cambios?')) {
-        this.parteService.updateParte(this.parteId, this.parte).subscribe(
+        // Convertir parteId a número antes de pasarlo al servicio
+        const parteIdNumber = Number(this.parteId);
+        
+        this.parteService.updateParte(parteIdNumber, this.parte).subscribe(
             () => {
                 this.goBack();
             },

@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { User } from '../../../auth/interfaces/user.interface';
-import { Parte } from '../../../shared/interfaces/parte.interface';
-import { AuthService } from '../../../auth/services/auth.service';
+import { Usuario } from '../../../shared/interfaces/usuario.interface';
+import { ParteService } from '../../../shared/service/parte.service';
+import { Router } from '@angular/router';
+import { RoutesConstants } from '../../../shared/constants/routes.constants';
+import { ValidatorsService } from '../../../shared/service/validators.service';
+import { UsuarioService } from '../../../shared/service/usuario.service';
 
 @Component({
   selector: 'app-new-parte-page',
@@ -16,13 +19,12 @@ export class NewPartePageComponent implements OnInit{
   clienteForm: FormGroup;
   intervencionForm: FormGroup;
   clienteControl = this.fb.control('');
-  clientesFiltrados!: Observable<User[]>;
+  clientesFiltrados!: Observable<Usuario[]>;
 
   currentDate: Date = new Date();
   today: Date = new Date(); // Obtener la fecha actual
 
-  clientes: User[] = []; // Lista de clientes obtenida del servicio
-  partes: Parte[] = []; // Lista de partes obtenida del servicio
+  users: Usuario[] = [];
   
   // Dispositivos y estados de intervención (simulados)
   estados = [
@@ -35,33 +37,39 @@ export class NewPartePageComponent implements OnInit{
 
   constructor( 
     private fb: FormBuilder, 
-    private authService: AuthService,
+    private usuarioService: UsuarioService,
+    private parteService: ParteService,
+    private router: Router,
+    private validatorsService: ValidatorsService,
   ) {
    
     //Formulario clientes
     this.clienteForm = this.fb.group({
-      name: [''],
-      surname: [''],
-      email: [''],
-      tlf: [''],
+      clienteId: [],
+      name: [],
+      surname: [],
+      email: [],
+      tlf: []
     });
+
 
     //Formulario intervención
     this.intervencionForm = this.fb.group({
-      dispositivo: [''],
+      clienteId: ['', Validators.required],
+      fechaCreacion: [this.currentDate, Validators.required],
+      dispositivo: ['', Validators.required],
       otrosMateriales: [''],
-      estadoIntervencion: [''],
-      fechaEstimada: [''],
-      motivoCliente: [''],
-      informeEmpresa: [''],
+      estado: ['', Validators.required],
+      fechaEstimada: ['', Validators.required],
+      motivoCliente: ['', Validators.required],
+      informeEmpresa: ['', Validators.required],
       documentacionTecnica: ['no']
     });
   }
 
     ngOnInit(): void {
-      // Obtener los clientes desde AuthService
-      this.authService.getUsers().subscribe(clientes => {
-        this.clientes = clientes;
+      this.usuarioService.list().subscribe(users => {
+        this.users = users;
         this.clientesFiltrados = this.clienteControl.valueChanges.pipe(
           startWith(''),
           map(value => this.filtrarClientes(value || ''))
@@ -69,35 +77,60 @@ export class NewPartePageComponent implements OnInit{
       });
     }
 
-    // Método para filtrar clientes
-    filtrarClientes(value: string): User[] {
-      const filterValue = value.toLowerCase();
-      return this.clientes.filter(cliente => 
-        cliente.name.toLowerCase().includes(filterValue) || 
-        cliente.surname.toLowerCase().includes(filterValue)
+    filtrarClientes(value: any): Usuario[] {
+      const filterValue = (value || '').toString().toLowerCase();
+      return this.users.filter(user => 
+        user.name.toLowerCase().includes(filterValue) || 
+        user.surname.toLowerCase().includes(filterValue)
       );
-  }
+    }
   
     // Método para seleccionar un cliente y cargar sus datos
-    seleccionarCliente(cliente: User) {
+    seleccionarCliente(user: Usuario) {
       // Asigna el nombre completo al campo de búsqueda
-      this.clienteControl.setValue(`${cliente.name} ${cliente.surname}`);
+      this.clienteControl.setValue(`${user.name} ${user.surname}`);
 
       // Autocompleta los campos del cliente en el formulario
       this.clienteForm.patchValue({
-        name: cliente.name,
-        surname: cliente.surname,
-        email: cliente.email,
-        tlf: cliente.tlf
+        clienteId: user.id,
+        name: user.name,
+        surname: user.surname,
+        email: user.email,
+        tlf: user.tlf
+    });
+
+    // Guarda el id del cliente seleccionado en el formulario de intervención
+    this.intervencionForm.get('clienteId')?.setValue(user.id);
+  }
+
+  create() {
+    if (this.intervencionForm.invalid) {
+      this.intervencionForm.markAllAsTouched();
+      return;
+    }
+
+    const parteData = this.intervencionForm.value;
+    console.log('Parte data:', parteData);
+
+    this.parteService.create(parteData).subscribe({
+      next: () => this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_PARTES_ADMIN]),
+      error: (err) => console.error('Error al crear el parte:', err)  // Muestra detalles del error
     });
   }
 
-  crearParte() {
-    console.log('Parte creado', this.intervencionForm.value);
+  // Comprueba si en el campo hay errores cuando toca
+  isValidField( field: string ) {
+    return this.validatorsService.isValidField( this.intervencionForm, field );
   }
 
-  cancelar() {
-    this.intervencionForm.reset();
+  // Muestra mensaje de error específico dependiendo del campo
+  getFieldError( field: string ): string | null {
+    return this.validatorsService.getFieldError( this.intervencionForm, field );
+  }
+
+  // Navegación para volver al listado de partes
+  goBack():void {
+    this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_PARTES_ADMIN]);
   }
 
   generarQR() {
