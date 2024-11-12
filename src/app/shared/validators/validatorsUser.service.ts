@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
+import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
 
 @Injectable({providedIn: 'root'})
-export class ValidatorsService {
+export class ValidatorsUserService {
 
  // Validator name
  readonly namePattern: string = '^([A-Za-zÀ-ÖØ-öø-ÿ]+[\\s\'-]*)+$';
@@ -15,7 +15,7 @@ export class ValidatorsService {
 
     ^: Inicio de cadena (implícito en el patrón de expresión regular de cadena).
     ([A-Za-zÀ-ÖØ-öø-ÿ]+): Permite uno o más caracteres alfabéticos (incluyendo letras acentuadas).
-    ([\\s\'-][A-Za-zÀ-ÖØ-öø-ÿ]+)*: Permite opcionalmente espacios, apóstrofes o guiones. 
+    ([\\s\'-]*: Permite opcionalmente espacios, apóstrofes o guiones. 
     +$: Permite que la secuencia se repita al menos una vez hasta el final de la cadena, 
         lo que permite espacios en blanco al final (implícito en el patrón de expresión regular de cadena).
 
@@ -53,16 +53,16 @@ export class ValidatorsService {
  */
 
  // Validator password
- readonly passwordPattern: string = '^(?=\D*\d)(?=[^a-z]*[a-z])(?=.*[.$@$!%*?&])(?=[^A-Z]*[A-Z]).{8,30}$';
+ readonly passwordPattern: string = '^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,30}$';
+
 
  /* Explicacion patron password
 
     ^: Inicio de cadena.
-    (?=\D*\d): Debe haber 1 dígito.
-    (?=[^a-z]*[a-z]): Debe haber 1 letra ASCII minúscula.
-    (?=.*[.$@$!%*?&]): Debe haber 1 símbolo de los que se incluyen.
-    (?=[^A-Z]*[A-Z]): Debe haber 1 letra ASCII mayúscula.
-    .{8,30}: cualquier número de 8 a 30 caracteres, excepto los caracteres de salto de línea.
+    (?=.*[A-Z]): asegura al menos una letra mayúscula.
+    (?=.*[a-z]): asegura al menos una letra minúscula.
+    (?=.*\d): asegura al menos un dígito.
+    .{8,30}: asegura que la contraseña tenga entre 8 y 30 caracteres en total (cualquier tipo de carácter).
     $: Fin de cadena.
 
   */
@@ -88,10 +88,6 @@ public getFieldError( form: FormGroup, field: string ): string | null {
   } else if((field === 'email') &&
      (form.controls[field].hasError('pattern')) ) {
     return 'Debe ser un correo con formato válido.'
-  //Contraseña Login
-  } else if((field === 'password') &&
-      (form.controls[field].hasError('pattern')) ) {
-    return 'Debe ser una contraseña con formato válido.'
   //Nombre
   } else if((field === 'name') &&
       (form.controls[field].hasError('pattern')) ) {
@@ -105,9 +101,9 @@ public getFieldError( form: FormGroup, field: string ): string | null {
   (form.controls[field].hasError('pattern')) ) {
     return 'El teléfono debe tener mínimo 7 dígitos y máximo 15'
   //Contraseña 1 Registro
-  } else if((field === 'password1') &&
+  } else if((field === 'password') &&
       (form.controls[field].hasError('pattern')) ) {
-    return 'La contraseña debe contener al menos un símbolo, un número,' +
+    return 'La contraseña debe contener al menos un número,' +
            'una letra mayúscula y una minúscula y al menos 8 caracteres.'
   //Contraseña 2 Registro
   } else if(field === 'password2') {

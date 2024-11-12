@@ -3,7 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RoutesConstants } from '../../../shared/constants/routes.constants';
 import { ParteService } from '../../../shared/service/parte.service';
 import { Parte } from '../../../shared/interfaces/parte.interface';
-import { AuthService } from '../../../auth/services/auth.service';
+import { UsuarioService } from '../../../shared/service/usuario.service';
+import { Usuario } from '../../../shared/interfaces/usuario.interface';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ValidatorsParteService } from '../../../shared/validators/validatorsParte.service';
+import { DialogService } from '../../../shared/service/dialog.service';
 
 @Component({
   selector: 'app-detalle-parte-page',
@@ -12,102 +16,116 @@ import { AuthService } from '../../../auth/services/auth.service';
 })
 
 export class DetallePartePageComponent implements OnInit {
+ 
+  //**Propiedades**//
   panelOpenState = false; // Estado del panel colapsado
-  parte!: Parte; // Datos del parte
-  originalParte!: Parte; // Copia datos parte
-  parteId!: string; // ID del parte a cargar
-
-  cliente: any = {}; // Datos del cliente (editable)
-  originalCliente: any; // Copia datos cliente
-
-
+  usuario: Usuario = {} as Usuario;  // Datos del usuario 
+  form?: FormGroup;
+  parte?: Parte; // Datos del parte (editable)
+  initialParteValues?: Partial<Parte>;
   today: Date = new Date(); // Obtener la fecha actual
+  errors: string[] = [];
 
-  // Dispositivos y estados de intervención (simulados)
+  // Dispositivos y estados de intervención
   estados = [
-    { label: 'Pendiente (PE)', valor: 'Pendiente' },
-    { label: 'En pausa (PE)', valor: 'En Pausa' },
-    { label: 'En curso (EC)', valor: 'En Curso' },
-    { label: 'Anulada (AN)', valor: 'Anulado' },
-    { label: 'Finalizada (OK)', valor: 'Finalizado' }
+    { label: 'Pendiente (PE)', valor: 'PE' },
+    { label: 'En pausa (EP)', valor: 'EP' },
+    { label: 'En curso (EC)', valor: 'EC' },
+    { label: 'Anulada (AN)', valor: 'AN' },
+    { label: 'Finalizada (OK)', valor: 'OK' }
   ];
 
+  //**Constructor**//
   constructor(
+    private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
-    private authService: AuthService,
     private parteService: ParteService,
+    private usuarioService: UsuarioService,
+    private dialogService: DialogService,
+    private validatorsParteService: ValidatorsParteService
   ) {}
 
+  //**Métodos**// 
   ngOnInit(): void {
     // Obtén el ID del parte desde la ruta
-    this.route.paramMap.subscribe(params => {
-      this.parteId = params.get('id') || ''; // Asigna el ID de la ruta
-      this.cargarParte(); // Carga el parte
-    });
+    const id = this.route.snapshot.paramMap.get('id');
+    
+    if (id) {
+      this.parteService.get(parseInt(id))
+        .subscribe(parte => {
+          this.parte = parte;
+          this.initialParteValues = { ...parte }; // Almacena los valores iniciales
+          this.cargarDatosUsuario(parte.usuarioId); //Carga los datos del usuario
+
+          this.form = this.fb.group({
+            usuarioId: [parte.usuarioId, Validators.required],
+            fechaCreacion: [this.today, Validators.required],
+            dispositivo: [parte.dispositivo, [ Validators.required,  Validators.pattern( this.validatorsParteService.dispositPattern ) ]],
+            otrosMateriales: [parte.otrosMateriales],
+            estado: [parte.estado, Validators.required],
+            fechaEstimada: [parte.fechaEstimada, Validators.required],
+            motivoCliente: [parte.motivoCliente, Validators.required],
+            informeEmpresa: [parte.informeEmpresa],
+            documentacionTecnica: [parte.documentacionTecnica, Validators.required]
+          });
+        })
+    } else {
+      console.log("No existe el parte");
+    }
+
   }
 
-  cargarParte(): void {
-    // Convertir parteId a número
-    const parteIdNumber = Number(this.parteId);
+  // Comprueba si en el campo hay errores cuando toca
+  isValidField( field: string ) {
+    return this.validatorsParteService.isValidField( this.form!, field );
+  }
 
-    // Inicializar datos del parte
-    this.parteService.getParteById(parteIdNumber).subscribe(
-      parte => {
-          if (parte) {
-              this.parte = { ...parte };
-              this.originalParte = { ...parte };
-              
-              // Cargar datos del cliente según el clienteId del parte
-              this.authService.getUserById(parte.clienteId).subscribe(
-                cliente => {
-                  if (cliente) {
-                    this.cliente = { ...cliente }; // Cargar datos del cliente
-                    this.originalCliente = { ...cliente }; // Guardar una copia de los datos originales
-                  }
-                },
-                error => {
-                  console.error('Error al cargar el cliente:', error);
-                  alert('No se pudo cargar los datos del cliente. Intenta de nuevo más tarde.');
-                }
-              );
-            }
-          },
-          error => {
-            console.error('Error al cargar el parte:', error);
-            alert('No se pudo cargar el parte. Intenta de nuevo más tarde.');
-          }
+  // Muestra mensaje de error específico dependiendo del campo
+  getFieldError( field: string ): string | null {
+    return this.validatorsParteService.getFieldError( this.form!, field );
+  }
+
+  cargarDatosUsuario(usuarioId: number): void {
+    // Cargar datos del usuario según el usuarioId del parte
+    this.usuarioService.get(usuarioId).subscribe(
+      usuario => this.usuario = usuario,
+      error => {
+              console.error('Error al cargar el usuario:', error);
+              alert('No se pudo cargar los datos del usuario. Intenta de nuevo más tarde.');
+      }
     );
   }
 
+  save() {
+    // Marcar todos los campos como tocados para mostrar mensajes de error
+    if(this.form?.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+    
+    const parteForm = this.form!.value;
 
-  guardarCambios() {
-    // Simulación de guardar cambios
-      if (confirm('¿Estás seguro de que deseas guardar los cambios?')) {
-        // Convertir parteId a número antes de pasarlo al servicio
-        const parteIdNumber = Number(this.parteId);
-        
-        this.parteService.updateParte(parteIdNumber, this.parte).subscribe(
-            () => {
-                this.goBack();
-            },
-            error => {
-                console.error('Error al guardar cambios:', error);
-                alert('No se pudieron guardar los cambios. Intenta de nuevo más tarde.');
-            }
-        );
-      } else {
-        this.parte = { ...this.originalParte };
-        this.cliente = { ...this.originalCliente };
-      }
+    this.parteService.update(this.parte!.id, parteForm)
+      .subscribe({
+          next: () => {
+            this.errors = [];
+            this.dialogService.openDialog('Éxito', 'El parte se ha actualizado correctamente.');
+            this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_PARTES_ADMIN])
+          },
+          error: response => {
+            this.errors = response.error.errors;
+          }
+      });
+   
   }
 
-
-  reestablecerCambios() {
-    // Restaurar los datos originales
+  // Método para restablecer los valores del formulario a los originales
+  resetForm() {
     if (confirm('¿Estás seguro de que deseas reestablecer los cambios?')) {
-      this.parte = { ...this.originalParte };
-      this.cliente = { ...this.originalCliente };
+      if (this.initialParteValues) {
+        this.form?.reset({ ...this.initialParteValues })
+      }
     }
   }
 

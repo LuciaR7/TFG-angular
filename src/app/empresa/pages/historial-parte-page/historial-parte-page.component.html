@@ -1,7 +1,7 @@
 <!-- Título central -->
 <div class="title" customFlexbox="row" cFAlign="space-between center" cFGap="10px" style="padding-inline: 40px;">
     
-    <div>Historial intervenciones: PARTE: {{ parteId }}</div>
+    <div>Historial intervenciones: PARTE: {{parteId }} </div>
     <!-- Botón volver listado partes -->
     <div>
         <button mat-raised-button color="warn"
@@ -13,6 +13,7 @@
 
 <!-- Contenedor general historial y formulario -->
 <div class="principContainer" customFlexbox="column" cfGap="40px">
+
 
     <mat-form-field appearance="fill">
         <mat-label>Filtrar</mat-label>
@@ -31,7 +32,7 @@
 
             <!-- Columna Fecha -->
             <ng-container matColumnDef="fecha">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA CREACIÓN </th>
                 <td mat-cell *matCellDef="let historial"> {{ historial.fecha | date: 'dd/MM/yyyy' }} </td>
             </ng-container>
     
@@ -47,22 +48,16 @@
                 <td mat-cell *matCellDef="let historial"> {{historial.intervencion}} </td>
             </ng-container>
     
-            <!-- Columna Botón de Selección -->
-            <ng-container matColumnDef="select">
-                <th mat-header-cell *matHeaderCellDef> ACCIONES </th>
-                <td mat-cell *matCellDef="let historial">
-                    <button mat-mini-fab color="primary" matTooltip="Ver Detalle"
-                            (click)="selectRow(historial)">
-                    <mat-icon>arrow_drop_down</mat-icon>
-                    </button>
-                </td>
-            </ng-container>
     
             <!-- Cabecera y columnas de la tabla -->
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;
+                "(click)="openDetailDialog(row)" 
+                matTooltip="Haz clic para ver los detalles">
+            </tr>
+
     
-            <!-- No coincide la búsqueda del filtro-->
+            <!-- No coincide la búsqueda del filtro -->
             <tr class="mat-row" *matNoDataRow>
                 <td class="mat-cell" colspan="5">No hay datos que coincidan con el filtro "{{input.value}}"</td>
             </tr>
@@ -71,67 +66,84 @@
         <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
     </div>
 
-    <!-- Separacion vertical-->
+    <!-- Separacion vertical -->
     <div class="alto20"></div>
+
+    <!-- Alert mensajes Api -->
+    <div *ngIf="errors.length">
+        <div class="alert alert-danger">
+            <p>Han sucedido los siguientes errores:</p>
+            <ul>
+                <li *ngFor="let error of errors">{{ error }}</li>
+            </ul>
+        </div>
+    </div>
 
     <!-- Formulario de intervención -->
     <div customFlexbox="" cFGap="30px" style="background-color: #d8d5d5; padding: 30px;">
-        <form [formGroup]="intervencionForm" (ngSubmit)="onSubmit()">
-            
-            <div customFlexbox="column" cFGap="30px">
-                <!-- Campos fecha y técnico -->
-                <div customFlexbox="row" cFGap="30px">
-                    <mat-form-field>
-                        <mat-label>Fecha</mat-label>
-                        <input matInput formControlName="fecha" [matDatepicker]="picker" [min]="today" [disabled]="isRowSelected">
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                        <mat-error *ngIf="intervencionForm.get('fecha')?.hasError('required') && intervencionForm.get('fecha')?.touched">
-                            Este campo es requerido.
-                        </mat-error>
-                      </mat-form-field>
-        
-                      <mat-form-field>
-                        <mat-label>Técnico</mat-label>
-                        <input matInput formControlName="tecnico" readonly>
-                        <mat-error *ngIf="intervencionForm.get('tecnico')?.hasError('required') && intervencionForm.get('tecnico')?.touched">
-                            Este campo es requerido.
-                        </mat-error>
-                      </mat-form-field>
-                </div>
-        
-                <!-- Campos intervención y descripción -->
-                <div customFlexbox="row" cFGap="30px">
-                    <mat-form-field>
-                        <mat-label>Intervención</mat-label>
-                        <input matInput formControlName="intervencion" [readonly]="isRowSelected">
-                        <mat-error *ngIf="intervencionForm.get('intervencion')?.hasError('required') && intervencionForm.get('intervencion')?.touched">
-                            Este campo es requerido.
-                        </mat-error>
-                      </mat-form-field>
-        
-                      <mat-form-field>
-                        <mat-label>Descripción</mat-label>
-                        <textarea matInput formControlName="descripcion" [readonly]="isRowSelected"></textarea>
-                        <mat-error *ngIf="intervencionForm.get('descripcion')?.hasError('required') && intervencionForm.get('descripcion')?.touched">
-                            Este campo es requerido.
-                        </mat-error>
-                      </mat-form-field>
-                </div>
+        @if (form) {
 
-                <!-- Botones Añadir y Cancelar -->
-                <div customFlexbox="row" cFAlign="end end" cFGap="15px">
-                    <button mat-raised-button type="submit" color="primary">
-                        Añadir
-                        <mat-icon>check</mat-icon>
-                    </button>
-                    <button mat-raised-button type="button" color="warn" (click)="onReset()">
-                        Limpiar
-                        <mat-icon>clear</mat-icon>
-                    </button>
+            <form [formGroup]="form" (ngSubmit)="create()">
+                
+                <div customFlexbox="column" cFGap="30px">
+                    <!-- Campos fecha y técnico -->
+                    <div customFlexbox="row" cFGap="30px">
+                        <mat-form-field>
+                            <mat-label>Fecha</mat-label>
+                            <input matInput formControlName="fecha" 
+                                    [matDatepicker]="picker" [min]="today">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error>
+                                @if (form.get('fecha')?.hasError('required') && form.get('fecha')?.touched) {
+                                    La fecha es requerida
+                                }
+                            </mat-error>
+                        </mat-form-field>
+            
+                        <mat-form-field>
+                            <mat-label>Técnico</mat-label>
+                            <input matInput formControlName="tecnico" readonly>
+                            <mat-error>
+                                @if (form.get('tecnico')?.hasError('required') && form.get('tecnico')?.touched) {
+                                    El técnico es requerido
+                                }
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+            
+                    <!-- Campos intervención y descripción -->
+                    <div customFlexbox="row" cFGap="30px">
+                        <mat-form-field>
+                            <mat-label>Intervención</mat-label>
+                            <input matInput formControlName="intervencion">
+                            <mat-error>
+                                @if (form.get('intervencion')?.hasError('required') && form.get('intervencion')?.touched) {
+                                    El título de la intervención es requerido
+                                }
+                            </mat-error>
+                        </mat-form-field>
+            
+                        <mat-form-field>
+                            <mat-label>Descripción</mat-label>
+                            <textarea matInput formControlName="descripcion"></textarea>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Botones Añadir y Cancelar -->
+                    <div customFlexbox="row" cFAlign="end end" cFGap="15px">
+                        <button mat-raised-button type="submit" color="primary">
+                            Añadir
+                            <mat-icon>check</mat-icon>
+                        </button>
+                        <button mat-raised-button type="button" color="warn" (click)="resetForm()">
+                            Limpiar
+                            <mat-icon>clear</mat-icon>
+                        </button>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        }   
     </div>
 
     

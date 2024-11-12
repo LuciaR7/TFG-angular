@@ -11,12 +11,14 @@ import { RoutesConstants } from '../../../shared/constants/routes.constants';
   styleUrl: './home-empresa-page.component.css'
 })
 export class HomeEmpresaPageComponent {
-
+  
+  //**Constructor**//
   constructor(
     private authService: AuthService,
     private router: Router
   ) {}
 
+  //**Métodos**//
   get user(): Usuario | undefined {
     return this.authService.currentUser;
   }

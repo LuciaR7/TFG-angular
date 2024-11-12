@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -6,66 +6,105 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RoutesConstants } from '../../../shared/constants/routes.constants';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../auth/services/auth.service';
-import { Intervencion } from '../../interfaces/historial.interface';
-import { EmpresaService } from '../../services/empresa.service';
-import { switchMap } from 'rxjs';
+import { IntervencionService } from '../../../shared/service/intervencion.service';
+import { Intervencion } from '../../../shared/interfaces/intervencion.interface';
+import { DialogService } from '../../../shared/service/dialog.service';
 
 
 @Component({
   selector: 'app-historial-parte-page',
   templateUrl: './historial-parte-page.component.html',
-  styleUrl: './historial-parte-page.component.css'
+  styleUrl: './historial-parte-page.component.css',
 })
-export class HistorialPartePageComponent implements AfterViewInit, OnInit {
-  intervencionForm: FormGroup;
-  parteId!: string; // ID del parte a cargar
-  dataSource: MatTableDataSource<Intervencion>;
-  displayedColumns: string[] = ['id', 'fecha', 'tecnico', 'intervencion', 'select'];
-  today: Date = new Date(); // Obtener la fecha actual
-  isRowSelected: boolean = false; // Variable para controlar si una fila está seleccionada
+export class HistorialPartePageComponent implements OnInit, AfterViewInit {
 
+  //**Propiedades**//
+  form: FormGroup;
+  currentUser: string;
+  parteId!: string; // ID del parte a cargar
+  dataSource: MatTableDataSource<Intervencion> = new MatTableDataSource();
+  displayedColumns: string[] = ['id', 'fecha', 'tecnico', 'intervencion'];
+  today: Date = new Date(); // Obtener la fecha actual
+  errors: string[] = [];
+
+  //**Decoradores**//
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  //**Constructor**//
   constructor(
     private router: Router, 
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private authService: AuthService,
-    private empresaService: EmpresaService,
+    private intervencionService: IntervencionService,
+    private dialogService: DialogService,
+    private cdr: ChangeDetectorRef
   ) {
-   
-    // Obtener el usuario de la sesión actual
-    const currentUser = this.authService.currentUser?.name || 'Técnico desconocido';
+      // Obtener el usuario de la sesión actual
+      this.currentUser = `${this.authService.currentUser?.name} ${this.authService.currentUser?.surname}`;
 
-    // Inicializar el formulario con el nombre del técnico predeterminado
-    this.intervencionForm = this.fb.group({
-      fecha: [this.today, Validators.required],
-      tecnico: [ currentUser, Validators.required],
-      intervencion: ['', Validators.required],
-      descripcion: ['', Validators.required]
-    });
+      // Inicializar el formulario con el nombre del técnico predeterminado
+      this.form = this.fb.group({
+        parteId: [0, Validators.required],
+        fecha: [this.today, Validators.required],
+        tecnico: [this.currentUser, Validators.required],
+        intervencion: ['', Validators.required],
+        descripcion: [null]
+      });
 
-    this.dataSource = new MatTableDataSource();
-  }
-
+    }
+  
+  //**Métodos**//  
   ngOnInit(): void {
     // Obtener el ID del parte desde la ruta
     this.parteId = this.route.snapshot.paramMap.get('id')!; // Asegúrate de que el ID no sea null
+    // Guarda el id del parte seleccionado en el formulario de intervención
+    this.form.get('parteId')?.setValue(parseInt(this.parteId));
 
     // Cargar las intervenciones asociadas al parte usando el ID
     if (this.parteId) {
-      this.empresaService.getHistorialByParteId(this.parteId).subscribe(historial => {
-        this.dataSource.data = historial; // Cargar las intervenciones en el dataSource
-      });
+      this.loadHistorial(Number(this.parteId));
     } else {
       console.error('No se encontró el ID del parte');
     }
+
+     // Establecer la columna de id como la columna de orden predeterminada
+     this.dataSource.sortingDataAccessor = (intervencion: Intervencion, property: string) => {
+      switch (property) {
+        case 'id':
+          return intervencion.id;
+        case 'fecha':
+          return new Date(intervencion.fecha).getTime();
+        case 'tecnico':
+          return intervencion.tecnico;
+        case 'intervencion':
+          return intervencion.intervencion;
+        default:
+          return ''; // Retorna string vacío si no encuentra la propiedad
+      }
+    };
+
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
+    // Conectar el paginador y el sort con el dataSource
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+
+    // Establecer el orden predeterminado
+    this.sort.active = 'id';
+    this.sort.direction = 'desc';
+
+    // Marcar el componente para una verificación de cambios
+    this.cdr.detectChanges();
+  }
+
+  loadHistorial(parteId: number) {
+    this.intervencionService.getIntervencionesByParteId(parteId)
+      .subscribe((historial) => {
+        this.dataSource.data = historial;
+      });
   }
 
   // Aplicar filtros
@@ -78,87 +117,56 @@ export class HistorialPartePageComponent implements AfterViewInit, OnInit {
     }
   }
 
-  // Copia de la fila seleccionada para autocompletar el formulario
-  selectRow(row: Intervencion): void {
-     // Establecer la variable a true cuando se seleccione una fila
-      this.isRowSelected = true;
-
-      this.intervencionForm.patchValue({
-        id: row.id,
-        fecha: row.fecha,
-        tecnico: row.tecnico,
-        intervencion: row.intervencion,
-        descripcion: row.descripcion
-      });
+  // Mostrar dialog al presionar una fila
+  openDetailDialog(intervencion: Intervencion): void {
+    this.dialogService.openDialogIntervencion(intervencion);
   }
 
-  // Función para generar el siguiente ID
-  private generateNextId(historial: Intervencion[]): string { 
-    if (historial.length === 0) {
-      return 'H001'; // ID inicial si no hay registros
-    }
-  
-    const lastId = historial[historial.length - 1].id;
-    const nextIdNumber = parseInt(lastId.slice(1)) + 1; // Eliminar 'H' y sumar 1
-    return `H${nextIdNumber.toString().padStart(3, '0')}`; // Formatear con ceros
-  }
-
-
-  // Función para agregar intervención
-  onSubmit() {
+  // Método para agregar intervención
+  create(): void {
     // Marcar todos los campos como tocados para mostrar mensajes de error
-    this.intervencionForm.markAllAsTouched();
-  
-    // Verificar si el formulario es válido
-    if (this.intervencionForm.valid) {
-      // Obtener todos los valores del formulario, incluso los deshabilitados
-      const formValue = this.intervencionForm.getRawValue();
-  
-      // Usar switchMap para encadenar las llamadas a los servicios
-      this.empresaService.getHistorialByParteId(this.parteId).pipe(
-        switchMap((historial) => {
-          // Generar un nuevo ID usando los datos del historial
-          const newId = this.generateNextId(historial);
-          const nuevaIntervencion: Intervencion = { ...formValue, id: newId };
-  
-          // Llamar al servicio para agregar la nueva intervención
-          return this.empresaService.addIntervencion(nuevaIntervencion);
-        })
-      ).subscribe({
-        next: (response) => {
-          // Solo actualizar el dataSource si la intervención fue añadida exitosamente
-          if (response) {
-            console.log('Nueva intervención añadida:', response);
-  
-            // Actualizar el dataSource con la nueva intervención
-             this.dataSource.data = [...this.dataSource.data, response];
-  
-            // Reiniciar el formulario
-            this.onReset();
-          }
-        },
-        error: (err) => {
-          console.error('Error al añadir la intervención o cargar el historial', err);
-        }
-      });
-    } else {
-      console.log('Formulario inválido, no se puede añadir una nueva fila');
+    if(this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
     }
+
+     // Asegura que sea un objeto plano
+     const intervencionData: Intervencion = {
+      ...this.form.getRawValue(),
+    };
+
+      this.intervencionService.create(intervencionData as Intervencion)
+        .subscribe({
+          next: () => {
+            this.errors = [];
+            this.loadHistorial(parseInt(this.parteId)); // Recargar el historial
+            this.resetForm();
+          },
+          error: response => {
+           this.errors = response.error.errors;
+          }
+        });
+  
   }
+
 
   // Método para reiniciar el formulario
-  onReset() {
-    const currentUser = this.authService.currentUser?.email || 'Técnico desconocido';
+  resetForm(): void {
+    this.currentUser = `${this.authService.currentUser?.name} ${this.authService.currentUser?.surname}`;
 
-    this.intervencionForm.reset({
+    this.form.reset({
+      parteId: parseInt(this.parteId),
       fecha: this.today,
-      tecnico: currentUser,
+      tecnico: this.currentUser,
       intervencion: '',
-      descripcion: ''
+      descripcion: null
     });
 
-    // Permitir la edición al crear una nueva entrada
-    this.isRowSelected = false;
+    // Eliminar errores del control 'intervencion'
+    const intervencionControl = this.form.get('intervencion');
+    if (intervencionControl) {
+      intervencionControl.setErrors(null); // Elimina errores
+    }
 
   }
 

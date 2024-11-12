@@ -13,6 +13,8 @@ import { EmpresaToolbarComponent } from './components/empresa-toolbar/empresa-to
 import { DetallePartePageComponent } from './pages/detalle-parte-page/detalle-parte-page.component';
 import { HistorialPartePageComponent } from './pages/historial-parte-page/historial-parte-page.component';
 import { DetalleClientePageComponent } from './pages/detalle-cliente-page/detalle-cliente-page.component';
+import { IntervencionDetailDialogComponent } from './components/intervencion-detail-dialog/intervencion-detail-dialog.component';
+import { DialogMessageComponent } from './components/dialog-message/dialog-message.component';
 
 
 
@@ -29,6 +31,8 @@ import { DetalleClientePageComponent } from './pages/detalle-cliente-page/detall
     DetallePartePageComponent,
     HistorialPartePageComponent,
     DetalleClientePageComponent,
+    IntervencionDetailDialogComponent,
+    DialogMessageComponent,
   ],
   imports: [
     MaterialModule,

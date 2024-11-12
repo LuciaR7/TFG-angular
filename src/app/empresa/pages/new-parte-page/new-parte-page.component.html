@@ -19,49 +19,60 @@
                     <!-- Campo Busca Cliente -->
                     <mat-form-field>
                         <mat-label>Buscar cliente</mat-label>
-                        <input matInput placeholder="Buscar cliente" [formControl]="clienteControl"
+                        <input matInput placeholder="Buscar cliente" [formControl]="usuarioControl"
                                 [matAutocomplete]="auto">
                         <mat-icon matSuffix>search</mat-icon>
                     </mat-form-field>
                     
                     <!-- Lista de clientes filtrados -->
-                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="seleccionarCliente($event.option.value)">
-                    <mat-option *ngFor="let cliente of clientesFiltrados | async" [value]="cliente">
-                        {{ cliente.name }} {{ cliente.surname }}
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="seleccionarUsuario($event.option.value)">
+                    <mat-option *ngFor="let usuario of usuariosFiltrados | async" [value]="usuario">
+                        {{ usuario.name }} {{ usuario.surname }}
                     </mat-option>
                     </mat-autocomplete>
                     
                     <span>
-                        Datos Cliente ~ {{ clienteForm.get('clienteId')?.value }} ~
+                        Datos Cliente ~ {{ usuarioForm.get('usuarioId')?.value }} ~
                     </span>
                 </mat-card-title>
             </mat-card-header>
     
             <!-- Formulario 1 Datos Cliente -->
-                <form [formGroup]="clienteForm">
+                <form [formGroup]="usuarioForm">
     
                 <!-- Contenido mat-card-->
                 <mat-card-content>
                     <div customFlexbox="column" cFAlign="space-around stretch" cFGap="25px">
                         <div customFlexbox="row" customFlexbox.s="column" cFGap="25px">
                             <!-- Nombre, Apellidos -->
-                            <mat-form-field appearance="outline">
-                                <mat-label>Nombre</mat-label><input type="text" matInput formControlName="name" readonly>
+                            <mat-form-field>
+                                <mat-label>Nombre</mat-label><input type="text" matInput formControlName="name" [readonly]="!isEditing">
                             </mat-form-field>
-                            <mat-form-field appearance="outline">
-                                <mat-label>Apellidos</mat-label><input type="text" matInput formControlName="surname" readonly>
+                            <mat-form-field>
+                                <mat-label>Apellidos</mat-label><input type="text" matInput formControlName="surname" [readonly]="!isEditing">
                             </mat-form-field>
                         </div>
                         <div customFlexbox="row" customFlexbox.s="column" cFGap="25px">
                             <!-- Email, Teléfono -->
-                            <mat-form-field appearance="outline">
-                                <mat-label>E-Mail</mat-label><input type="text" matInput formControlName="email" readonly>
+                            <mat-form-field>
+                                <mat-label>E-Mail</mat-label><input type="text" matInput formControlName="email" [readonly]="!isEditing">
                             </mat-form-field>
-                            <mat-form-field appearance="outline">
-                                <mat-label>Teléfono</mat-label><input type="text" matInput formControlName="tlf" readonly>
+                            <mat-form-field>
+                                <mat-label>Teléfono</mat-label><input type="text" matInput formControlName="tlf" [readonly]="!isEditing">
                             </mat-form-field>
+                        </div>                      
+
+
+                        <div customFlexbox="" cFAlign="end center" cFGap="60px">
+                            <button mat-raised-button style="background-color: #54d258" 
+                                (click)="editarDatosUsuario()">Actualizar Datos Cliente
+                                <mat-icon>save</mat-icon>
+                            </button>
                         </div>
+            
+
                     </div>
+                    
                 </mat-card-content>
             </form> <!-- FIN Formulario 1-->
         </mat-card>
@@ -78,110 +89,133 @@
                     </span>
                 </mat-card-title>
                 <span>
-                    {{ currentDate | date: 'dd/MM/yyyy' }}
+                    {{ today | date: 'dd/MM/yyyy' }}
                 </span>
             </mat-card-header>
     
             <!-- Formulario 2 Datos Intervención -->
-            <form [formGroup]="intervencionForm" (ngSubmit)="create()">
-                            
-                <!-- Contenido mat-card Datos Intervención-->
-                <mat-card-content>
-                    <div customFlexbox="column" cFAlign="space-around stretch" cFGap="25px">
-                        
-                        <!-- Bloque dispositivo y materiales -->
-                        <div customFlexbox="row" customFlexbox.s="column" cFGap="25px">
-                            <!-- Dispositivo -->
-                                <mat-form-field>
-                                    <mat-label>Dispositivo</mat-label>
-                                    <input type="text" matInput formControlName="dispositivo" placeholder="Dispositivo">
-                                    <mat-error>
-                                        @if (isValidField('dispositivo')) {
-                                          <span> {{ getFieldError('dispositivo') }} </span>
-                                        }
-                                    </mat-error>
-                                </mat-form-field>
-                            <!-- Otros materiales -->
-                                <mat-form-field>
-                                    <mat-label>Otros materiales</mat-label>
-                                    <input type="text" matInput formControlName="otrosMateriales" placeholder="Otros materiales">
-                                </mat-form-field>
-                        </div> <!-- FIN dispositivo y materiales -->
-    
-                        <!-- Bloque estado y fecha estimada salida -->
-                        <div customFlexbox="row" customFlexbox.s="column" cFGap="25px">
-                            <!-- Estado -->
-                                <mat-form-field>
-                                    <mat-label>Estado</mat-label>
-                                    <mat-select formControlName="estado">
-                                        <mat-option *ngFor="let estado of estados" [value]="estado.valor">
-                                        {{ estado.label }}
-                                        </mat-option>
-                                    </mat-select>
-                                    <mat-error>
-                                        @if (isValidField('estado')) {
-                                          <span> {{ getFieldError('estado') }} </span>
-                                        }
-                                    </mat-error>
-                                </mat-form-field>
-                            <!-- Fecha estimada de salida -->
-                                <mat-form-field>
-                                    <mat-label>Fecha estimada fin</mat-label>
-                                    <input matInput formControlName="fechaEstimada" placeholder="Fecha estimada" 
-                                            [matDatepicker]="picker" [min]="today">
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker></mat-datepicker>
-                                    <mat-error>
-                                        @if (isValidField('fechaEstimada')) {
-                                          <span> {{ getFieldError('fechaEstimada') }} </span>
-                                        }
-                                    </mat-error>
-                                </mat-form-field>
-                        </div> <!-- FIN  estado y fecha estimada salida -->
-                
-                        <!-- Bloque motivo cliente e informe empresa -->
-                        <div customFlexbox="row" customFlexbox.s="column" cFGap="25px">
-                            <!-- Motivo Cliente -->
-                                <mat-form-field>
-                                    <mat-label>Motivo cliente</mat-label>
-                                    <textarea matInput formControlName="motivoCliente" placeholder="Motivo cliente"></textarea>
-                                    <mat-error>
-                                        @if (isValidField('motivoCliente')) {
-                                          <span> {{ getFieldError('motivoCliente') }} </span>
-                                        }
-                                    </mat-error>
-                                </mat-form-field>
-                            <!-- Informe Empresa -->
-                                <mat-form-field>
-                                    <mat-label>Informe empresa</mat-label>
-                                    <textarea matInput formControlName="informeEmpresa" placeholder="Informe empresa"></textarea>
-                                    <mat-error>
-                                        @if (isValidField('informeEmpresa')) {
-                                          <span> {{ getFieldError('informeEmpresa') }} </span>
-                                        }
-                                    </mat-error>
-                                </mat-form-field>
-                        </div> <!-- FIN motivo cliente e informe empresa -->
-                
-                        <!-- Campo Incluir Documentación Técnica -->
-                        <div customFlexbox="column">
-                                <mat-label>DOCUMENTACIÓN TÉCNICA (Presupuesto u otros)</mat-label>
-                                <mat-radio-group formControlName="documentacionTecnica">
-                                <mat-radio-button value="si">Sí</mat-radio-button>
-                                <mat-radio-button value="no">No</mat-radio-button>
-                                </mat-radio-group>
-                        </div> <!-- FIN Documentación Técnica -->
-    
-                        <!-- Botones -->
-                        <div customFlexbox="row" cFAlign="space-between end" cFGap="60px">
-                            <button mat-raised-button color="primary">Crear Parte</button>
-                            <button type="button" mat-raised-button color="warn" (click)="goBack()">Cancelar</button>
-                            <button type="button" mat-raised-button color="accent" (click)="generarQR()">Generar QR</button>
+            @if (intervencionForm) {
+
+                <!-- Alert mensajes Api -->
+                <div>
+                    @if (errors.length) {
+                        <div class="alert alert-danger">
+                            <p>Han sucedido los siguientes errores:</p>
+                            <ul>
+                                @for (error of errors; track error) {
+                                    <li>{{ error }}</li>
+                                }
+                            </ul>
                         </div>
-                    </div>
-    
-                </mat-card-content>
-            </form>
+                    }
+                </div>
+
+                <form [formGroup]="intervencionForm" (ngSubmit)="create()">
+                                
+                    <!-- Contenido mat-card Datos Intervención-->
+                    <mat-card-content>
+                        <div customFlexbox="column" cFAlign="space-around stretch" cFGap="25px">
+                            
+                            <!-- Bloque dispositivo y materiales -->
+                            <div customFlexbox="row" customFlexbox.s="column" cFGap="25px">
+                                <!-- Dispositivo -->
+                                    <mat-form-field>
+                                        <mat-label>Dispositivo</mat-label>
+                                        <input type="text" matInput formControlName="dispositivo" placeholder="Dispositivo">
+                                        <mat-error>
+                                            @if (isValidField('dispositivo')) {
+                                            <span> {{ getFieldError('dispositivo') }} </span>
+                                            }
+                                        </mat-error>
+                                    </mat-form-field>
+                                <!-- Otros materiales -->
+                                    <mat-form-field>
+                                        <mat-label>Otros materiales</mat-label>
+                                        <input type="text" matInput formControlName="otrosMateriales" placeholder="Otros materiales">
+                                    </mat-form-field>
+                            </div> <!-- FIN dispositivo y materiales -->
+        
+                            <!-- Bloque estado y fecha estimada salida -->
+                            <div customFlexbox="row" customFlexbox.s="column" cFGap="25px">
+                                <!-- Estado -->
+                                    <mat-form-field>
+                                        <mat-label>Estado</mat-label>
+                                        <mat-select formControlName="estado" placeholder="Estado">
+                                            <mat-option *ngFor="let estado of estados" [value]="estado.valor">
+                                            {{ estado.label }}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error>
+                                            @if (isValidField('estado')) {
+                                            <span> {{ getFieldError('estado') }} </span>
+                                            }
+                                        </mat-error>
+                                    </mat-form-field>
+                                <!-- Fecha estimada de salida -->
+                                    <mat-form-field>
+                                        <mat-label>Fecha estimada fin</mat-label>
+                                        <input matInput formControlName="fechaEstimada" placeholder="Fecha estimada" 
+                                                [matDatepicker]="picker" [min]="today">
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                        <mat-error>
+                                            @if (isValidField('fechaEstimada')) {
+                                            <span> {{ getFieldError('fechaEstimada') }} </span>
+                                            }
+                                        </mat-error>
+                                    </mat-form-field>
+                            </div> <!-- FIN  estado y fecha estimada salida -->
+                    
+                            <!-- Bloque motivo cliente e informe empresa -->
+                            <div customFlexbox="row" customFlexbox.s="column" cFGap="25px">
+                                <!-- Motivo Cliente -->
+                                    <mat-form-field>
+                                        <mat-label>Motivo cliente</mat-label>
+                                        <textarea matInput formControlName="motivoCliente" placeholder="Motivo cliente"></textarea>
+                                        <mat-error>
+                                            @if (isValidField('motivoCliente')) {
+                                            <span> {{ getFieldError('motivoCliente') }} </span>
+                                            }
+                                        </mat-error>
+                                    </mat-form-field>
+                                <!-- Informe Empresa -->
+                                    <mat-form-field>
+                                        <mat-label>Informe empresa</mat-label>
+                                        <textarea matInput formControlName="informeEmpresa" placeholder="Informe empresa"></textarea>
+                                    </mat-form-field>
+                            </div> <!-- FIN motivo cliente e informe empresa -->
+                    
+                            <!-- Campo Incluir Documentación Técnica -->
+                            <div customFlexbox="column">
+                                    <mat-label>DOCUMENTACIÓN TÉCNICA (Presupuesto u otros)</mat-label>
+                                    <mat-radio-group formControlName="documentacionTecnica">
+                                    <mat-radio-button value="SI">Sí</mat-radio-button>
+                                    <mat-radio-button value="NO">No</mat-radio-button>
+                                    <mat-error>
+                                        @if (isValidField('documentacionTecnica')) {
+                                        <span> {{ getFieldError('documentacionTecnica') }} </span>
+                                        }
+                                    </mat-error>
+                                    </mat-radio-group>
+                            </div> <!-- FIN Documentación Técnica -->
+        
+                            <!-- Botones -->
+                            <div customFlexbox="row" cFAlign="space-between end" cFGap="60px">
+                                <button mat-raised-button color="primary">
+                                    <mat-icon>add_circle</mat-icon> Crear Parte
+                                </button>
+                                <button type="button" mat-raised-button color="warn" (click)="goBack()">
+                                    <mat-icon>cancel</mat-icon> Cancelar
+                                </button>
+                                <button type="button" mat-raised-button color="accent" (click)="generarQR()">
+                                    <mat-icon>qr_code</mat-icon> Generar QR
+                                </button>
+                            </div>
+                        </div>
+        
+                    </mat-card-content>
+                </form>
+            }
         </mat-card> 
     </div> <!-- FIN Bloque 2: Datos Parte Intervención-->
 

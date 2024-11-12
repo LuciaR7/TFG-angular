@@ -57,6 +57,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     margin-left: 20px;
 }
 
+/** Mensaje alerta error formulario API **/
+.alert-danger {
+    background-color: #f8d7da; /* Color de fondo rojo claro */
+    color: #721c24; /* Color de texto oscuro */
+    border: 1px solid #f5c6cb; /* Borde rojo */
+    padding: 15px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    margin-bottom: 20px; /* Espaciado inferior */
+}
+
 
 
 

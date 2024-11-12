@@ -1,7 +1,7 @@
 <!-- Título central -->
 <div class="title" customFlexbox="row" cFAlign="space-between center" cFGap="10px" style="padding-inline: 40px;">
     
-    <div>Detalle parte de intervención: {{ parte.id }}</div>
+    <div>Detalle parte de intervención: {{ parte?.dispositivo }}</div>
     <!-- Botón volver listado partes -->
     <div>
         <button mat-raised-button color="warn"
@@ -11,10 +11,24 @@
     </div>
 </div>
 
-<!-- Contenedor general Datos Cliente y Parte -->
+<!-- Alert mensajes Api -->
+<div>
+    @if (errors.length) {
+        <div class="alert alert-danger">
+            <p>Han sucedido los siguientes errores:</p>
+            <ul>
+                @for (error of errors; track error) {
+                    <li>{{ error }}</li>
+                }
+            </ul>
+        </div>
+    }
+</div>
+
+<!-- Contenedor general Datos Usuario y Parte -->
 <div class="principContainer" customFlexbox="column" cfGap="40px">
 
-    <!-- Contenedor de Datos del Cliente (colapsable) -->
+    <!-- Contenedor de Datos del Usuario (colapsable) -->
     <mat-expansion-panel [(expanded)]="panelOpenState" style="background-color: rgb(236, 217, 243);">
         <mat-expansion-panel-header>
         <mat-panel-title>Datos del Cliente</mat-panel-title>
@@ -22,24 +36,24 @@
         </mat-expansion-panel-header>
 
         <div customFlexbox="row" customFlexbox.xs="column" cFGap="20px">
-           <mat-form-field>
+           <mat-form-field appearance="outline">
                 <mat-label>Nombre</mat-label>
-                <input matInput placeholder="Nombre" [(ngModel)]="cliente.name">
+                <input matInput placeholder="Nombre" [(ngModel)]="usuario.name" readonly>
             </mat-form-field>
     
-            <mat-form-field>
+            <mat-form-field appearance="outline">
                 <mat-label>Apellidos</mat-label>
-                <input matInput placeholder="Apellidos" [(ngModel)]="cliente.surname">
+                <input matInput placeholder="Apellidos" [(ngModel)]="usuario.surname" readonly>
             </mat-form-field>
         
-            <mat-form-field>
+            <mat-form-field appearance="outline">
                 <mat-label>E-Mail</mat-label>
-                <input matInput placeholder="E-mail" [(ngModel)]="cliente.email">
+                <input matInput placeholder="E-mail" [(ngModel)]="usuario.email" readonly>
             </mat-form-field>
         
-            <mat-form-field>
+            <mat-form-field appearance="outline">
                 <mat-label>Teléfono</mat-label>
-                <input matInput placeholder="Teléfono" [(ngModel)]="cliente.tlf">
+                <input matInput placeholder="Teléfono" [(ngModel)]="usuario.tlf" readonly>
             </mat-form-field>  
         </div>
        
@@ -49,79 +63,114 @@
     <div class="alto20"></div>
 
     <!-- Contenedor de Datos del Parte de Intervención -->
-    <div *ngIf="parte" customFlexbox="column" cFGap="20px" style="background-color: rgb(232, 219, 236); padding: 30px;">
+    <div customFlexbox="column" cFGap="20px" style="background-color: rgb(232, 219, 236); padding: 30px;">
        
-        <!-- Columna 1 Campos Dispositivo y Otros Materiales --> 
-        <div customFlexbox="row" cFGap="20px" >
-            <mat-form-field>
-                <mat-label>Dispositivo</mat-label>
-                <input matInput placeholder="Dispositivo" [(ngModel)]="parte.dispositivo">
-            </mat-form-field>
-        
-            <mat-form-field>
-                <mat-label>Otros materiales</mat-label>
-                <input matInput placeholder="Otros materiales" [(ngModel)]="parte.otrosMateriales">
-            </mat-form-field>
-        </div>
-       
-        <!-- Columna 2 Campos Estado y Fecha Estimada Fin --> 
-        <div customFlexbox="row" cFGap="20px" >
-            <mat-form-field>
-                <mat-label>Estado</mat-label>
-                <mat-select placeholder="Estado" [(ngModel)]="parte.estado">
-                    <mat-option *ngFor="let estado of estados" [value]="estado.valor">
-                        {{ estado.label }}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
+        <!-- Formulario Registro -->
+        @if (form) {
+            <form [formGroup]="form" (ngSubmit)="save()">
+
+                <!-- Columna 1 Campos Dispositivo y Otros Materiales --> 
+                <div customFlexbox="row" cFGap="20px" >
+                    <mat-form-field>
+                        <mat-label>Dispositivo</mat-label>
+                        <input matInput formControlName="dispositivo" placeholder="Dispositivo">
+                        <mat-error>
+                            @if (isValidField('dispositivo')) {
+                            <span> {{ getFieldError('dispositivo') }} </span>
+                            }
+                        </mat-error>
+                    </mat-form-field>
+                
+                    <mat-form-field>
+                        <mat-label>Otros materiales</mat-label>
+                        <input matInput formControlName="otrosMateriales" placeholder="Otros materiales">
+                    </mat-form-field>
+                </div>
             
-            <mat-form-field>
-                <mat-label>Fecha estimada fin</mat-label>
-                <input matInput [matDatepicker]="picker" [min]="today" placeholder="Fecha Estimada" [(ngModel)]="parte.fechaEstimada">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-        </div>
-    
-        <!-- Columna 3 Campo Motivo Cliente --> 
-        <div>
-            <mat-form-field>
-                <mat-label>Motivo cliente</mat-label>
-                <textarea matInput placeholder="Motivo del cliente" [(ngModel)]="parte.motivoCliente"></textarea>
-            </mat-form-field>
-        </div>
+                <!-- Columna 2 Campos Estado y Fecha Estimada Fin --> 
+                <div customFlexbox="row" cFGap="20px" >
+                    <mat-form-field>
+                        <mat-label>Estado</mat-label>
+                        <mat-select placeholder="Estado" formControlName="estado">
+                            <mat-option *ngFor="let estado of estados" [value]="estado.valor">
+                                {{ estado.label }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>
+                            @if (isValidField('estado')) {
+                            <span> {{ getFieldError('estado') }} </span>
+                            }
+                        </mat-error>
+                    </mat-form-field>
+                    
+                    <mat-form-field>
+                        <mat-label>Fecha estimada fin</mat-label>
+                        <input matInput formControlName="fechaEstimada" placeholder="Fecha estimada"
+                                [matDatepicker]="picker" [min]="today">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error>
+                            @if (isValidField('fechaEstimada')) {
+                            <span> {{ getFieldError('fechaEstimada') }} </span>
+                            }
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            
+                <!-- Columna 3 Campo Motivo Cliente --> 
+                <div>
+                    <mat-form-field>
+                        <mat-label>Motivo cliente</mat-label>
+                        <textarea matInput formControlName="motivoCliente" placeholder="Motivo cliente"></textarea>
+                    </mat-form-field>
+                    <mat-error>
+                        @if (isValidField('motivoCliente')) {
+                        <span> {{ getFieldError('motivoCliente') }} </span>
+                        }
+                    </mat-error>
+                </div>
 
-        <!-- Columna 4 Campo Informe Empresa --> 
-        <div>
-            <mat-form-field>
-                <mat-label>Informe empresa</mat-label>
-                <textarea matInput placeholder="Informe empresa" [(ngModel)]="parte.informeEmpresa"></textarea>
-            </mat-form-field>
-        </div>
+                <!-- Columna 4 Campo Informe Empresa --> 
+                <div>
+                    <mat-form-field>
+                        <mat-label>Informe empresa</mat-label>
+                        <textarea matInput formControlName="informeEmpresa" placeholder="Informe empresa"></textarea>
+                    </mat-form-field>
+                </div>
 
-        <!-- Columna 5 Documentación Técnica --> 
-        <div customFlexbox="column" cFGap="20px">
-            <label>Documentación técnica (Presupuesto u otros)</label>
-            <mat-radio-group [(ngModel)]="parte.documentacionTecnica">
-                <mat-radio-button value="Sí">Sí</mat-radio-button>
-                <mat-radio-button value="No">No</mat-radio-button>
-            </mat-radio-group>
-        </div>
+                <!-- Columna 5 Documentación Técnica --> 
+                <div customFlexbox="column" cFGap="20px">
+                    <label>Documentación técnica (Presupuesto u otros)</label>
+                    <mat-radio-group formControlName="documentacionTecnica">
+                        <mat-radio-button value="SI">Sí</mat-radio-button>
+                        <mat-radio-button value="NO">No</mat-radio-button>
+                        <mat-error>
+                            @if (isValidField('documentacionTecnica')) {
+                            <span> {{ getFieldError('documentacionTecnica') }} </span>
+                            }
+                        </mat-error>
+                    </mat-radio-group>
+                </div>
+                
+                <!-- Botones -->
+                <div customFlexbox="row" cFAlign="end" cFGap="15px">
+                    <!-- Boton Reestablecer -->
+                    <button type="button" mat-flat-button color="warn" (click)="resetForm()">
+                        Reestablecer
+                    <mat-icon>clear</mat-icon>
+                    </button>
+                
+                    <!-- Boton Guardar -->
+                    <button mat-flat-button color="primary">
+                        Guardar Cambios
+                    <mat-icon>check</mat-icon>
+                    </button>
+                </div>
+
+            </form> <!-- FIN Formulario editar-->
+        }
     </div>
 
-    <!-- Separación vertical-->
-    <div class="alto20"></div>
     
-    <!-- Botones de Guardar y Cancelar -->
-    <div customFlexbox="row" cFAlign="end end" cFGap="15px">
-        <button mat-raised-button color="primary" (click)="guardarCambios()">
-            Guardar Cambios
-            <mat-icon>check</mat-icon>
-        </button>
-        <button mat-raised-button color="warn" (click)="reestablecerCambios()">
-            Reestablecer
-            <mat-icon>clear</mat-icon>
-        </button>
-    </div>
 
 </div>

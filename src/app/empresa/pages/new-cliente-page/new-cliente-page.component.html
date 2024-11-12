@@ -2,23 +2,39 @@
 <div class="title" customFlexbox="row" cFAlign="center center" cFGap="10px">
   RicoRepair: Añadir nuevo cliente
 </div>
-  
-  <!-- Contenedor Registro -->
-  <div class="principContainer" customFlexbox="row" cFAlign="center center">
-  
-    <!-- Mat-card -->
-    <div customFlexbox="" cFflex="80">  
-    <mat-card>
-      <!-- Cabecera mat-card-->
-      <mat-card-header>
-            <mat-card-title>
-                <span>
-                    Nuevo Cliente:
-                </span>
-            </mat-card-title>
-      </mat-card-header>
-  
-      <!-- Formulario Registro -->
+
+<!-- Alert mensajes Api -->
+<div>
+  @if (errors.length) {
+      <div class="alert alert-danger">
+          <p>Han sucedido los siguientes errores:</p>
+          <ul>
+              @for (error of errors; track error) {
+                  <li>{{ error }}</li>
+              }
+          </ul>
+      </div>
+  }
+</div>
+
+<!-- Contenedor Registro -->
+<div class="principContainer" customFlexbox="row" cFAlign="center center">
+
+  <!-- Mat-card -->
+  <div customFlexbox="" cFflex="80">  
+  <mat-card>
+    <!-- Cabecera mat-card-->
+    <mat-card-header>
+          <mat-card-title>
+              <span>
+                  Nuevo Cliente:
+              </span>
+          </mat-card-title>
+    </mat-card-header>
+
+    <!-- Formulario Registro -->
+    @if (form) {
+
       <form [formGroup]="form" (ngSubmit)="create()" autocomplete="off">
   
         <!-- Contenido mat-card-->
@@ -78,21 +94,17 @@
                   <!-- Password -->
                     <mat-form-field>
                         <mat-label>Contraseña</mat-label>
-                        <input type="password" matInput formControlName="password" placeholder="Contraseña">
+                        <input [type]="showPassword ? 'text' : 'password'" matInput formControlName="password" 
+                          placeholder="Contraseña">
+                        <mat-icon matSuffix (click)="togglePasswordVisibility()">
+                          {{ showPassword ? 'visibility_off' : 'visibility' }}
+                        </mat-icon>
                         <mat-error>
                           @if (isValidField('password')) {
                             <span> {{ getFieldError('password') }} </span>
                           }
                         </mat-error>
                     </mat-form-field>
-  
-                  <!-- Si hay error en password, como el mensaje es largo,
-                   mete un espacio entre campos-->
-                  @if (isValidField('password') &&
-                  (form.controls['password'].hasError('pattern'))) {
-                    <div customFlexbox="" cfHide cfShow.xs
-                          style="height: 42px;"></div>
-                  }
   
                   <!-- Password2 -->
                     <mat-form-field>
@@ -110,14 +122,6 @@
   
               <!-- Separacion normal inputs-boton-->
               <div style="height: 50px;"></div>
-  
-               <!-- Si hay error en password, como el mensaje es largo,
-                   mete un espacio más grande entre inputs y boton-->
-                   @if (isValidField('password') &&
-                   (form.controls['password'].hasError('pattern'))) {
-                    <div customFlexbox="" cfShow cfHide.xs
-                          style="height: 42px;"></div>
-                  }
   
             <!-- Botones -->
             <div customFlexbox="row" cFAlign="end" cFGap="15px">
@@ -148,10 +152,11 @@
   
   
       </form> <!-- FIN Formulario login-->
-  
-    </mat-card>
-    </div>
+    }
+
+  </mat-card>
   </div>
+</div>
 
   <!-- <div customFlexbox="row" cFflex="40" cFAlign="center center" style="background-color: antiquewhite;">
   

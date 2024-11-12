@@ -1,14 +1,17 @@
+import { Usuario } from './usuario.interface';
 export interface Parte {
     id                   : number;
-    clienteId            : number;
+    usuarioId            : number;
+    usuario              : Usuario;
     fechaCreacion        : Date;
     dispositivo          : string;
-    otrosMateriales      : string;
+    otrosMateriales?     : string;
     estado               : Estado;
     fechaEstimada        : Date;
     motivoCliente        : string;
-    informeEmpresa       : string;
+    informeEmpresa?      : string;
     documentacionTecnica : DocumentacionTecnica;
+
 }
 
 export enum Estado {
@@ -20,6 +23,6 @@ export enum Estado {
 }
 
 export enum DocumentacionTecnica {
-    SI = 'Sí',
+    SI = 'Si',
     NO = 'No',
 }

@@ -1,7 +1,7 @@
 <!-- Título central -->
 <div class="title" customFlexbox="row" cFAlign="space-between center" cFGap="10px" style="padding-inline: 40px;">
     
-    <div>Editar cliente</div>
+    <div>Editar cliente: {{user?.name}} {{user?.surname}}</div>
     <!-- Botón volver listado partes -->
     <div>
         <button mat-raised-button color="warn"
@@ -11,9 +11,23 @@
     </div>
 </div>
 
+<!-- Alert mensajes Api -->
+<div>
+    @if (errors.length) {
+        <div class="alert alert-danger">
+            <p>Han sucedido los siguientes errores:</p>
+            <ul>
+                @for (error of errors; track error) {
+                    <li>{{ error }}</li>
+                }
+            </ul>
+        </div>
+    }
+</div>
+
 <!-- Contenedor de Datos del Cliente -->
 <div class="principContainer" customFlexbox="row" cFAlign="center center">
-    
+
     <!-- Mat-card -->
     <div customFlexbox="" cFGap="20px" cFflex="90">  
         <mat-card>
@@ -79,7 +93,11 @@
                                 <!-- Password -->
                                 <mat-form-field>
                                     <mat-label>Contraseña</mat-label>
-                                    <input type="password" matInput formControlName="password" placeholder="Contraseña">
+                                    <input [type]="showPassword ? 'text' : 'password'" matInput formControlName="password" 
+                                        placeholder="Contraseña">
+                                    <mat-icon matSuffix (click)="togglePasswordVisibility()">
+                                        {{ showPassword ? 'visibility_off' : 'visibility' }}
+                                    </mat-icon>
                                     <mat-error>
                                         @if (isValidField('password')) {
                                         <span> {{ getFieldError('password') }} </span>

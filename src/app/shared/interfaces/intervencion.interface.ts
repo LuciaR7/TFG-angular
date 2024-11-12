@@ -1,9 +1,7 @@
 export interface Intervencion {
-    parteId      : string;
-    id           : string;
+    id           : number;
     fecha        : Date;
     tecnico      : string;
     intervencion : string;
-    descripcion  : string;
+    descripcion? : string;
 }
-  
