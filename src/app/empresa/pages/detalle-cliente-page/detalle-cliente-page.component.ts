@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RoutesConstants } from '../../../shared/constants/routes.constants';
 import { UsuarioService } from '../../../shared/service/usuario.service';
-import { EmailValidator, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, EmailValidator, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ValidatorsUserService } from '../../../shared/validators/validatorsUser.service';
 import { Usuario } from '../../../shared/interfaces/usuario.interface';
 import { DialogService } from '../../../shared/service/dialog.service';
@@ -40,7 +40,6 @@ export class DetalleClientePageComponent implements OnInit {
       this.usuarioService.get(parseInt(id))
         .subscribe(user => {
           this.user = user;
-          console.log('Usuario recibido:', user);  // Verifica la respuesta aquí
           this.initialUserValues = { ...user }; // Almacena los valores iniciales
          
           this.form = this.fb.group({
@@ -48,8 +47,8 @@ export class DetalleClientePageComponent implements OnInit {
             surname: [user.surname, [ Validators.required,  Validators.pattern( this.validatorsUserService.surnamePattern ) ]],
             email: [user.email, [ Validators.required, Validators.pattern(this.validatorsUserService.emailPattern) ]],
             tlf: [user.tlf, [ Validators.required,  Validators.pattern( this.validatorsUserService.tlfPattern ) ]],
-            password: [user.password, [ Validators.required, ]],
-            password2: [user.password, [ Validators.required, ]],
+            password: ['', [this.passwordRequiredValidator()]], // Password con validación condicional
+            password2: ['', [this.passwordRequiredValidator()]],
           },{
             validators: [
               this.validatorsUserService.isFieldOneEqualFieldTwo('password', 'password2'),
@@ -60,6 +59,32 @@ export class DetalleClientePageComponent implements OnInit {
     } else {
       console.log("no existe el usuario");
     }
+  }
+
+  // Método condicional para la validación del campo password
+  passwordRequiredValidator() {
+    return (control: AbstractControl): ValidationErrors | null => {
+     // Recuperamos el patrón de contraseña desde el servicio
+    const passwordPattern = this.validatorsUserService.passwordPattern;
+
+      // Si el control tiene un valor distinto de "" (es decir, si el usuario cambia la contraseña)
+      if (control.value && control.value.trim() !== '') {
+        // Primero validamos que el campo no esté vacío (required)
+      if (!control.value.trim()) {
+        return { required: true }; // Campo obligatorio
+      }
+
+      // Validamos el patrón de la contraseña
+      if (!passwordPattern.test(control.value)) {
+        return { pattern: true }; // Contraseña no cumple con el patrón
+      }
+
+      return null; // Si pasa ambas validaciones, es válido
+    }
+
+    // Si el campo está vacío (es decir, no tocó la contraseña), no hay error de validación
+    return null;
+  };
   }
 
   // Comprueba si en el campo hay errores cuando toca
@@ -85,6 +110,11 @@ export class DetalleClientePageComponent implements OnInit {
     
     const userForm = this.form!.value;
 
+    // Si la contraseña no fue modificada, mantener la contraseña original
+    if (!userForm.password) {
+      userForm.password = this.user!.password;  // Mantener la contraseña original
+    }
+
     this.usuarioService.update(this.user!.id, userForm)
       .subscribe({
         next: () => {
@@ -102,9 +132,14 @@ export class DetalleClientePageComponent implements OnInit {
   resetForm() {
     if (confirm('¿Estás seguro de que deseas reestablecer los cambios?')) {
       if (this.initialUserValues) {
-        this.form?.reset({ ...this.initialUserValues, password2: this.initialUserValues.password });
+        // Crear un objeto con los valores iniciales, pero excluyendo password y password2
+        const { password, ...resetValues } = { ...this.initialUserValues };
+  
+        // Restablecer el formulario con los valores ajustados (sin password y password2)
+        this.form?.reset(resetValues);
       }
     }
+
   }
 
   // Navegación para volver al listado de usuarios

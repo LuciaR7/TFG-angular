@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-listado-partes-page',
   templateUrl: './listado-partes-page.component.html',
-  styleUrl: './listado-partes-page.component.css',
+  styleUrl: './listado-partes-page.component.css'
 })
 export class ListadoPartesPageComponent implements OnInit {
 

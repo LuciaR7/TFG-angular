@@ -1,23 +1,30 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { RoutesConstants } from '../../../shared/constants/routes.constants';
 import { UsuarioService } from '../../../shared/service/usuario.service';
 import { Usuario } from '../../../shared/interfaces/usuario.interface';
 import { DialogService } from '../../../shared/service/dialog.service';
+import { getHorariosPaginatorIntl } from '../../../shared/global.functions';
 
 @Component({
   selector: 'app-listado-clientes-page',
   templateUrl: './listado-clientes-page.component.html',
-  styleUrls: ['./listado-clientes-page.component.css']
+  styleUrls: ['./listado-clientes-page.component.css'],
+  providers: [
+    //Necesario para internacionalizacion de texto paginator de mat-table
+    { provide: MatPaginatorIntl, useValue: getHorariosPaginatorIntl() }
+  ]
 })
 export class ListadoClientesPageComponent implements OnInit, AfterViewInit{
   
   //**Propiedades**//
   displayedColumns: string[] = ['id', 'nombre', 'apellidos', 'email', 'acciones'];
+  displayedColumnsS: string[] = ['nombre', 'email', 'acciones'];
   dataSource: MatTableDataSource<Usuario> = new MatTableDataSource();
+  isLoading = true;
 
   //**Decoradores**//
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -57,18 +64,40 @@ export class ListadoClientesPageComponent implements OnInit, AfterViewInit{
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
-    // Establecer el orden predeterminado y activar la columna de 'id' por defecto
-    this.sort.sort({ id: 'id', start: 'desc', disableClear: true });
-
     // Marcar el componente para una verificación de cambios
     this.cdr.detectChanges();
   }
 
+  //Indica si la tabla esta vacia de registros `true`, o no `false`.
+  get esTablaVacia():boolean{
+
+    if(this.dataSource.data.length === 0){
+        return true;
+    } 
+    return false;
+  }
+
   loadAll():void {
-    this.usuarioService.list()
-    .subscribe(users => {
-      this.dataSource.data = users;
-    });
+    this.isLoading = true; // Activa el spinner
+    this.usuarioService.list().subscribe(
+      users => {
+          this.dataSource.data = users;
+          this.isLoading = false; // Desactiva el spinner
+
+          // Fuerza la detección de cambios
+          this.cdr.detectChanges();
+
+          // Aplica el orden por defecto en la tabla si el sort está disponible
+          if (this.sort) {
+            this.dataSource.sort = this.sort; // Conecta el `sort`
+            this.sort.sort({ id: 'id', start: 'desc', disableClear: true }); // Aplica el orden descendente
+          }
+      },
+      error => {
+        console.error('Error al cargar los usuarios:', error);
+        this.isLoading = false; // Desactiva el spinner incluso si hay un error
+      }
+    );
   }
 
   applyFilter(event: Event) {

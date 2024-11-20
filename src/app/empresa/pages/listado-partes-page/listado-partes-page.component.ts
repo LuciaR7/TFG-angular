@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RoutesConstants } from '../../../shared/constants/routes.constants';
@@ -9,19 +9,26 @@ import { ParteService } from '../../../shared/service/parte.service';
 import { Usuario } from '../../../shared/interfaces/usuario.interface';
 import { UsuarioService } from '../../../shared/service/usuario.service';
 import { DialogService } from '../../../shared/service/dialog.service';
+import { getHorariosPaginatorIntl } from '../../../shared/global.functions';
 
 @Component({
   selector: 'app-listado-partes-page',
   templateUrl: './listado-partes-page.component.html',
-  styleUrls: ['./listado-partes-page.component.css']
+  styleUrls: ['./listado-partes-page.component.css'],
+  providers: [
+    //Necesario para internacionalizacion de texto paginator de mat-table
+    { provide: MatPaginatorIntl, useValue: getHorariosPaginatorIntl() }
+  ]
 })
 export class ListadoPartesPageComponent implements OnInit, AfterViewInit {
   
   //**Propiedades**//
-  displayedColumns: string[] = ['id', 'usuario', 'dispositivo' , 'estado', 'fechaCreacion' ,'fechaEstimada', 'acciones'];
+  displayedColumns: string[] = ['id', 'usuario', 'dispositivo' , 'estado', 'fechaCreacion','fechaEstimada', 'acciones'];
+  displayedColumnsS: string[] = [ 'usuario', 'dispositivo' , 'fechaCreacion', 'acciones'];
   dataSource: MatTableDataSource<Parte> = new MatTableDataSource();
   usuarioId?: number; // Variable para almacenar el usuarioId
   usuarios: Usuario [] = []; // Lista para almacenar los usuarios
+  isLoading = true;
 
   //**Decoradores**//
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -72,12 +79,17 @@ export class ListadoPartesPageComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
-    // Establecer el orden predeterminado
-    this.sort.active = 'id';
-    this.sort.direction = 'desc';
-
     // Marcar el componente para una verificación de cambios
     this.cdr.detectChanges();
+  }
+
+   //Indica si la tabla esta vacia de registros `true`, o no `false`.
+   get esTablaVacia():boolean{
+    
+    if(this.dataSource.data.length === 0){
+        return true;
+    } 
+    return false;
   }
 
   loadUsuarios(): void {
@@ -88,19 +100,47 @@ export class ListadoPartesPageComponent implements OnInit, AfterViewInit {
   }
 
   loadPartes(): void {
+    this.isLoading = true; // Activa el spinner
+
     if (this.usuarioId) {
       // Si usuarioId está definido, cargar los partes de ese usuario
-      this.parteService.getPartesByUsuarioId(this.usuarioId)
-        .subscribe(partes => {
-          this.dataSource.data = partes;
+      this.parteService.getPartesByUsuarioId(this.usuarioId).subscribe(
+        partes => {
+            this.dataSource.data = partes;
+            this.isLoading = false; // Desactiva el spinner después del retraso
+            
+            // Fuerza la detección de cambios
+            this.cdr.detectChanges();
+
+            // Aplica el orden por defecto en la tabla si el sort está disponible
+            if (this.sort) {
+              this.dataSource.sort = this.sort; // Conecta el `sort`
+              this.sort.sort({ id: 'id', start: 'desc', disableClear: true }); // Aplica el orden descendente
+            }
+        },
+        error => {
+            console.error('Error al cargar partes', error);
+            this.isLoading = false; // Desactiva el spinner si ocurre un error
         });
-    } else {
+
+    }else {
       // Si no hay usuarioId, cargar todos los partes
-      this.parteService.list()
-        .subscribe(partes => {
-          this.dataSource.data = partes;
-        });
-    }
+      this.parteService.list().subscribe(
+        partes => {
+            this.dataSource.data = partes;
+            this.isLoading = false; // Desactiva el spinner después de recibir la respuesta
+            this.cdr.detectChanges();
+            // Aplica el orden por defecto en la tabla si el sort está disponible
+            if (this.sort) {
+              this.dataSource.sort = this.sort; // Conecta el sort
+              this.sort.sort({ id: 'id', start: 'desc', disableClear: true }); // Aplica el orden descendente
+            }
+      }, 
+        error => {
+          console.error('Error al cargar partes', error);
+          this.isLoading = false; // Desactiva el spinner si ocurre un error
+      });
+    } 
   }
 
   //Obtener el nombre del usuario para mostrarlo en la tabla
@@ -127,7 +167,9 @@ export class ListadoPartesPageComponent implements OnInit, AfterViewInit {
   }
 
   verHistorial(id: number): void {
-    this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_HISTORIAL_PARTE_ADMIN, id]);
+    this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_HISTORIAL_PARTE_ADMIN, id], {
+      queryParams: { usuarioId: this.usuarioId }
+    });
   }
 
   deleteParte(parte: Parte): void {

@@ -11,8 +11,13 @@
     </div>
 </div>
 
+<!-- Spinner de carga -->
+<div *ngIf="isLoading" class="loading-spinner">
+    <mat-spinner></mat-spinner>
+</div>
+
 <!-- Contenedor general historial y formulario -->
-<div class="principContainer" customFlexbox="column" cfGap="40px">
+<div *ngIf="!isLoading" class="principContainer" customFlexbox="column" cfGap="40px">
 
 
     <mat-form-field appearance="fill">
@@ -59,7 +64,16 @@
     
             <!-- No coincide la búsqueda del filtro -->
             <tr class="mat-row" *matNoDataRow>
-                <td class="mat-cell" colspan="5">No hay datos que coincidan con el filtro "{{input.value}}"</td>
+                <td class="mat-cell" colspan="5" [attr.colspan]="displayedColumns.length">
+                    <!-- Caso 1: No tenemos datos-->
+                    @if (esTablaVacia) {
+                      <span> No se ha creado ninguna intervención</span>
+                    }
+                    <!-- Caso 2: No hay coincincidencias de busqueda-->
+                    @if (!esTablaVacia) {
+                        <span> No hay intervenciones que coincidan con el filtro "{{input.value}}"</span>
+                    }
+                  </td>
             </tr>
         </table>
     

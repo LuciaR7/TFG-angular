@@ -21,8 +21,8 @@ export class NewClientePageComponent {
      // email: ['', [ Validators.required, Validators.pattern(this.validatorsUserService.emailPattern) ], [  this.emailValidator ]],
      email: ['', [ Validators.required, Validators.pattern(this.validatorsUserService.emailPattern) ]],
      tlf: ['', [ Validators.required,  Validators.pattern( this.validatorsUserService.tlfPattern ) ]],
-     password: ['', [ Validators.required ]],
-     //password: ['', [Validators.required, Validators.pattern( this.validatorsUserService.passwordPattern ) ]],
+     //password: ['', [ Validators.required ]],
+     password: ['', [Validators.required, Validators.pattern( this.validatorsUserService.passwordPattern ) ]],
      password2: ['', [ Validators.required ]],
    }, {
       validators: [

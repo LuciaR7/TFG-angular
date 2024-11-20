@@ -53,7 +53,7 @@ export class ValidatorsUserService {
  */
 
  // Validator password
- readonly passwordPattern: string = '^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,30}$';
+ readonly passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,30}$/;
 
 
  /* Explicacion patron password
@@ -69,8 +69,7 @@ export class ValidatorsUserService {
 
 // Validator Campo: Comprueba si en el campo hay errores cuando toca
 public isValidField( form: FormGroup, field: string ) {
-  return form.controls[field].errors
-  && form.controls[field].touched;
+  return form.controls[field].errors && form.controls[field].touched;
 }
 
 // Validator Errores Campo: Mensaje de error específico dependiendo del campo
@@ -103,8 +102,7 @@ public getFieldError( form: FormGroup, field: string ): string | null {
   //Contraseña 1 Registro
   } else if((field === 'password') &&
       (form.controls[field].hasError('pattern')) ) {
-    return 'La contraseña debe contener al menos un número,' +
-           'una letra mayúscula y una minúscula y al menos 8 caracteres.'
+        return 'La contraseña debe contener al menos un número, una letra mayúscula y una minúscula, y al menos 8 caracteres.';
   //Contraseña 2 Registro
   } else if(field === 'password2') {
     return 'Las contraseñas deben de ser iguales.'

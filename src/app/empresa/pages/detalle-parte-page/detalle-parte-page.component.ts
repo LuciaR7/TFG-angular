@@ -111,7 +111,7 @@ export class DetallePartePageComponent implements OnInit {
           next: () => {
             this.errors = [];
             this.dialogService.openDialog('Éxito', 'El parte se ha actualizado correctamente.');
-            this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_PARTES_ADMIN])
+            this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_PARTES_ADMIN, this.parte?.usuarioId])
           },
           error: response => {
             this.errors = response.error.errors;
@@ -130,8 +130,8 @@ export class DetallePartePageComponent implements OnInit {
   }
 
   // Navegación para volver al listado de partes
-  goBack():void {
-    this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_PARTES_ADMIN]);
+  goBack(id: number):void {
+    this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_PARTES_ADMIN, id]);
   }
 
 }

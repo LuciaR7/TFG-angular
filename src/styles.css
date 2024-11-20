@@ -67,6 +67,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     margin-bottom: 20px; /* Espaciado inferior */
 }
 
+/** Spinner de carga **/
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+}
 
 
 

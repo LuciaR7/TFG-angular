@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RoutesConstants } from '../../../shared/constants/routes.constants';
@@ -9,12 +9,17 @@ import { AuthService } from '../../../auth/services/auth.service';
 import { IntervencionService } from '../../../shared/service/intervencion.service';
 import { Intervencion } from '../../../shared/interfaces/intervencion.interface';
 import { DialogService } from '../../../shared/service/dialog.service';
+import { getHorariosPaginatorIntl } from '../../../shared/global.functions';
 
 
 @Component({
   selector: 'app-historial-parte-page',
   templateUrl: './historial-parte-page.component.html',
   styleUrl: './historial-parte-page.component.css',
+  providers: [
+    //Necesario para internacionalizacion de texto paginator de mat-table
+    { provide: MatPaginatorIntl, useValue: getHorariosPaginatorIntl() }
+  ]
 })
 export class HistorialPartePageComponent implements OnInit, AfterViewInit {
 
@@ -22,10 +27,12 @@ export class HistorialPartePageComponent implements OnInit, AfterViewInit {
   form: FormGroup;
   currentUser: string;
   parteId!: string; // ID del parte a cargar
+  usuarioId!: number;
   dataSource: MatTableDataSource<Intervencion> = new MatTableDataSource();
   displayedColumns: string[] = ['id', 'fecha', 'tecnico', 'intervencion'];
   today: Date = new Date(); // Obtener la fecha actual
   errors: string[] = [];
+  isLoading = true;
 
   //**Decoradores**//
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -62,6 +69,14 @@ export class HistorialPartePageComponent implements OnInit, AfterViewInit {
     // Guarda el id del parte seleccionado en el formulario de intervención
     this.form.get('parteId')?.setValue(parseInt(this.parteId));
 
+    // Obtener el usuarioId desde los query params
+    this.route.queryParamMap.subscribe(params => {
+      const usuarioIdParam = params.get('usuarioId');
+      if (usuarioIdParam) {
+        this.usuarioId = +usuarioIdParam; // Convertir a número
+      }
+    });
+
     // Cargar las intervenciones asociadas al parte usando el ID
     if (this.parteId) {
       this.loadHistorial(Number(this.parteId));
@@ -92,19 +107,41 @@ export class HistorialPartePageComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
-    // Establecer el orden predeterminado
-    this.sort.active = 'id';
-    this.sort.direction = 'desc';
-
     // Marcar el componente para una verificación de cambios
     this.cdr.detectChanges();
   }
 
+  //Indica si la tabla esta vacia de registros `true`, o no `false`.
+    get esTablaVacia():boolean{
+
+      if(this.dataSource.data.length === 0){
+          return true;
+      } 
+      return false;
+    }
+
   loadHistorial(parteId: number) {
-    this.intervencionService.getIntervencionesByParteId(parteId)
-      .subscribe((historial) => {
-        this.dataSource.data = historial;
-      });
+    this.isLoading = true; // Activa el spinner
+
+    this.intervencionService.getIntervencionesByParteId(parteId).subscribe(
+      (historial) => {
+          this.dataSource.data = historial;
+          this.isLoading = false; // Desactiva el spinner
+          
+          // Fuerza la detección de cambios
+          this.cdr.detectChanges();
+
+          // Aplica el orden por defecto en la tabla si el sort está disponible
+          if (this.sort) {
+            this.dataSource.sort = this.sort; // Conecta el `sort`
+            this.sort.sort({ id: 'id', start: 'desc', disableClear: true }); // Aplica el orden descendente
+          }
+      },
+      (error) => {
+        console.error('Error al cargar el historial:', error);
+        this.isLoading = false; // Desactiva el spinner en caso de error
+      }
+    );
   }
 
   // Aplicar filtros
@@ -172,6 +209,10 @@ export class HistorialPartePageComponent implements OnInit, AfterViewInit {
 
   // Navegación para volver al listado de partes
   goBack():void {
-    this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_PARTES_ADMIN]);
+    if (this.usuarioId) {
+      this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_PARTES_ADMIN, this.usuarioId]);
+    } else {
+      this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_PARTES_ADMIN]);
+    }
   }
 }
