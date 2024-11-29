@@ -14,12 +14,16 @@ export class RequestedWithInterceptor implements HttpInterceptor {
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
+        let requestToForward = req;
+
         /* Añade cabecera X-Requested-With, para que el servidor no muestre
         un dialog para requerir credenciales si no se esta logueado */        
-        const requestToForward = req.clone({ setHeaders: { 'X-Requested-With': 'XMLHttpRequest' } });
+        requestToForward = req.clone({ setHeaders: { 'X-Requested-With': 'XMLHttpRequest' } });
 
         return next.handle(requestToForward);
 
     }
-
+        
 }
+
+

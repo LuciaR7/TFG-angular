@@ -9,7 +9,7 @@ import { ParteService } from '../../../shared/service/parte.service';
 import { Usuario } from '../../../shared/interfaces/usuario.interface';
 import { UsuarioService } from '../../../shared/service/usuario.service';
 import { DialogService } from '../../../shared/service/dialog.service';
-import { getHorariosPaginatorIntl } from '../../../shared/global.functions';
+import { getTablasPaginatorIntl } from '../../../shared/global.functions';
 
 @Component({
   selector: 'app-listado-partes-page',
@@ -17,7 +17,7 @@ import { getHorariosPaginatorIntl } from '../../../shared/global.functions';
   styleUrls: ['./listado-partes-page.component.css'],
   providers: [
     //Necesario para internacionalizacion de texto paginator de mat-table
-    { provide: MatPaginatorIntl, useValue: getHorariosPaginatorIntl() }
+    { provide: MatPaginatorIntl, useValue: getTablasPaginatorIntl() }
   ]
 })
 export class ListadoPartesPageComponent implements OnInit, AfterViewInit {
@@ -107,8 +107,14 @@ export class ListadoPartesPageComponent implements OnInit, AfterViewInit {
       this.parteService.getPartesByUsuarioId(this.usuarioId).subscribe(
         partes => {
             this.dataSource.data = partes;
-            this.isLoading = false; // Desactiva el spinner después del retraso
             
+            // Asegurar que el paginator se asigna correctamente
+            setTimeout(() => {
+              this.dataSource.paginator = this.paginator;
+            });
+
+            this.isLoading = false; // Desactiva el spinner
+  
             // Fuerza la detección de cambios
             this.cdr.detectChanges();
 
@@ -128,6 +134,10 @@ export class ListadoPartesPageComponent implements OnInit, AfterViewInit {
       this.parteService.list().subscribe(
         partes => {
             this.dataSource.data = partes;
+            // Asegurar que el paginator se asigna correctamente
+            setTimeout(() => {
+              this.dataSource.paginator = this.paginator;
+            });
             this.isLoading = false; // Desactiva el spinner después de recibir la respuesta
             this.cdr.detectChanges();
             // Aplica el orden por defecto en la tabla si el sort está disponible

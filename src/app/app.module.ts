@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,9 +9,8 @@ import { SharedModule } from './shared/shared.module';
 
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { ReactiveFormsModule } from '@angular/forms';
-import { WithCredentialsInterceptor } from './auth/interceptors/with-credential-interceptors';
 import { RequestedWithInterceptor } from './auth/interceptors/requested-with-interceptor';
-import { XsrfInterceptor } from './auth/interceptors/xsrf-interceptor';
+import { AuthorizationHeaderInterceptor } from './auth/interceptors/authorization-header -interceptor';
 
 
 
@@ -33,13 +32,11 @@ import { XsrfInterceptor } from './auth/interceptors/xsrf-interceptor';
     ],
 
     providers: [
-        provideAnimationsAsync(),
-        // provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         {
-            //Asegura que las cookies de sesión se envíen con todas las solicitudes.
+            //Añade un encabezado de autorización (token) a las solicitudes HTTP
             provide: HTTP_INTERCEPTORS,
-            useClass: WithCredentialsInterceptor,
+            useClass: AuthorizationHeaderInterceptor,
             multi: true
         },
         {
@@ -48,12 +45,8 @@ import { XsrfInterceptor } from './auth/interceptors/xsrf-interceptor';
             useClass: RequestedWithInterceptor,
             multi: true
         },
-        {
-            //Protege contra ataques CSRF al incluir el token CSRF en las cabeceras de las solicitudes.
-            provide: HTTP_INTERCEPTORS,
-            useClass: XsrfInterceptor,
-            multi: true
-        }
+
+        provideAnimationsAsync(),
     ]
   })
 export class AppModule { }

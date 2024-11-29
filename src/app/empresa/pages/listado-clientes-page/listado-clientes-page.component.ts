@@ -7,7 +7,7 @@ import { RoutesConstants } from '../../../shared/constants/routes.constants';
 import { UsuarioService } from '../../../shared/service/usuario.service';
 import { Usuario } from '../../../shared/interfaces/usuario.interface';
 import { DialogService } from '../../../shared/service/dialog.service';
-import { getHorariosPaginatorIntl } from '../../../shared/global.functions';
+import { getTablasPaginatorIntl } from '../../../shared/global.functions';
 
 @Component({
   selector: 'app-listado-clientes-page',
@@ -15,7 +15,7 @@ import { getHorariosPaginatorIntl } from '../../../shared/global.functions';
   styleUrls: ['./listado-clientes-page.component.css'],
   providers: [
     //Necesario para internacionalizacion de texto paginator de mat-table
-    { provide: MatPaginatorIntl, useValue: getHorariosPaginatorIntl() }
+    { provide: MatPaginatorIntl, useValue: getTablasPaginatorIntl() }
   ]
 })
 export class ListadoClientesPageComponent implements OnInit, AfterViewInit{
@@ -82,8 +82,14 @@ export class ListadoClientesPageComponent implements OnInit, AfterViewInit{
     this.usuarioService.list().subscribe(
       users => {
           this.dataSource.data = users;
+          
+          // Asegurar que el paginator se asigna correctamente
+          setTimeout(() => {
+            this.dataSource.paginator = this.paginator;
+          });
+          
           this.isLoading = false; // Desactiva el spinner
-
+          
           // Fuerza la detección de cambios
           this.cdr.detectChanges();
 

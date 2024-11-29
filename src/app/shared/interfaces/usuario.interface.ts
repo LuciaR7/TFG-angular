@@ -1,7 +1,7 @@
 import { Parte } from "./parte.interface";
 
 export interface Usuario {
-    id       : number;
+    id        : number;
     name      : string;
     surname   : string;
     email     : string;

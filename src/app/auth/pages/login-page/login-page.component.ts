@@ -4,7 +4,7 @@ import { RoutesConstants } from '../../../shared/constants/routes.constants';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidatorsUserService } from '../../../shared/validators/validatorsUser.service';
-import { Rol } from '../../../shared/interfaces/usuario.interface';
+import { LoginRequest } from '../../interfaces/loginRequest';
 
 
 @Component({
@@ -16,6 +16,8 @@ import { Rol } from '../../../shared/interfaces/usuario.interface';
 export class LoginPageComponent {
 
   //**Propiedades**//
+  loginError: string = "";
+
   public formLogin: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.pattern( this.validatorsUserService.emailPattern )]],
     password: ['', [Validators.required, Validators.pattern( this.validatorsUserService.passwordPattern ) ]],
@@ -49,35 +51,64 @@ export class LoginPageComponent {
         return;
     }
 
-    console.log(this.formLogin.value);
-
     //Una vez se guarda, reestablecer los campos
     this.formLogin.reset();
+
+    // Eliminar errores del control 'email'
+    const emailControl = this.formLogin.get('email');
+    if (emailControl) {
+      emailControl.setErrors(null); // Elimina errores
+    }
+
+    // Eliminar errores del control 'password'
+    const passwordControl = this.formLogin.get('password');
+    if (passwordControl) {
+      passwordControl.setErrors(null); // Elimina errores
+    }
   }
+
+  
 
   //Comprobar credenciales usuario
   onLogin(): void {
 
-    const email:string = this.formLogin.controls['email'].value;
-    const password:string = this.formLogin.controls['password'].value;
+    if(this.formLogin.valid){
+      this.loginError="";
+      this.authService.login(this.formLogin.value as LoginRequest).subscribe({
+        next: (userData) => {
+          // Guardamos el token en sessionStorage
+          sessionStorage.setItem('token', userData.token);
+          sessionStorage.setItem('userRole', userData.rol);
+          sessionStorage.setItem('userId', userData.id.toString());
 
-      this.authService.login(email, password)
-          .subscribe({
-              next: user => {
-                if(user.rol === Rol.USER){
-                  // Redirigir a la ruta que contiene el ID del usuario
-                  this.router.navigate([RoutesConstants.RUTA_USERS, 
-                                        RoutesConstants.RUTA_LIST_PARTES_USERS, user.id]);
-                  //this.router.navigate([RoutesConstants.RUTA_USERS])
-                }else{
-                  this.router.navigate([RoutesConstants.RUTA_ADMIN])
-                }
+          // Verificación del rol para redirigir
+          const userRole = userData.rol;
+          const userId = userData.id;
 
-              },
-              error: err=>{
-                  alert("Acceso denegado: "+err)
-              }
-          });
+          if (userRole === 'USER' && userId) {
+            // Redirigir a la ruta de "user list parts" usando el userId
+            this.router.navigate([RoutesConstants.RUTA_USERS, RoutesConstants.RUTA_LIST_PARTES_USERS, userId]);
+          } else if (userRole === 'ADMIN') {
+            // Redirigir a la ruta de administrador
+            this.router.navigate([RoutesConstants.RUTA_ADMIN]);
+          }
+        },
+      error: (errorData) => {
+        console.error(errorData);
+        this.loginError = errorData.message || 'Credenciales incorrectas';
+      },
+      complete: () => {
+        this.formLogin.reset();
+      }
+      })
+
+    }
+    else{
+      this.formLogin.markAllAsTouched();
+      alert("Error al ingresar los datos.");
+    }
+
+    
   }
 
 }

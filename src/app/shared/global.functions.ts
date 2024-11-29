@@ -1,6 +1,6 @@
 import { MatPaginatorIntl } from "@angular/material/paginator";
 
-export function getHorariosPaginatorIntl() {
+export function getTablasPaginatorIntl() {
     const paginatorIntl = new MatPaginatorIntl();
     paginatorIntl.itemsPerPageLabel ="Elementos por página";
     paginatorIntl.nextPageLabel = "Siguiente página";

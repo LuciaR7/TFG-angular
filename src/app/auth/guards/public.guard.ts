@@ -15,13 +15,14 @@ export class PublicGuard implements CanMatch, CanActivate {
   ) { }
 
   private checkAuthStatus(): Observable<boolean> {
-    return this.authService.checkRolAuth().pipe(
+    return this.authService.checkRole().pipe(
       map(rol => {
         if (rol === Rol.ADMIN) {
           this.router.navigate([RoutesConstants.RUTA_ADMIN]);
           return false;
         } else if (rol === Rol.USER) {
-          this.router.navigate([RoutesConstants.RUTA_USERS]);
+          const userId = sessionStorage.getItem('userId');
+          this.router.navigate([RoutesConstants.RUTA_USERS, RoutesConstants.RUTA_LIST_PARTES_USERS, userId]);
           return false;
         }
         return true;

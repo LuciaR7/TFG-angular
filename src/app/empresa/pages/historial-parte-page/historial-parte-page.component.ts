@@ -9,7 +9,7 @@ import { AuthService } from '../../../auth/services/auth.service';
 import { IntervencionService } from '../../../shared/service/intervencion.service';
 import { Intervencion } from '../../../shared/interfaces/intervencion.interface';
 import { DialogService } from '../../../shared/service/dialog.service';
-import { getHorariosPaginatorIntl } from '../../../shared/global.functions';
+import { getTablasPaginatorIntl } from '../../../shared/global.functions';
 
 
 @Component({
@@ -18,7 +18,7 @@ import { getHorariosPaginatorIntl } from '../../../shared/global.functions';
   styleUrl: './historial-parte-page.component.css',
   providers: [
     //Necesario para internacionalizacion de texto paginator de mat-table
-    { provide: MatPaginatorIntl, useValue: getHorariosPaginatorIntl() }
+    { provide: MatPaginatorIntl, useValue: getTablasPaginatorIntl() }
   ]
 })
 export class HistorialPartePageComponent implements OnInit, AfterViewInit {
@@ -126,9 +126,14 @@ export class HistorialPartePageComponent implements OnInit, AfterViewInit {
     this.intervencionService.getIntervencionesByParteId(parteId).subscribe(
       (historial) => {
           this.dataSource.data = historial;
+
+          // Asegurar que el paginator se asigna correctamente
+          setTimeout(() => {
+            this.dataSource.paginator = this.paginator;
+          });
+
           this.isLoading = false; // Desactiva el spinner
-          
-          // Fuerza la detección de cambios
+
           this.cdr.detectChanges();
 
           // Aplica el orden por defecto en la tabla si el sort está disponible

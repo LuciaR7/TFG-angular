@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { tap } from 'rxjs/operators';
 import { Usuario } from '../interfaces/usuario.interface';
-import { environment } from '../../../environments/environments';
+import { environment } from '../../../environments/environment';
 
  
 @Injectable({
