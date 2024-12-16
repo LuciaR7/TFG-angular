@@ -1,12 +1,10 @@
 .mat-mdc-form-field {
     width: 100%;
 }
-
-td, th {
-    width: 20%;
-}
-
 .mat-table {
+    table-layout: fixed; /* Ancho fijo para evitar exceso de espacio */
+    width: 100%; /* Controla el ancho total de la tabla */
+    margin: auto; /* Centra la tabla en el espacio disponible */
     background-color: #f0eaea; /* Color de fondo de la tabla */
 }
 
@@ -22,3 +20,16 @@ td, th {
     background-color: #ada6a6; /* Color de fondo del encabezado */
     color: #fff; /* Color del texto del encabezado */
 }
+
+/* Definir anchos específicos para las columnas */ 
+  .col-fecha {
+    width: 25%; /* Columna Fecha */
+  }
+  
+  .col-tecnico {
+    width: 35%; /* Columna Técnico */
+  }
+  
+  .col-intervencion {
+    width: 40%; /* Columna Intervención */
+  }

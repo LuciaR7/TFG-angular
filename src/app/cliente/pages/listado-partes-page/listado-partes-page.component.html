@@ -10,11 +10,11 @@
       <cdk-virtual-scroll-viewport itemSize="100" style="height: 100%; width: 100%;">
         <mat-card *cdkVirtualFor="let parte of partes$ | async" matTooltip="Abrir" (click)="onSelectParte(parte)">
           <mat-card-header>
-            <mat-card-title>{{ parte.id }}</mat-card-title>
+            <mat-card-title>{{ parte.dispositivo }}</mat-card-title>
             <mat-card-subtitle>{{ parte.fechaCreacion | date: 'dd/MM/yyyy' }}</mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>
-            <p><strong>Dispositivo:</strong> {{ parte.dispositivo }}</p>
+            <p><strong>Id:</strong> {{ parte.id }}</p>
           </mat-card-content>
         </mat-card>
       </cdk-virtual-scroll-viewport>

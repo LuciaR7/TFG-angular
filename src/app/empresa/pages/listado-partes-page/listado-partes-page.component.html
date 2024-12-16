@@ -2,10 +2,15 @@
 <div class="title" customFlexbox="row" cFAlign="space-between center" cFGap="10px" style="padding-inline: 40px;">
   <div>RicoRepair: Listado de partes de intervención</div>
     <!-- Botón añadir nuevo parte -->
-  <div customFlexbox="" cfHide.xs>
+  <div customFlexbox="row" cFGap="10px" cfHide.xs>
     <button mat-raised-button style="background-color: #54d258" 
           (click)="goNewParte()">Nuevo Parte
           <mat-icon>add</mat-icon>
+    </button>
+    <!-- Botón volver -->
+    <button mat-raised-button color="warn"
+          (click)="goBack()">Volver
+          <mat-icon>undo</mat-icon>
     </button>
   </div>
 </div>
@@ -19,54 +24,60 @@
 <!-- Contenedor general listado partes -->
 <div *ngIf="!isLoading" class="principContainer" customFlexbox="column" cFAlign="start stretch">
     
-    <mat-form-field appearance="fill">
-      <mat-label>Filtrar</mat-label>
-      <input matInput (keyup)="applyFilter($event)" placeholder="Filtrar..." #input>
-    </mat-form-field>
+  <!-- Filtro y subtitulo pantalla grande -->
+    <div customFlexbox="column" cFGap="10px" cfHide.s cfHide.xs>
+        <div class="subtitulo">{{getDatosUsuario(usuarioId!)}} </div>
+        <mat-form-field appearance="fill" style="width: 500px">
+            <mat-label>Filtrar</mat-label>
+            <mat-icon matPrefix>search</mat-icon>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Filtrar..." #input>
+        </mat-form-field>
+    </div>
   
+    <!-- Tabla pantalla grande -->
     <div class="mat-elevation-z8" cfHide.s cfHide.xs>
       <table mat-table [dataSource]="dataSource" matSort class="mat-table">
     
         <!-- Columna ID -->
         <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-          <td mat-cell *matCellDef="let parte"> {{parte.id}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="col-id"> ID </th>
+          <td mat-cell *matCellDef="let parte" class="col-id"> {{parte.id}} </td>
         </ng-container>
 
         <!-- Columna Usuario -->
         <ng-container matColumnDef="usuario">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> CLIENTE </th>
-          <td mat-cell *matCellDef="let parte"> {{getUsuarioNombre(parte.usuarioId)}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="col-usuario"> CLIENTE </th>
+          <td mat-cell *matCellDef="let parte" class="col-usuario"> {{getNombreUsuario(parte.usuarioId)}} </td>
         </ng-container>
 
         <!-- Columna Dispositivo -->
         <ng-container matColumnDef="dispositivo">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> DISPOSITIVO </th>
-          <td mat-cell *matCellDef="let parte"> {{parte.dispositivo}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="col-dispositivo"> DISPOSITIVO </th>
+          <td mat-cell *matCellDef="let parte" class="col-dispositivo"> {{parte.dispositivo}} </td>
         </ng-container>
     
         <!-- Columna Estado -->
         <ng-container matColumnDef="estado">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> ESTADO </th>
-          <td mat-cell *matCellDef="let parte"> {{parte.estado}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="col-estado"> ESTADO </th>
+          <td mat-cell *matCellDef="let parte" class="col-estado"> {{parte.estado}} </td>
         </ng-container>
 
         <!-- Columna Fecha Entrada -->
         <ng-container matColumnDef="fechaCreacion">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA ENTRADA </th>
-          <td mat-cell *matCellDef="let parte"> {{parte.fechaCreacion | date: 'dd/MM/yyyy'}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="col-fechaEntrada"> FECHA ENTRADA </th>
+          <td mat-cell *matCellDef="let parte" class="col-fechaC"> {{parte.fechaCreacion | date: 'dd/MM/yyyy'}} </td>
         </ng-container>
     
         <!-- Columna Fecha Salida -->
         <ng-container matColumnDef="fechaEstimada">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA SALIDA </th>
-          <td mat-cell *matCellDef="let parte"> {{parte.fechaEstimada | date: 'dd/MM/yyyy'}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="col-fechaSalida"> FECHA SALIDA </th>
+          <td mat-cell *matCellDef="let parte" class="col-fechaSalida"> {{parte.fechaEstimada | date: 'dd/MM/yyyy'}} </td>
         </ng-container>
     
         <!-- Columna Acciones -->
         <ng-container matColumnDef="acciones">
-          <th mat-header-cell *matHeaderCellDef> ACCIONES </th>
-          <td mat-cell *matCellDef="let parte">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="col-acciones"> ACCIONES </th>
+          <td mat-cell *matCellDef="let parte" class="col-acciones">
             <div class="action-buttons">
               <button mat-mini-fab color="primary" matTooltip="Editar"
                       (click)="detalleParte(parte.id)">
@@ -74,7 +85,7 @@
               </button>
       
               <button mat-mini-fab color="accent" matTooltip="Historial"
-                      (click)="verHistorial(parte.id)">
+                      (click)="verHistorial(parte.id, parte.usuarioId)">
                 <mat-icon>view_list</mat-icon>
               </button>
       
@@ -113,33 +124,50 @@
           </td>
         </tr>
       </table>     
+    </div> <!-- FIN Tabla pantalla grande -->
+
+    <!-- Filtro y subtitulo pantalla pequeña -->
+    <div customFlexbox="column" cFGap="10px" cfHide cfShow.s cfShow.xs>
+        <div class="subtituloS">{{getDatosUsuario(usuarioId!)}} </div>
+        <mat-form-field appearance="fill" style="width: 200px">
+            <mat-label>Filtrar</mat-label>
+            <mat-icon matPrefix>search</mat-icon>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Filtrar..." #input>
+        </mat-form-field>
     </div>
 
+    <!-- Tabla pantalla pequeña -->
     <div class="mat-elevation-z8" cfHide cfShow.s cfShow.xs>
       <table mat-table [dataSource]="dataSource" matSort class="mat-table">
   
         <!-- Columna Usuario -->
         <ng-container matColumnDef="usuario">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> CLIENTE </th>
-          <td mat-cell *matCellDef="let parte"> {{getUsuarioNombre(parte.usuarioId)}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="col-usuario"> CLIENTE </th>
+          <td mat-cell *matCellDef="let parte" class="col-usuario"> {{getNombreUsuario(parte.usuarioId)}} </td>
         </ng-container>
 
         <!-- Columna Dispositivo -->
         <ng-container matColumnDef="dispositivo">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> DISPOSITIVO </th>
-          <td mat-cell *matCellDef="let parte"> {{parte.dispositivo}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="col-dispositivo"> DISPOSITIVO </th>
+          <td mat-cell *matCellDef="let parte" class="col-dispositivo"> {{parte.dispositivo}} </td>
+        </ng-container>
+
+        <!-- Columna Estado -->
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="col-estado"> ESTADO </th>
+          <td mat-cell *matCellDef="let parte" class="col-estado"> {{parte.estado}} </td>
         </ng-container>
   
         <!-- Columna Fecha Entrada -->
         <ng-container matColumnDef="fechaCreacion">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA ENTRADA </th>
-          <td mat-cell *matCellDef="let parte"> {{parte.fechaCreacion | date: 'dd/MM/yyyy'}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="col-fechaEntrada"> FECHA ENTRADA </th>
+          <td mat-cell *matCellDef="let parte" class="col-fechaEntrada"> {{parte.fechaCreacion | date: 'dd/MM/yyyy'}} </td>
         </ng-container>
     
         <!-- Columna Acciones -->
         <ng-container matColumnDef="acciones">
-          <th mat-header-cell *matHeaderCellDef> ACCIONES </th>
-          <td mat-cell *matCellDef="let parte">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="col-acciones"> ACCIONES </th>
+          <td mat-cell *matCellDef="let parte" class="col-acciones">
             <div class="action-buttons">
               <button mat-mini-fab color="primary" matTooltip="Editar"
                       (click)="detalleParte(parte.id)">
@@ -147,7 +175,7 @@
               </button>
       
               <button mat-mini-fab color="accent" matTooltip="Historial"
-                      (click)="verHistorial(parte.id)">
+                      (click)="verHistorial(parte.id, parte.usuarioId)">
                 <mat-icon>view_list</mat-icon>
               </button>
       
@@ -173,7 +201,7 @@
     
         <!-- No coincide la búsqueda del filtro-->
         <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" colspan="4" [attr.colspan]="displayedColumnsS.length">
+          <td class="mat-cell" colspan="5" [attr.colspan]="displayedColumnsS.length">
             <!-- Caso 1: No tenemos datos-->
             @if (esTablaVacia) {
               <span> No se ha creado ningún parte</span>
@@ -184,9 +212,8 @@
             }
           </td>
         </tr>
-      </table>
-      
-    </div>
+      </table> 
+    </div> <!-- FIN Tabla pantalla pequeña -->
 
     <!-- El paginador único para ambas tablas -->
     <div class="mat-elevation-z8">

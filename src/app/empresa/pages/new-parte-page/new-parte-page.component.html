@@ -1,6 +1,13 @@
 <!-- Título central -->
-<div class="title" customFlexbox="row" cFAlign="center center" cFGap="10px">
-    RicoRepair: Crear nuevo parte de intervención
+<div class="title" customFlexbox="row" cFAlign="space-between center" cFGap="10px" style="padding-inline: 40px;">
+    <div>RicoRepair: Crear nuevo parte de intervención</div>
+    <!-- Botón volver -->
+    <div cfHide.s cfHide.xs>
+        <button mat-raised-button color="warn"
+                (click)="goBack()">Volver
+                <mat-icon>undo</mat-icon>
+        </button>
+    </div>
 </div>
 
 <!-- Contenedor general Parte -->
@@ -32,7 +39,7 @@
                     </mat-autocomplete>
                     
                     <span>
-                        Datos Cliente ~ {{ usuarioForm.get('usuarioId')?.value }} ~
+                        Datos Cliente #{{ usuarioForm.get('usuarioId')?.value }}
                     </span>
                 </mat-card-title>
             </mat-card-header>
@@ -206,9 +213,6 @@
                                 </button>
                                 <button type="button" mat-raised-button color="warn" (click)="goBack()">
                                     <mat-icon>cancel</mat-icon> Cancelar
-                                </button>
-                                <button type="button" mat-raised-button color="accent" (click)="generarQR()">
-                                    <mat-icon>qr_code</mat-icon> Generar QR
                                 </button>
                             </div>
                         </div>

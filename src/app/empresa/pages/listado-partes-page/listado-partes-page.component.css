@@ -1,12 +1,7 @@
-.mat-mdc-form-field {
-    width: 100%;
-}
-
-td, th {
-    width: 14.28%;
-}
-
 .mat-table {
+    table-layout: fixed; /* Ancho fijo para evitar exceso de espacio */
+    width: 100%; /* Que ocupe todo el espacio disponible */
+    margin: auto; /* Centra la tabla en el espacio disponible */
     background-color: #f0eaea; /* Color de fondo de la tabla */
 }
 
@@ -23,7 +18,59 @@ td, th {
     color: #fff; /* Color del texto del encabezado */
 }
 
+/* Definir anchos específicos para las columnas */
+.col-id {
+    width: 10%; /* Ancho específico para la columna ID */
+  }
+  
+  .col-usuario {
+    width: 20%; /* Columna Cliente */
+  }
+  
+  .col-dispositivo {
+    width: 20%; /* Columna Dispositivo */
+  }
+  
+  .col-estado {
+    width: 15%; /* Columna Estado */
+  }
+  
+  .col-fechaEntrada {
+    width: 15%; /* Columna Fecha Entrada */
+  }
+  
+  .col-fechaSalida {
+    width: 15%; /* Columna Fecha Salida */
+  }
+  
+  .col-acciones {
+    width: 10%; /* Columna Acciones */
+  }
+  
+  /* Ajustes para pantallas pequeñas */
+  @media (max-width: 768px) {  
+    .col-usuario {
+      width: 30%; 
+    }
+  
+    .col-dispositivo {
+      width: 10%;
+    }
+
+    .col-estado {
+      width: 10%;
+    }
+  
+    .col-fechaEntrada {
+      width: 30%; /* Agrupar las fechas en pantallas pequeñas */
+    }
+  
+    .col-acciones {
+      width: 20%; /* Ajustar acciones para pantallas pequeñas */
+    }
+  }
+
 .action-buttons button {
-    margin: 5px 10px 5px 0px; /*t,r,b,l*/
+    margin: 5px 4px;
 }
   

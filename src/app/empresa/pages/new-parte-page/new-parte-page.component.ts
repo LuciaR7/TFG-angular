@@ -4,7 +4,7 @@ import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Usuario } from '../../../shared/interfaces/usuario.interface';
 import { ParteService } from '../../../shared/service/parte.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RoutesConstants } from '../../../shared/constants/routes.constants';
 import { UsuarioService } from '../../../shared/service/usuario.service';
 import { Parte } from '../../../shared/interfaces/parte.interface';
@@ -22,6 +22,7 @@ export class NewPartePageComponent implements OnInit{
   //**Propiedades**//
   usuarioForm: FormGroup;
   intervencionForm: FormGroup;
+  usuarioId?: number; // Variable para almacenar el usuarioId
   isEditing: boolean = false; // Controla si se está editando el usuario
   usuarioControl = this.fb.control('');
   usuariosFiltrados!: Observable<Usuario[]>;
@@ -42,10 +43,11 @@ export class NewPartePageComponent implements OnInit{
 
   //**Constructor**//
   constructor( 
+    private router: Router,
+    private route: ActivatedRoute,
     private fb: FormBuilder, 
     private usuarioService: UsuarioService,
     private parteService: ParteService,
-    private router: Router,
     private validatorsParteService: ValidatorsParteService,
     private dialogService: DialogService
   ) {
@@ -67,7 +69,7 @@ export class NewPartePageComponent implements OnInit{
         fechaCreacion: [this.today, Validators.required],
         dispositivo: ['', [ Validators.required,  Validators.pattern( this.validatorsParteService.dispositPattern ) ]],
         otrosMateriales: [null],
-        estado: ['', Validators.required],
+        estado: ['PE', Validators.required],
         fechaEstimada: ['', Validators.required],
         motivoCliente: ['', Validators.required],
         informeEmpresa: [null],
@@ -78,6 +80,11 @@ export class NewPartePageComponent implements OnInit{
 
   //**Métodos**//  
   ngOnInit(): void {
+    // Obtener el ID del usuario desde la ruta
+    const usuarioIdString = this.route.snapshot.paramMap.get('id')!; // Asegúrate de que el ID no sea null
+    // Guarda el id del usuario seleccionado
+    this.usuarioId = (parseInt(usuarioIdString));
+
     // Cargar la lista de usuarios
     this.usuarioService.list().subscribe(users => {
       this.users = users;
@@ -86,6 +93,30 @@ export class NewPartePageComponent implements OnInit{
         map(value => this.filtrarUsuarios(value || ''))
       );
     });
+
+    // Si hay un usuarioId, cargar los datos del usuario
+    if (this.usuarioId) {
+      this.usuarioService.get(this.usuarioId).subscribe(user => {
+        // Llenar el formulario con los datos del usuario
+        this.usuarioForm.patchValue({
+          usuarioId: user.id,
+          name: user.name,
+          surname: user.surname,
+          email: user.email,
+          tlf: user.tlf,
+          password: user.password
+        });
+
+        // Autocompletar el control del nombre completo
+        this.usuarioControl.setValue(`${user.name} ${user.surname}`);
+
+        // Rellenar el formulario de intervención con el ID del usuario
+        this.intervencionForm.get('usuarioId')?.setValue(user.id);
+
+        // Activar el modo de edición
+        this.isEditing = true;
+      });
+    }
 
     // Suscribirse a los cambios en los campos 'name' y 'surname'
     this.usuarioForm.valueChanges.subscribe(() => {
@@ -181,13 +212,14 @@ export class NewPartePageComponent implements OnInit{
     return this.validatorsParteService.getFieldError( this.intervencionForm, field );
   }
 
-  // Navegación para volver al listado de partes
+  // Navegación para volver
   goBack():void {
-    this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_PARTES_ADMIN]);
+    if (this.usuarioId) {
+      this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_PARTES_ADMIN, this.usuarioId]);
+    } else {
+      this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_PARTES_ADMIN]);
+    }
   }
 
-  generarQR() {
-    console.log('QR generado');
-  }
 
 }

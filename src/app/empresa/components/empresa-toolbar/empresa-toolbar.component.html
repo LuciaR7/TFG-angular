@@ -2,12 +2,15 @@
 <mat-toolbar color="primary">
 
     <img class="logo-rs" src="assets/images/logo-rs.png"> 
-    
 
-    <div>
-        <span>{{ user?.email }}</span>
+    <div cFGap="10px" cfHide.s cfHide.xs>
+        <span>{{ user?.email }} </span>
          &nbsp;
-        <span>{{ user?.rol }}</span>
+        <span> {{ user?.rol }}</span>
+    </div>
+
+    <div customFlexbox="" cfHide cfShow.s cfShow.xs>
+        <span>{{ user?.email }}</span>
     </div>
        
     <span class="spacer"></span>

@@ -24,7 +24,7 @@ export class ListadoPartesPageComponent implements OnInit, AfterViewInit {
   
   //**Propiedades**//
   displayedColumns: string[] = ['id', 'usuario', 'dispositivo' , 'estado', 'fechaCreacion','fechaEstimada', 'acciones'];
-  displayedColumnsS: string[] = [ 'usuario', 'dispositivo' , 'fechaCreacion', 'acciones'];
+  displayedColumnsS: string[] = [ 'usuario', 'dispositivo', 'estado', 'fechaCreacion', 'acciones'];
   dataSource: MatTableDataSource<Parte> = new MatTableDataSource();
   usuarioId?: number; // Variable para almacenar el usuarioId
   usuarios: Usuario [] = []; // Lista para almacenar los usuarios
@@ -50,6 +50,10 @@ export class ListadoPartesPageComponent implements OnInit, AfterViewInit {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       this.usuarioId = id ? +id : undefined;
+     
+      // Ajusta las columnas a mostrar dependiendo del usuarioId
+      this.adjustColumns();
+
       this.loadUsuarios(); // Cargar usuarios
     });
     
@@ -59,7 +63,7 @@ export class ListadoPartesPageComponent implements OnInit, AfterViewInit {
         case 'id':
           return parte.id;
         case 'usuario':
-          return this.getUsuarioNombre(parte.usuarioId);
+          return this.getNombreUsuario(parte.usuarioId);
         case 'dispositivo':
           return parte.dispositivo; 
         case 'estado':
@@ -92,6 +96,18 @@ export class ListadoPartesPageComponent implements OnInit, AfterViewInit {
     return false;
   }
 
+  adjustColumns(): void {
+    if (this.usuarioId) {
+      // Usuario específico: ocultar columna "Cliente"
+      this.displayedColumns = ['id', 'dispositivo', 'estado', 'fechaCreacion', 'fechaEstimada', 'acciones'];
+      this.displayedColumnsS = ['dispositivo', 'estado', 'fechaCreacion', 'acciones'];
+    } else {
+      // Listado general: incluir columna "Cliente"
+      this.displayedColumns = ['id', 'usuario', 'dispositivo', 'estado', 'fechaCreacion', 'fechaEstimada', 'acciones'];
+      this.displayedColumnsS = ['usuario', 'dispositivo', 'estado', 'fechaCreacion', 'acciones'];
+    }
+  }
+
   loadUsuarios(): void {
     this.usuarioService.list().subscribe(usuarios => {
       this.usuarios = usuarios; // Almacenar la lista de usuarios
@@ -101,6 +117,9 @@ export class ListadoPartesPageComponent implements OnInit, AfterViewInit {
 
   loadPartes(): void {
     this.isLoading = true; // Activa el spinner
+
+    // Ajusta las columnas en función del usuarioId
+    this.adjustColumns();
 
     if (this.usuarioId) {
       // Si usuarioId está definido, cargar los partes de ese usuario
@@ -153,8 +172,17 @@ export class ListadoPartesPageComponent implements OnInit, AfterViewInit {
     } 
   }
 
+  //Obtener datos del usuario
+  getDatosUsuario(usuarioId: number): string {
+    if (!this.usuarios || this.usuarios.length === 0) {
+      return 'Cargando...'; // Mensaje temporal si los usuarios aún no están disponibles
+    }
+    const usuario = this.usuarios.find(u => u.id === usuarioId);
+    return usuario ? `${usuario.name} ${usuario.surname} (${usuario.email} Tlf: ${usuario.tlf})` : ''; // Maneja el caso si no se encuentra el usuario
+  }
+
   //Obtener el nombre del usuario para mostrarlo en la tabla
-  getUsuarioNombre(usuarioId: number): string {
+  getNombreUsuario(usuarioId: number): string {
     if (!this.usuarios || this.usuarios.length === 0) {
       return 'Cargando...'; // Mensaje temporal si los usuarios aún no están disponibles
     }
@@ -164,22 +192,31 @@ export class ListadoPartesPageComponent implements OnInit, AfterViewInit {
 
   // Aplicar filtros
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+  
+    // Ajuste del filtro
+    this.dataSource.filterPredicate = (data: Parte, filter: string) => {
+      return (
+        data.id.toString().includes(filter) || // Filtrar por ID
+        (this.getNombreUsuario(data.usuarioId).toLowerCase().includes(filter)) || // Filtrar por usuario
+        (data.dispositivo && data.dispositivo.toLowerCase().includes(filter)) || // Filtrar por dispositivo
+        (data.estado && data.estado.toLowerCase().includes(filter)) || // Filtrar por estado
+        (data.fechaCreacion && new Date(data.fechaCreacion).toLocaleDateString().includes(filter)) || // Filtrar por fechaCreacion
+        (data.fechaEstimada && new Date(data.fechaEstimada).toLocaleDateString().includes(filter)) // Filtrar por fechaEstimada
+      );
+    };
+  
+    // Aplicar el filtro al dataSource
+    this.dataSource.filter = filterValue;
   }
+  
 
   detalleParte(id: number): void {
     this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_DETAIL_PARTE_ADMIN, id]);
   }
 
-  verHistorial(id: number): void {
-    this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_HISTORIAL_PARTE_ADMIN, id], {
-      queryParams: { usuarioId: this.usuarioId }
-    });
+  verHistorial(id: number, usuarioId: number): void {
+    this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_HISTORIAL_PARTE_ADMIN, id, usuarioId]);
   }
 
   deleteParte(parte: Parte): void {
@@ -193,7 +230,21 @@ export class ListadoPartesPageComponent implements OnInit, AfterViewInit {
   }
 
   goNewParte():void  {
-    this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_NEW_PARTE_ADMIN]);
+    if (this.usuarioId) {
+      this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_NEW_PARTE_ADMIN, this.usuarioId]);
+    } else {
+      this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_NEW_PARTE_ADMIN]);
+    }
+
+  }
+
+  // Navegación para volver
+  goBack():void {
+    if (this.usuarioId) {
+      this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_CLIENTS_ADMIN]);
+    } else {
+      this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_HOME_ADMIN]);
+    }
   }
 
   imprimirParte(parte: Parte): void {
@@ -219,7 +270,7 @@ export class ListadoPartesPageComponent implements OnInit, AfterViewInit {
             <table>
               <tr><th>ID Parte</th><td>${parte.id}</td></tr>
               <tr><th>ID Cliente</th><td>${parte.usuarioId}</td></tr>
-              <tr><th>Cliente</th><td>${this.getUsuarioNombre(parte.usuarioId)}</td></tr>
+              <tr><th>Cliente</th><td>${this.getNombreUsuario(parte.usuarioId)}</td></tr>
               <tr><th>Dispositivo</th><td>${parte.dispositivo}</td></tr>
               <tr><th>Otros Materiales</th><td>${parte.otrosMateriales}</td></tr>
               <tr><th>Estado</th><td>${parte.estado}</td></tr>

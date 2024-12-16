@@ -55,16 +55,16 @@ export class LoginPageComponent {
     this.formLogin.reset();
 
     // Eliminar errores del control 'email'
-    const emailControl = this.formLogin.get('email');
-    if (emailControl) {
-      emailControl.setErrors(null); // Elimina errores
-    }
+    // const emailControl = this.formLogin.get('email');
+    // if (emailControl) {
+    //   emailControl.setErrors(null); // Elimina errores
+    // }
 
     // Eliminar errores del control 'password'
-    const passwordControl = this.formLogin.get('password');
-    if (passwordControl) {
-      passwordControl.setErrors(null); // Elimina errores
-    }
+    // const passwordControl = this.formLogin.get('password');
+    // if (passwordControl) {
+    //   passwordControl.setErrors(null); // Elimina errores
+    // }
   }
 
   
@@ -93,14 +93,11 @@ export class LoginPageComponent {
             this.router.navigate([RoutesConstants.RUTA_ADMIN]);
           }
         },
-      error: (errorData) => {
-        console.error(errorData);
-        this.loginError = errorData.message || 'Credenciales incorrectas';
-      },
-      complete: () => {
-        this.formLogin.reset();
-      }
-      })
+        error: (errorData) => {
+          console.error(errorData);
+          this.loginError = errorData.message || 'Credenciales incorrectas';
+        }
+      });
 
     }
     else{

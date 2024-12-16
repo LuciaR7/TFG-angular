@@ -10,6 +10,9 @@ import { IntervencionService } from '../../../shared/service/intervencion.servic
 import { Intervencion } from '../../../shared/interfaces/intervencion.interface';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { getTablasPaginatorIntl } from '../../../shared/global.functions';
+import { ParteService } from '../../../shared/service/parte.service';
+import { UsuarioService } from '../../../shared/service/usuario.service';
+import { Usuario } from '../../../shared/interfaces/usuario.interface';
 
 
 @Component({
@@ -27,9 +30,11 @@ export class HistorialPartePageComponent implements OnInit, AfterViewInit {
   form: FormGroup;
   currentUser: string;
   parteId!: string; // ID del parte a cargar
-  usuarioId!: number;
+  usuarioId!: number; // ID del usuario a cargar
+  dispositivo: string = ''; // Dispositivo de la intervención
+  usuarioNombre: string = ''; // Nombre del usuario 
   dataSource: MatTableDataSource<Intervencion> = new MatTableDataSource();
-  displayedColumns: string[] = ['id', 'fecha', 'tecnico', 'intervencion'];
+  displayedColumns: string[] = ['fecha', 'tecnico', 'intervencion'];
   today: Date = new Date(); // Obtener la fecha actual
   errors: string[] = [];
   isLoading = true;
@@ -44,6 +49,8 @@ export class HistorialPartePageComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private authService: AuthService,
+    private usuarioService: UsuarioService,
+    private parteService: ParteService,
     private intervencionService: IntervencionService,
     private dialogService: DialogService,
     private cdr: ChangeDetectorRef
@@ -69,17 +76,16 @@ export class HistorialPartePageComponent implements OnInit, AfterViewInit {
     // Guarda el id del parte seleccionado en el formulario de intervención
     this.form.get('parteId')?.setValue(parseInt(this.parteId));
 
-    // Obtener el usuarioId desde los query params
-    this.route.queryParamMap.subscribe(params => {
-      const usuarioIdParam = params.get('usuarioId');
-      if (usuarioIdParam) {
-        this.usuarioId = +usuarioIdParam; // Convertir a número
-      }
-    });
+    // Obtener el ID del usuario desde la ruta
+    const usuarioIdString = this.route.snapshot.paramMap.get('usuarioId')!; // Asegúrate de que el ID no sea null
+    // Guarda el id del usuario seleccionado
+    this.usuarioId = (parseInt(usuarioIdString));
 
     // Cargar las intervenciones asociadas al parte usando el ID
     if (this.parteId) {
       this.loadHistorial(Number(this.parteId));
+      this.loadNombreUsuario(this.usuarioId); //Carga los datos del usuario
+      this.loadDispositivo(Number(this.parteId)); // Cargar datos del dispositivo
     } else {
       console.error('No se encontró el ID del parte');
     }
@@ -87,8 +93,6 @@ export class HistorialPartePageComponent implements OnInit, AfterViewInit {
      // Establecer la columna de id como la columna de orden predeterminada
      this.dataSource.sortingDataAccessor = (intervencion: Intervencion, property: string) => {
       switch (property) {
-        case 'id':
-          return intervencion.id;
         case 'fecha':
           return new Date(intervencion.fecha).getTime();
         case 'tecnico':
@@ -139,7 +143,7 @@ export class HistorialPartePageComponent implements OnInit, AfterViewInit {
           // Aplica el orden por defecto en la tabla si el sort está disponible
           if (this.sort) {
             this.dataSource.sort = this.sort; // Conecta el `sort`
-            this.sort.sort({ id: 'id', start: 'desc', disableClear: true }); // Aplica el orden descendente
+            this.sort.sort({ id: 'fecha', start: 'desc', disableClear: true }); // Aplica el orden descendente
           }
       },
       (error) => {
@@ -149,15 +153,47 @@ export class HistorialPartePageComponent implements OnInit, AfterViewInit {
     );
   }
 
+  // Método para obtener el nombre del dispositivo
+  loadDispositivo(parteId: number): void {
+    this.parteService.get(parteId).subscribe({
+      next: (detalle) => {
+        this.dispositivo = detalle.dispositivo;
+      },
+      error: (err) => console.error('Error al cargar el detalle del parte:', err)
+    });
+  }
+
+  // Método para obtener el nombre del usuario
+  loadNombreUsuario(usuarioId: number): void {
+    this.usuarioService.get(usuarioId).subscribe(
+      usuario => {
+        this.usuarioNombre = `${usuario.name} ${usuario.surname}`; // Establece el nombre completo
+      },
+      error => {
+        console.error('Error al obtener el nombre del usuario:', error);
+      }
+    );
+  }
+  
   // Aplicar filtros
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    
+    // Ajuste del filtro
+    this.dataSource.filterPredicate = (data: Intervencion, filter: string): boolean => {
+      const filterDate = data.fecha ? new Date(data.fecha).toLocaleDateString().toLowerCase().includes(filter) : false;
+      const filterTecnico = data.tecnico ? data.tecnico.toLowerCase().includes(filter) : false;
+      const filterIntervencion = data.intervencion ? data.intervencion.toLowerCase().includes(filter) : false;
+  
+      // Devolver true si alguna de las condiciones es verdadera, de lo contrario false
+      return filterDate || filterTecnico || filterIntervencion;
+    };
+  
+    // Aplicar el filtro al dataSource
+    this.dataSource.filter = filterValue;
   }
+  
+    
 
   // Mostrar dialog al presionar una fila
   openDetailDialog(intervencion: Intervencion): void {
@@ -197,7 +233,6 @@ export class HistorialPartePageComponent implements OnInit, AfterViewInit {
     this.currentUser = `${this.authService.currentUser?.name} ${this.authService.currentUser?.surname}`;
 
     this.form.reset({
-      parteId: parseInt(this.parteId),
       fecha: this.today,
       tecnico: this.currentUser,
       intervencion: '',

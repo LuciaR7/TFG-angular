@@ -1,12 +1,7 @@
-.mat-mdc-form-field {
-  width: 100%;
-}
-
-td, th {
-  width: 20%;
-}
-
 .mat-table {
+  table-layout: fixed; /* Ancho fijo para evitar exceso de espacio */
+  width: 100%; /* Controla el ancho total de la tabla */
+  margin: auto; /* Centra la tabla en el espacio disponible */
   background-color: #f0eaea; /* Color de fondo de la tabla */
 }
 
@@ -23,13 +18,48 @@ td, th {
   color: #fff; /* Color del texto del encabezado */
 }
 
-.action-buttons button {
-  margin: 5px 8px 5px auto; /*t,r,b,l*/
+/* Definir anchos específicos para las columnas */
+.col-id {
+  width: 10%; /* Ancho específico para la columna ID */
 }
 
-.action-buttons button:last-child {
-  margin-right: 0; /* Elimina el margen del último botón */
+.col-nombre {
+  width: 20%; /* Columna Nombre */
 }
+
+.col-apellidos {
+  width: 25%; /* Columna Apellidos */
+}
+
+.col-email {
+  width: 30%; /* Columna Email */
+}
+
+.col-acciones {
+  width: 15%; /* Columna Acciones */
+}
+
+/* Ajustar para pantallas pequeñas */
+@media (max-width: 768px) {
+  .col-nombre {
+    width: 25%;
+  }
+  .col-email {
+    width: 40%;
+  }
+
+  .col-acciones {
+    width: 35%;
+  }
+}
+
+.action-buttons button {
+  margin: 5px 4px;
+}
+
+
+
+
 
 
   
