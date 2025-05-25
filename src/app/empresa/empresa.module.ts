@@ -10,11 +10,13 @@ import { ListadoPartesPageComponent } from './pages/listado-partes-page/listado-
 import { ListadoClientesPageComponent } from './pages/listado-clientes-page/listado-clientes-page.component';
 import { HomeEmpresaPageComponent } from './pages/home-empresa-page/home-empresa-page.component';
 import { EmpresaToolbarComponent } from './components/empresa-toolbar/empresa-toolbar.component';
-import { DetallePartePageComponent } from './pages/detalle-parte-page/detalle-parte-page.component';
+import { EditarPartePageComponent } from './pages/editar-parte-page/editar-parte-page.component';
 import { HistorialPartePageComponent } from './pages/historial-parte-page/historial-parte-page.component';
-import { DetalleClientePageComponent } from './pages/detalle-cliente-page/detalle-cliente-page.component';
-import { IntervencionDetailDialogComponent } from './components/intervencion-detail-dialog/intervencion-detail-dialog.component';
+import { EditarClientePageComponent } from './pages/editar-cliente-page/editar-cliente-page.component';
+import { DetalleIntervencionDialogComponent } from './components/detalle-intervencion-dialog/detalle-intervencion-dialog.component';
 import { DialogMessageComponent } from './components/dialog-message/dialog-message.component';
+import { DetalleParteDialogComponent } from './components/detalle-parte-dialog/detalle-parte-dialog.component';
+import { DetalleClienteDialogComponent } from './components/detalle-cliente-dialog/detalle-cliente-dialog.component';
 
 
 
@@ -28,11 +30,13 @@ import { DialogMessageComponent } from './components/dialog-message/dialog-messa
     ListadoClientesPageComponent,
     HomeEmpresaPageComponent,
     EmpresaToolbarComponent,
-    DetallePartePageComponent,
+    EditarPartePageComponent,
     HistorialPartePageComponent,
-    DetalleClientePageComponent,
-    IntervencionDetailDialogComponent,
+    EditarClientePageComponent,
+    DetalleIntervencionDialogComponent,
     DialogMessageComponent,
+    DetalleParteDialogComponent,
+    DetalleClienteDialogComponent,
   ],
   imports: [
     MaterialModule,

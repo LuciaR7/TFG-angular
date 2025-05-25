@@ -8,11 +8,11 @@ import { Usuario } from '../../../shared/interfaces/usuario.interface';
 import { DialogService } from '../../../shared/service/dialog.service';
 
 @Component({
-  selector: 'app-detalle-cliente-page',
-  templateUrl: './detalle-cliente-page.component.html',
-  styleUrl: './detalle-cliente-page.component.css'
+  selector: 'app-editar-cliente-page',
+  templateUrl: './editar-cliente-page.component.html',
+  styleUrl: './editar-cliente-page.component.css'
 })
-export class DetalleClientePageComponent implements OnInit {
+export class EditarClientePageComponent implements OnInit {
 
   //**Propiedades**//
   form?: FormGroup;

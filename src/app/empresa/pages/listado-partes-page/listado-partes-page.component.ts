@@ -144,8 +144,16 @@ export class ListadoPartesPageComponent implements OnInit, AfterViewInit {
             }
         },
         error => {
-            console.error('Error al cargar partes', error);
             this.isLoading = false; // Desactiva el spinner si ocurre un error
+            if (error.status === 404) {
+              // Mostrar mensaje al usuario: "Usuario no encontrado"
+              alert('Usuario no encontrado. Por favor, verifica el ID.');
+              // Redirigir al listado de clientes
+              this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_CLIENTS_ADMIN]);
+            } else {
+              // Otros errores
+              alert('Error al cargar partes');
+            }
         });
 
     }else {
@@ -166,7 +174,6 @@ export class ListadoPartesPageComponent implements OnInit, AfterViewInit {
             }
       }, 
         error => {
-          console.error('Error al cargar partes', error);
           this.isLoading = false; // Desactiva el spinner si ocurre un error
       });
     } 
@@ -208,6 +215,11 @@ export class ListadoPartesPageComponent implements OnInit, AfterViewInit {
   
     // Aplicar el filtro al dataSource
     this.dataSource.filter = filterValue;
+  }
+
+  // Mostrar dialog con detalles del parte al presionar una fila
+  openDetailParteDialog(parte: Parte): void {
+    this.dialogService.openDialogParte(parte);
   }
   
 

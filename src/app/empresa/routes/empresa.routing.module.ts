@@ -7,9 +7,9 @@ import { NewPartePageComponent } from '../pages/new-parte-page/new-parte-page.co
 import { ListadoClientesPageComponent } from '../pages/listado-clientes-page/listado-clientes-page.component';
 import { NewClientePageComponent } from '../pages/new-cliente-page/new-cliente-page.component';
 import { HomeEmpresaPageComponent } from '../pages/home-empresa-page/home-empresa-page.component';
-import { DetallePartePageComponent } from '../pages/detalle-parte-page/detalle-parte-page.component';
+import { EditarPartePageComponent } from '../pages/editar-parte-page/editar-parte-page.component';
 import { HistorialPartePageComponent } from '../pages/historial-parte-page/historial-parte-page.component';
-import { DetalleClientePageComponent } from '../pages/detalle-cliente-page/detalle-cliente-page.component';
+import { EditarClientePageComponent } from '../pages/editar-cliente-page/editar-cliente-page.component';
 
 const routes: Routes = [
   {
@@ -23,8 +23,8 @@ const routes: Routes = [
       { path: RoutesConstants.RUTA_LIST_PARTES_ADMIN, component: ListadoPartesPageComponent },
       { path: `${RoutesConstants.RUTA_NEW_PARTE_ADMIN}/:id`, component: NewPartePageComponent },
       { path: `${RoutesConstants.RUTA_LIST_PARTES_ADMIN}/:id`, component: ListadoPartesPageComponent },
-      { path: `${RoutesConstants.RUTA_DETAIL_PARTE_ADMIN}/:id`, component: DetallePartePageComponent },
-      { path: `${RoutesConstants.RUTA_DETAIL_CLIENTE_ADMIN}/:id`, component: DetalleClientePageComponent },
+      { path: `${RoutesConstants.RUTA_DETAIL_PARTE_ADMIN}/:id`, component: EditarPartePageComponent },
+      { path: `${RoutesConstants.RUTA_DETAIL_CLIENTE_ADMIN}/:id`, component: EditarClientePageComponent },
       { path: `${RoutesConstants.RUTA_HISTORIAL_PARTE_ADMIN}/:id/:usuarioId`, component: HistorialPartePageComponent },
       { path: '', redirectTo: RoutesConstants.RUTA_HOME_ADMIN, pathMatch: 'full' }, // Ruta por defecto
       { path: '**', redirectTo: RoutesConstants.RUTA_HOME_ADMIN } // Ruta comodín 

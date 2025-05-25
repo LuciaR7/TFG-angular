@@ -1,14 +1,14 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Intervencion } from '../../../shared/interfaces/intervencion.interface';
 
 @Component({
-  selector: 'app-intervencion-detail-dialog',
-  templateUrl: './intervencion-detail-dialog.component.html',
+  selector: 'app-detalle-intervencion-dialog',
+  templateUrl: './detalle-intervencion-dialog.component.html',
   styles: ``
 })
 
-export class IntervencionDetailDialogComponent {
+export class DetalleIntervencionDialogComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Intervencion
   ) {}

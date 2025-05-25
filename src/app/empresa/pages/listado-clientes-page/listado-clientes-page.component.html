@@ -85,7 +85,10 @@
 
       <!-- Cabecera y columnas de la tabla -->
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let user; columns: displayedColumns;"></tr>
+      <tr mat-row *matRowDef="let user; columns: displayedColumns;
+          "(click)="openDetailUsuarioDialog(user)" 
+          matTooltip="Haz clic para ver los detalles del cliente">
+        </tr>
   
       <!-- No coincide la búsqueda del filtro-->
       <tr class="mat-row" *matNoDataRow>
@@ -144,7 +147,10 @@
 
       <!-- Cabecera y columnas de la tabla -->
       <tr mat-header-row *matHeaderRowDef="displayedColumnsS"></tr>
-      <tr mat-row *matRowDef="let user; columns: displayedColumnsS;"></tr>
+      <tr mat-row *matRowDef="let user; columns: displayedColumnsS;
+          "(click)="openDetailUsuarioDialog(user)" 
+          matTooltip="Haz clic para ver los detalles del cliente">
+      </tr>
   
       <!-- No coincide la búsqueda del filtro-->
       <tr class="mat-row" *matNoDataRow>

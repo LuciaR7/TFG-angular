@@ -10,12 +10,12 @@ import { ValidatorsParteService } from '../../../shared/validators/validatorsPar
 import { DialogService } from '../../../shared/service/dialog.service';
 
 @Component({
-  selector: 'app-detalle-parte-page',
-  templateUrl: './detalle-parte-page.component.html',
-  styleUrl: './detalle-parte-page.component.css'
+  selector: 'app-editar-parte-page',
+  templateUrl: './editar-parte-page.component.html',
+  styleUrl: './editar-parte-page.component.css'
 })
 
-export class DetallePartePageComponent implements OnInit {
+export class EditarPartePageComponent implements OnInit {
  
   //**Propiedades**//
   panelOpenState = false; // Estado del panel colapsado

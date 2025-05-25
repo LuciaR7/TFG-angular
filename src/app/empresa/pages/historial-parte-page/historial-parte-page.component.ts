@@ -196,7 +196,7 @@ export class HistorialPartePageComponent implements OnInit, AfterViewInit {
     
 
   // Mostrar dialog al presionar una fila
-  openDetailDialog(intervencion: Intervencion): void {
+  openDetailIntervencionDialog(intervencion: Intervencion): void {
     this.dialogService.openDialogIntervencion(intervencion);
   }
 

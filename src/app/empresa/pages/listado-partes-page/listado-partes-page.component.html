@@ -108,7 +108,10 @@
     
         <!-- Cabecera y columnas de la tabla -->
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let parte; columns: displayedColumns;"></tr>
+        <tr mat-row *matRowDef="let parte; columns: displayedColumns;
+            "(click)="openDetailParteDialog(parte)" 
+            matTooltip="Haz clic para ver los detalles del parte">
+        </tr>
     
         <!-- No coincide la búsqueda del filtro-->
         <tr class="mat-row" *matNoDataRow>
@@ -197,7 +200,10 @@
     
         <!-- Cabecera y columnas de la tabla -->
         <tr mat-header-row *matHeaderRowDef="displayedColumnsS"></tr>
-        <tr mat-row *matRowDef="let parte; columns: displayedColumnsS;"></tr>
+        <tr mat-row *matRowDef="let parte; columns: displayedColumnsS;
+            "(click)="openDetailParteDialog(parte)" 
+            matTooltip="Haz clic para ver los detalles del parte">
+        </tr>
     
         <!-- No coincide la búsqueda del filtro-->
         <tr class="mat-row" *matNoDataRow>

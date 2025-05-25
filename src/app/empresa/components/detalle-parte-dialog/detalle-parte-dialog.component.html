@@ -1,0 +1,17 @@
+
+<h2 mat-dialog-title>Detalle del Parte #{{data.id}}</h2>
+
+<mat-dialog-content>
+  <p><strong>Dispositivo:</strong> {{data.dispositivo}}</p>
+  <p><strong>Id Cliente:</strong> {{data.usuarioId}}</p>
+  <p><strong>Otros Materiales:</strong> {{data.otrosMateriales}}</p>
+  <p><strong>Estado:</strong> {{data.estado}}</p>
+  <p><strong>Fecha Entrada:</strong> {{data.fechaCreacion | date:'dd/MM/yyyy'}}</p>
+  <p><strong>Fecha Estimada Salida:</strong> {{data.fechaEstimada | date:'dd/MM/yyyy'}}</p>
+  <p><strong>Motivo Cliente:</strong> {{data.motivoCliente}}</p>
+  <p><strong>Informe Empresa:</strong> {{data.informeEmpresa}}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close color="warn">Cerrar</button>
+</mat-dialog-actions>

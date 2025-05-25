@@ -1,4 +1,5 @@
 <h2 mat-dialog-title>Detalles de la Intervención</h2>
+
 <mat-dialog-content>
   <p><strong>ID:</strong> {{data.id}}</p>
   <p><strong>Fecha:</strong> {{data.fecha | date: 'dd/MM/yyyy'}}</p>
@@ -6,6 +7,7 @@
   <p><strong>Intervención:</strong> {{data.intervencion}}</p>
   <p><strong>Descripción:</strong> {{data.descripcion}}</p>
 </mat-dialog-content>
+
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>Cerrar</button>
 </mat-dialog-actions>

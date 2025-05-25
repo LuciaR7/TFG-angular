@@ -115,6 +115,11 @@ export class ListadoClientesPageComponent implements OnInit, AfterViewInit{
     }
   }
 
+  // Mostrar dialog con detalles del usuario al presionar una fila
+  openDetailUsuarioDialog(usuario: Usuario): void {
+    this.dialogService.openDialogUsuario(usuario);
+  }
+
   detalleUsuario(id: number): void {
     this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_DETAIL_CLIENTE_ADMIN, id]);
   }

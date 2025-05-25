@@ -65,7 +65,7 @@
             <!-- Cabecera y columnas de la tabla -->
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;
-                "(click)="openDetailDialog(row)" 
+                "(click)="openDetailIntervencionDialog(row)" 
                 matTooltip="Haz clic para ver los detalles">
             </tr>
 
@@ -154,13 +154,13 @@
 
                     <!-- Botones Añadir y Cancelar -->
                     <div customFlexbox="row" cFAlign="end end" cFGap="15px">
-                        <button mat-raised-button type="submit" color="primary">
-                            Añadir
-                            <mat-icon>check</mat-icon>
-                        </button>
                         <button mat-raised-button type="button" color="warn" (click)="resetForm()">
                             Limpiar
                             <mat-icon>clear</mat-icon>
+                        </button>
+                        <button mat-raised-button type="submit" color="primary">
+                            Añadir
+                            <mat-icon>check</mat-icon>
                         </button>
                     </div>
                 </div>
