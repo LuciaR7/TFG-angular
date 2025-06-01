@@ -80,23 +80,23 @@
           <td mat-cell *matCellDef="let parte" class="col-acciones">
             <div class="action-buttons">
               <button mat-mini-fab color="primary" matTooltip="Editar"
-                      (click)="detalleParte(parte.id)">
+                      (click)="detalleParte(parte.id); $event.stopPropagation()">
                 <mat-icon>edit</mat-icon>
               </button>
       
               <button mat-mini-fab color="accent" matTooltip="Historial"
-                      (click)="verHistorial(parte.id, parte.usuarioId)">
+                      (click)="verHistorial(parte.id, parte.usuarioId); $event.stopPropagation()">
                 <mat-icon>view_list</mat-icon>
               </button>
       
               <div class="action-buttons">
                 <button mat-mini-fab color="primary" matTooltip="Imprimir"
-                        (click)="imprimirParte(parte)">
+                        (click)="imprimirParte(parte); $event.stopPropagation()">
                   <mat-icon>print</mat-icon>
                 </button>
                 
                 <button mat-mini-fab color="warn" matTooltip="Eliminar"
-                        (click)="deleteParte(parte)">
+                        (click)="deleteParte(parte); $event.stopPropagation()">
                   <mat-icon>delete</mat-icon>
                 </button>
 
@@ -173,23 +173,23 @@
           <td mat-cell *matCellDef="let parte" class="col-acciones">
             <div class="action-buttons">
               <button mat-mini-fab color="primary" matTooltip="Editar"
-                      (click)="detalleParte(parte.id)">
+                      (click)="detalleParte(parte.id); $event.stopPropagation()">
                 <mat-icon>edit</mat-icon>
               </button>
       
               <button mat-mini-fab color="accent" matTooltip="Historial"
-                      (click)="verHistorial(parte.id, parte.usuarioId)">
+                      (click)="verHistorial(parte.id, parte.usuarioId); $event.stopPropagation()">
                 <mat-icon>view_list</mat-icon>
               </button>
       
               <div class="action-buttons">
                 <button mat-mini-fab color="primary" matTooltip="Imprimir"
-                        (click)="imprimirParte(parte)">
+                        (click)="imprimirParte(parte); $event.stopPropagation()">
                   <mat-icon>print</mat-icon>
                 </button>
                 
                 <button mat-mini-fab color="warn" matTooltip="Eliminar"
-                        (click)="deleteParte(parte)">
+                        (click)="deleteParte(parte); $event.stopPropagation()">
                   <mat-icon>delete</mat-icon>
                 </button>
               
