@@ -120,12 +120,15 @@ export class ListadoClientesPageComponent implements OnInit, AfterViewInit{
     this.dialogService.openDialogUsuario(usuario);
   }
 
-  detalleUsuario(id: number): void {
+  editarUsuario(id: number): void {
     this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_DETAIL_CLIENTE_ADMIN, id]);
   }
 
   verPartes(id: number): void {
-    this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_PARTES_ADMIN, id]);
+    this.router.navigate(
+      [RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_PARTES_ADMIN, id],
+      { state: { origen: 'usuario' } }
+    );
   }
 
   deleteUser(user: Usuario): void {

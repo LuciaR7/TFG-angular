@@ -223,12 +223,16 @@ export class ListadoPartesPageComponent implements OnInit, AfterViewInit {
   }
   
 
-  detalleParte(id: number): void {
-    this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_DETAIL_PARTE_ADMIN, id]);
+  editarParte(id: number): void {
+    this.router.navigate(
+      [RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_DETAIL_PARTE_ADMIN, id],
+      { state: { origen: 'general' } }
+    );
   }
 
   verHistorial(id: number, usuarioId: number): void {
-    this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_HISTORIAL_PARTE_ADMIN, id, usuarioId]);
+    this.router.navigate(
+      [RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_HISTORIAL_PARTE_ADMIN, id, usuarioId]);
   }
 
   deleteParte(parte: Parte): void {

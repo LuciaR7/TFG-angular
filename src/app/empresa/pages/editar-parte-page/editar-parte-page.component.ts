@@ -25,6 +25,7 @@ export class EditarPartePageComponent implements OnInit {
   initialParteValues?: Partial<Parte>;
   today: Date = new Date(); // Obtener la fecha actual
   errors: string[] = [];
+  origenRuta: 'general' | 'usuario' = 'general'; // Capturamos origen ruta listado para poder retornar a él
 
   // Dispositivos y estados de intervención
   estados = [
@@ -48,8 +49,14 @@ export class EditarPartePageComponent implements OnInit {
 
   //**Métodos**// 
   ngOnInit(): void {
-    // Obtén el ID del parte desde la ruta
+    // Obtenemos el ID del parte desde la ruta
     const id = this.route.snapshot.paramMap.get('id');
+    // Obtenemos si el origen de la ruta es del listado general o del de un usuario para poder retornar a él
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras?.state as { origen?: string };
+    if (state?.origen === 'usuario') {
+      this.origenRuta = 'usuario';
+    }
     
     if (id) {
       this.parteService.get(parseInt(id))
@@ -129,9 +136,13 @@ export class EditarPartePageComponent implements OnInit {
     }
   }
 
-  // Navegación para volver al listado de partes
+  // Navegación para volver al listado de partes específico (el del usuario o el general)
   goBack(id: number):void {
-    this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_PARTES_ADMIN, id]);
+    if (this.origenRuta === 'usuario') {
+      this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_PARTES_ADMIN, id]);
+    } else {
+      this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_PARTES_ADMIN]);
+    }
   }
 
 }
