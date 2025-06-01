@@ -16,3 +16,23 @@ mat-card:hover {
 .mat-mdc-form-field {
     width: 100%;
 }
+
+.mensaje-advertencia{
+    background-color: #fff8e1;
+    border: 1px solid #ffecb3;
+    padding: 20px;
+    display: flex;
+    gap: 16px;
+    border-radius: 8px;
+}
+
+.mensaje-icono {
+    color: #ff9800;
+    font-size: 25px;
+}
+
+.mensaje-texto {
+    color: #5d4037;
+    font-size: 18px;
+    line-height: 1.8;
+}

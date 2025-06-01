@@ -7,6 +7,19 @@
   <!-- Listado de partes con scroll virtualizado -->
   <div class="listScroll" customFlexbox="column" cFGap="20px">
       <h1>Listado de Partes</h1>
+
+      <!-- Mensaje si no hay partes -->
+      <mat-card *ngIf="(partes$ | async)?.length === 0" class="mensaje-advertencia">
+        <mat-icon class="mensaje-icono">warning</mat-icon>
+        <div class="mensaje-texto">
+          <strong>Aún no tiene ningún parte creado.</strong>
+          Cualquier problema, póngase en contacto inmediatamente con nosotros.<br>
+          <strong>Teléfono de contacto: </strong>921 43 34 30<br>
+          ¡Gracias!
+        </div>
+      </mat-card>
+
+
       <cdk-virtual-scroll-viewport itemSize="100" style="height: 100%; width: 100%;">
         <mat-card *cdkVirtualFor="let parte of partes$ | async" matTooltip="Abrir" (click)="onSelectParte(parte)">
           <mat-card-header>
