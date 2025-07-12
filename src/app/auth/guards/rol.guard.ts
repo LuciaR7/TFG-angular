@@ -24,9 +24,9 @@ export class RolGuard implements CanMatch, CanActivate {
 
     if (role === 'ADMIN') {
       return true;  // Permitir acceso a la ruta si el rol es ADMIN
-    } else if (role === 'USER') {
-      this.router.navigate([RoutesConstants.RUTA_USERS]);
-      return false;  // Redirigir a la ruta de usuario si el rol es USER
+    } else if (role === 'CLIENT') {
+      this.router.navigate([RoutesConstants.RUTA_CLIENT]);
+      return false;  // Redirigir a la ruta de usuario si el rol es CLIENT
     }
 
     this.router.navigate([RoutesConstants.RUTA_ERROR]);

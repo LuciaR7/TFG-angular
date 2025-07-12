@@ -85,9 +85,9 @@ export class LoginPageComponent {
           const userRole = userData.rol;
           const userId = userData.id;
 
-          if (userRole === 'USER' && userId) {
-            // Redirigir a la ruta de "user list parts" usando el userId
-            this.router.navigate([RoutesConstants.RUTA_USERS, RoutesConstants.RUTA_LIST_PARTES_USERS, userId]);
+          if (userRole === 'CLIENT' && userId) {
+            // Redirigir a la ruta de "clients list parts" usando el userId
+            this.router.navigate([RoutesConstants.RUTA_CLIENT, RoutesConstants.RUTA_LIST_PARTES_CLIENTS, userId]);
           } else if (userRole === 'ADMIN') {
             // Redirigir a la ruta de administrador
             this.router.navigate([RoutesConstants.RUTA_ADMIN]);

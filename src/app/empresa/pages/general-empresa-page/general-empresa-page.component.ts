@@ -33,7 +33,7 @@ export class GeneralEmpresaPageComponent {
 
   // Ir a Usuario
   onUsuario():void {
-    this.router.navigate([RoutesConstants.RUTA_USERS])
+    this.router.navigate([RoutesConstants.RUTA_CLIENT])
   }
 
 }

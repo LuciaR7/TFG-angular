@@ -20,9 +20,9 @@ export class PublicGuard implements CanMatch, CanActivate {
         if (rol === Rol.ADMIN) {
           this.router.navigate([RoutesConstants.RUTA_ADMIN]);
           return false;
-        } else if (rol === Rol.USER) {
-          const userId = sessionStorage.getItem('userId');
-          this.router.navigate([RoutesConstants.RUTA_USERS, RoutesConstants.RUTA_LIST_PARTES_USERS, userId]);
+        } else if (rol === Rol.CLIENT) {
+          const clientId = sessionStorage.getItem('userId');
+          this.router.navigate([RoutesConstants.RUTA_CLIENT, RoutesConstants.RUTA_LIST_PARTES_CLIENTS, clientId]);
           return false;
         }
         return true;

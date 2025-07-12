@@ -13,7 +13,7 @@ export interface Usuario {
   
   
   export enum Rol{
-    USER  = 'Usuario',
+    CLIENT  = 'Cliente',
     ADMIN = 'Administrador',
   }
   

@@ -75,7 +75,7 @@ export class RegisterPageComponent {
       this.authService.register(name, email, password1, password2)
           .subscribe({
               next: user => {
-                  this.router.navigate([RoutesConstants.RUTA_USERS])
+                  this.router.navigate([RoutesConstants.RUTA_CLIENT])
               },
               error: err=>{
                   alert("Acceso denegado: "+err)

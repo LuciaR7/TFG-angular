@@ -3,7 +3,7 @@ export class RoutesConstants{
 
     //RUTAS PRIMER NIVEL
     static readonly RUTA_AUTENTICACION:string = 'auth';
-    static readonly RUTA_USERS:string = 'user';
+    static readonly RUTA_CLIENT:string = 'client';
     static readonly RUTA_ADMIN:string = 'admin';
     static readonly RUTA_ERROR:string = '404';
 
@@ -13,7 +13,7 @@ export class RoutesConstants{
     static readonly RUTA_NEW_ACCOUNT:string = 'new-account';
 
       // RUTAS CLIENTE
-      static readonly RUTA_LIST_PARTES_USERS:string = 'list';
+      static readonly RUTA_LIST_PARTES_CLIENTS:string = 'list';
 
       // RUTAS EMPRESA 
       static readonly RUTA_HOME_ADMIN:string = 'home';

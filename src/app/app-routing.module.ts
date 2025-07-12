@@ -24,7 +24,7 @@ const routes: Routes = [
       },
 
       {
-          path: RoutesConstants.RUTA_USERS,
+          path: RoutesConstants.RUTA_CLIENT,
           //función de carga que llama el import que recibe un argumento y dice
           // que si todo sale bien (then) llama a un módulo del que obtiene algo
           loadChildren: () => import('./cliente/cliente.module').then( m => m.ClienteModule),
