@@ -218,6 +218,7 @@ export class HistorialPartePageComponent implements OnInit, AfterViewInit {
           next: () => {
             this.errors = [];
             this.loadHistorial(parseInt(this.parteId)); // Recargar el historial
+            this.dialogService.openDialog('Éxito', 'La intervención se ha registrado correctamente.');
             this.resetForm();
           },
           error: response => {
@@ -233,7 +234,8 @@ export class HistorialPartePageComponent implements OnInit, AfterViewInit {
     this.currentUser = `${this.authService.currentUser?.name} ${this.authService.currentUser?.surname}`;
 
     this.form.reset({
-      fecha: this.today,
+      parteId: parseInt(this.parteId),
+      fecha: new Date(),
       tecnico: this.currentUser,
       intervencion: '',
       descripcion: null
