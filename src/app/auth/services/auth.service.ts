@@ -40,13 +40,13 @@ export class AuthService {
               console.error('Error al cargar el usuario', error);
           }
       );
-  }
+    }
   
-  // Método que devuelve el usuario actual
-  get currentUser(): Usuario | undefined {
-    // Si el usuario no está guardado, lo cargamos de sessionStorage o de otro lugar
-    return this.user;
-}
+    // Método que devuelve el usuario actual
+    get currentUser(): Usuario | undefined {
+      // Si el usuario no está guardado, lo cargamos de sessionStorage o de otro lugar
+      return this.user;
+    }
 
     login(credentials:LoginRequest):Observable<any>{
       return this.http.post<any>(this.url,credentials).pipe(
@@ -101,19 +101,5 @@ export class AuthService {
       console.error('Error message:', error.message);
       return throwError(() => new Error('Algo falló. Por favor intente nuevamente.'));
     }
-    
-    register( name: string, email: string, password1: string, password2: string ):Observable<Usuario> {
-
-      if((name === 'Lucia Rico') && (email === 'lucia@gmail.com') &&
-         (password1 === 'Lucia.R7') && (password2 === 'Lucia.R7')){
-
-          return of(this.user as Usuario);
-
-      } else {
-          return throwError(()=>"Credenciales incorrectas")
-      }
-
-    }
-
 
 }

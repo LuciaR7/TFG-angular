@@ -10,7 +10,6 @@ export class RoutesConstants{
 
     //RUTAS SEGUNDO NIVEL
     static readonly RUTA_LOGIN:string = 'login';
-    static readonly RUTA_NEW_ACCOUNT:string = 'new-account';
 
       // RUTAS CLIENTE
       static readonly RUTA_LIST_PARTES_CLIENTS:string = 'list';

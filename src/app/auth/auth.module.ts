@@ -7,7 +7,6 @@ import { SharedModule } from '../shared/shared.module';
 import { AuthToolbarComponent } from './components/auth-toolbar/auth-toolbar.component';
 import { GeneralPageComponent } from './pages/general-page/general-page.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
-import { RegisterPageComponent } from './pages/register-page/register-page.component';
 
 
 
@@ -16,7 +15,6 @@ import { RegisterPageComponent } from './pages/register-page/register-page.compo
     AuthToolbarComponent,
     GeneralPageComponent,
     LoginPageComponent,
-    RegisterPageComponent,
 
   ],
   imports: [
