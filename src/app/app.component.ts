@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
 })
 
 export class AppComponent {
-  title = 'TFG-angular';
+  title = 'TFG-Ricorepair';
 }
