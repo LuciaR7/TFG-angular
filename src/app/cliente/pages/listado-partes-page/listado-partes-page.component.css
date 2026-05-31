@@ -1,3 +1,10 @@
+/* Quitamos cursor para que no paraezca editable */
+mat-form-field input[readonly],
+mat-form-field textarea[readonly] {
+  cursor: default;
+  caret-color: transparent;
+}
+
 .listScroll{
     height: 500px;
     width: 100%;
@@ -10,7 +17,7 @@ mat-card {
 }
   
 mat-card:hover {
-    background-color: #f0f0f0; /* Cambia el fondo al pasar el mouse */
+    background-color:rgb(200, 149, 200);
 }
 
 .mat-mdc-form-field {
