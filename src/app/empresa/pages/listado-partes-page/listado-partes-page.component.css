@@ -7,11 +7,22 @@
 
 .mat-mdc-row {
     background-color: #fff4f4; /* Color de fondo de las filas */
+    position: relative;
 }
   
 .mat-mdc-row:hover {
-    background-color: #e0e0e0; /* Color al pasar el mouse sobre una fila */
+    background-color: #ffe1e1; /* Color al pasar el mouse sobre una fila */
     cursor: pointer; /* Cursor al pasar el mouse sobre una fila */
+}
+
+.mat-mdc-row:hover .mat-mdc-cell:first-child::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #f6a7a7;
 }
 
 .mat-mdc-header-row{

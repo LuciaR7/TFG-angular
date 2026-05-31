@@ -56,13 +56,21 @@
                 </div>
             </div>
 
+            <div *ngIf="loginError" style="color: red; text-align: center; margin-top: 10px;">
+              {{ loginError }}
+            </div>
+
             <!-- Separacion inputs-boton-->
             <div style="height: 50px;"></div>
 
             <!-- Boton Ingresar -->
-            <div customFlexbox="row" cFAlign="center center">
+            <div customFlexbox="row" cFAlign="center center" cFGap="10px">
+                <mat-spinner
+                    *ngIf="isLoading"
+                    diameter="20">
+                </mat-spinner>
                 <button mat-flat-button color="primary"
-                  (click)="onLogin()">
+                  (click)="onLogin()" [disabled]="formLogin.invalid || isLoading">
                     Acceder
                   <mat-icon>save</mat-icon>
                 </button>

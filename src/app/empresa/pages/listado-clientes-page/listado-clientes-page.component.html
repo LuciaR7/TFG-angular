@@ -86,7 +86,8 @@
       <!-- Cabecera y columnas de la tabla -->
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let user; columns: displayedColumns;
-          "(click)="openDetailUsuarioDialog(user)" 
+          "(click)="openDetailUsuarioDialog(user)"
+          [ngClass]="{ 'admin-row': user.rol === 'ADMIN' }" 
           matTooltip="Haz clic para ver los detalles del cliente">
         </tr>
   
@@ -149,6 +150,7 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumnsS"></tr>
       <tr mat-row *matRowDef="let user; columns: displayedColumnsS;
           "(click)="openDetailUsuarioDialog(user)" 
+          [ngClass]="{ 'admin-row': user.rol === 'ADMIN' }"
           matTooltip="Haz clic para ver los detalles del cliente">
       </tr>
   

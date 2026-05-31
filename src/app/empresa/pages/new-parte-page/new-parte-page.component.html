@@ -208,7 +208,7 @@
         
                             <!-- Botones -->
                             <div customFlexbox="row" cFAlign="space-between end" cFGap="60px">
-                                <button mat-raised-button color="primary">
+                                <button mat-raised-button color="primary" [disabled]="intervencionForm.invalid">
                                     <mat-icon>add_circle</mat-icon> Crear Parte
                                 </button>
                                 <button type="button" mat-raised-button color="warn" (click)="goBack()">

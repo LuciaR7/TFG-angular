@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { Error404PageComponent } from './pages/error404-page/error404-page.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 
@@ -16,6 +17,7 @@ import { Error404PageComponent } from './pages/error404-page/error404-page.compo
   exports:[
     Error404PageComponent,
     CommonModule,
+    MatProgressSpinnerModule
   ]
 
 

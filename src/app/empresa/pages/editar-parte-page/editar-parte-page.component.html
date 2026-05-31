@@ -161,7 +161,7 @@
                     </button>
                 
                     <!-- Boton Guardar -->
-                    <button mat-raised-button color="primary">
+                    <button mat-raised-button color="primary" [disabled]="form.invalid">
                         Guardar Cambios
                     <mat-icon>check</mat-icon>
                     </button>
