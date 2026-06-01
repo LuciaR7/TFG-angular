@@ -39,6 +39,13 @@ export class EditarClientePageComponent implements OnInit {
     if (id) {
       this.usuarioService.get(parseInt(id))
         .subscribe(user => {
+          // Impide editar otro administrador cambiando el id directamente en la URL.
+          if (!this.canEditUsuario(user)) {
+            this.dialogService.openDialog('Acceso denegado', 'No puedes editar los datos de otro administrador.');
+            this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_CLIENTS_ADMIN]);
+            return;
+          }
+
           this.user = user;
           this.initialUserValues = { ...user }; // Almacena los valores iniciales
          
@@ -101,7 +108,22 @@ export class EditarClientePageComponent implements OnInit {
     this.showPassword = !this.showPassword;
   }
 
+  // Permite editar clientes y solo el administrador que coincide con la sesión actual.
+  private canEditUsuario(user: Usuario): boolean {
+    const loggedUserId = Number(sessionStorage.getItem('userId'));
+    const isAdmin = String(user.rol) === 'ADMIN' || String(user.rol) === 'Administrador';
+
+    return !isAdmin || user.id === loggedUserId;
+  }
+
   save() {
+    // Segunda comprobación antes de guardar por si se intenta forzar la edición.
+    if (this.user && !this.canEditUsuario(this.user)) {
+      this.dialogService.openDialog('Acceso denegado', 'No puedes editar los datos de otro administrador.');
+      this.router.navigate([RoutesConstants.RUTA_ADMIN, RoutesConstants.RUTA_LIST_CLIENTS_ADMIN]);
+      return;
+    }
+
     // Marcar todos los campos como tocados para mostrar mensajes de error
     if(this.form?.invalid) {
       this.form.markAllAsTouched();
