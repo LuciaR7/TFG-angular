@@ -81,7 +81,13 @@ export class ListadoClientesPageComponent implements OnInit, AfterViewInit{
     this.isLoading = true; // Activa el spinner
     this.usuarioService.list().subscribe(
       users => {
-          this.dataSource.data = users;
+          const loggedUserId = Number(sessionStorage.getItem('userId'));
+
+          // Muestra todos los clientes y solo el administrador de la sesión actual.
+          this.dataSource.data = users.filter(user => {
+            const isAdmin = String(user.rol) === 'ADMIN' || String(user.rol) === 'Administrador';
+            return !isAdmin || user.id === loggedUserId;
+          });
           
           // Asegurar que el paginator se asigna correctamente
           setTimeout(() => {

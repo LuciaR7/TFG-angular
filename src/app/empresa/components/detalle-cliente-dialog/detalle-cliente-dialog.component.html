@@ -1,5 +1,8 @@
 
-<h2 mat-dialog-title>Detalle del Cliente #{{data.id}}</h2>
+<!-- $any evita el error de tipado porque el rol llega como 'ADMIN', aunque el enum Rol usa otro valor visible. -->
+<h2 mat-dialog-title>
+  {{ $any(data.rol) === 'ADMIN' ? 'Detalle del Administrador' : 'Detalle del Cliente' }} #{{ data.id }}
+</h2>
 
 <mat-dialog-content>
   <p><strong>Nombre:</strong> {{data.name}}</p>

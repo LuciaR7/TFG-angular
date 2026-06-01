@@ -10,6 +10,7 @@ import { UsuarioService } from '../../../shared/service/usuario.service';
 import { Parte } from '../../../shared/interfaces/parte.interface';
 import { ValidatorsParteService } from '../../../shared/validators/validatorsParte.service';
 import { DialogService } from '../../../shared/service/dialog.service';
+import { ValidatorsUserService } from '../../../shared/validators/validatorsUser.service';
 
 @Component({
   selector: 'app-new-parte-page',
@@ -49,16 +50,17 @@ export class NewPartePageComponent implements OnInit{
     private usuarioService: UsuarioService,
     private parteService: ParteService,
     private validatorsParteService: ValidatorsParteService,
+    private validatorsUserService: ValidatorsUserService,
     private dialogService: DialogService
   ) {
    
       //Formulario usuarios
       this.usuarioForm = this.fb.group({
-        usuarioId: [],
-        name: [],
-        surname: [],
-        email: [],
-        tlf: [],
+        usuarioId: [null, Validators.required],
+        name: ['', [ Validators.required, Validators.pattern( this.validatorsUserService.namePattern ) ]],
+        surname: ['', [ Validators.required, Validators.pattern( this.validatorsUserService.surnamePattern ) ]],
+        email: ['', [ Validators.required, Validators.pattern( this.validatorsUserService.emailPattern ) ]],
+        tlf: ['', [ Validators.required, Validators.pattern( this.validatorsUserService.tlfPattern ) ]],
         password: []
       });
 
@@ -159,6 +161,7 @@ export class NewPartePageComponent implements OnInit{
 
   editarDatosUsuario() {
     if (this.usuarioForm.invalid) {
+      this.usuarioForm.markAllAsTouched();
       console.error('Formulario de cliente inválido');
       return;
     }
@@ -210,6 +213,16 @@ export class NewPartePageComponent implements OnInit{
   // Muestra mensaje de error específico dependiendo del campo
   getFieldError( field: string ): string | null {
     return this.validatorsParteService.getFieldError( this.intervencionForm, field );
+  }
+
+  // Comprueba si en el campo de cliente hay errores cuando toca
+  isValidUsuarioField( field: string ) {
+    return this.validatorsUserService.isValidField( this.usuarioForm, field );
+  }
+
+  // Muestra mensaje de error específico dependiendo del campo de cliente
+  getUsuarioFieldError( field: string ): string | null {
+    return this.validatorsUserService.getFieldError( this.usuarioForm, field );
   }
 
   // Navegación para volver

@@ -1,7 +1,7 @@
 <!-- Título central -->
 <div class="title" customFlexbox="row" cFAlign="space-between center" cFGap="10px" style="padding-inline: 40px;">
     
-    <div>Editar cliente: {{user?.name}} {{user?.surname}}</div>
+    <div>{{ $any(user?.rol) === 'ADMIN' ? 'Editar administrador:' : 'Editar cliente:' }} {{user?.name}} {{user?.surname}}</div>
     <!-- Botón volver listado partes -->
     <div>
         <button mat-raised-button color="warn"

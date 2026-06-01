@@ -54,25 +54,45 @@
                             <!-- Nombre, Apellidos -->
                             <mat-form-field>
                                 <mat-label>Nombre</mat-label><input type="text" matInput formControlName="name" [readonly]="!isEditing">
+                                <mat-error>
+                                    @if (isValidUsuarioField('name')) {
+                                    <span> {{ getUsuarioFieldError('name') }} </span>
+                                    }
+                                </mat-error>
                             </mat-form-field>
                             <mat-form-field>
                                 <mat-label>Apellidos</mat-label><input type="text" matInput formControlName="surname" [readonly]="!isEditing">
+                                <mat-error>
+                                    @if (isValidUsuarioField('surname')) {
+                                    <span> {{ getUsuarioFieldError('surname') }} </span>
+                                    }
+                                </mat-error>
                             </mat-form-field>
                         </div>
                         <div customFlexbox="row" customFlexbox.s="column" cFGap="25px">
                             <!-- Email, Teléfono -->
                             <mat-form-field>
                                 <mat-label>E-Mail</mat-label><input type="text" matInput formControlName="email" [readonly]="!isEditing">
+                                <mat-error>
+                                    @if (isValidUsuarioField('email')) {
+                                    <span> {{ getUsuarioFieldError('email') }} </span>
+                                    }
+                                </mat-error>
                             </mat-form-field>
                             <mat-form-field>
                                 <mat-label>Teléfono</mat-label><input type="text" matInput formControlName="tlf" [readonly]="!isEditing">
+                                <mat-error>
+                                    @if (isValidUsuarioField('tlf')) {
+                                    <span> {{ getUsuarioFieldError('tlf') }} </span>
+                                    }
+                                </mat-error>
                             </mat-form-field>
                         </div>                      
 
 
                         <div customFlexbox="" cFAlign="end center" cFGap="60px">
-                            <button mat-raised-button style="background-color: #54d258" 
-                                (click)="editarDatosUsuario()">Actualizar Datos Cliente
+                            <button type="button" mat-raised-button style="background-color: #54d258" 
+                                (click)="editarDatosUsuario()" [disabled]="usuarioForm.invalid">Actualizar Datos Cliente
                                 <mat-icon>save</mat-icon>
                             </button>
                         </div>
